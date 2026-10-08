@@ -1,50 +1,170 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixeloria Pro</title>
+    <title>Pixeloria - The Global Marketplace for Digital Products</title>
     <style>
-        body {
-            font-family: Tahoma, sans-serif;
-            direction: rtl;
-            background-color: #f4f4f9;
+        * {
             margin: 0;
             padding: 0;
-            text-align: center;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        body {
+            background-color: #fcfcfc;
+            color: #1a1a1a;
+        }
+        /* الهيدر العلوي */
         header {
-            background-color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: #ffffff;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: #6c5ce7;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+            color: #555;
+            font-size: 14px;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        .btn-sign {
+            padding: 8px 20px;
+            border: 1px solid #ccc;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-create {
+            padding: 8px 20px;
+            background: #6c5ce7;
             color: white;
-            padding: 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
         }
+        /* قسم الهيرو (Hero Section) */
         .hero {
-            padding: 50px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 50px;
+            background: linear-gradient(135deg, #f3f0ff 0%, #faf8ff 100%);
+            overflow: hidden;
         }
-        .btn {
-            display: inline-block;
-            background-color: #3498db;
+        .hero-content {
+            max-width: 550px;
+        }
+        .hero-subtitle {
+            color: #6c5ce7;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #111;
+            margin-bottom: 20px;
+        }
+        .hero-title span {
+            color: #6c5ce7;
+        }
+        .hero-desc {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .btn-explore {
+            background: #6c5ce7;
             color: white;
             padding: 12px 25px;
+            border-radius: 10px;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            font-weight: bold;
+            font-weight: 600;
+        }
+        .btn-sell {
+            background: transparent;
+            color: #111;
+            border: 1px solid #ccc;
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;adier;
+            font-weight: 600;
+        }
+        .hero-features {
+            display: flex;
+            gap: 30px;
+            font-size: 13px;
+            color: #666;
+        }
+        .hero-image img {
+            max-width: 500px;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 
+    <!-- الهيدر -->
     <header>
-        <h1>Pixeloria Pro</h1>
-        <p>مرحباً بك في موقعنا الجديد</p>
+        <div class="logo">Pixeloria</div>
+        <ul class="nav-links">
+            <li>Explore</li>
+            <li>Categories</li>
+            <li>For Creators</li>
+            <li>Resources</li>
+        </ul>
+        <div class="auth-buttons">
+            <button class="btn-sign">Sign in</button>
+            <button class="btn-create">Create account</button>
+        </div>
     </header>
 
-    <main class="hero">
-        <h2>نحن نعمل على تطوير خدماتنا الرقمية والتصميم</h2>
-        <p>انتظرونا، قريباً سيكون كل شيء جاهزاً بشكل احترافي!</p>
-        <a href="#" class="btn">تواصل معنا</a>
-    </main>
+    <!-- الواجهة الرئيسية (Hero) -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-subtitle">The global marketplace for digital products</div>
+            <h1 class="hero-title">Create. Sell. <span>Grow.</span></h1>
+            <p class="hero-desc">Pixeloria is the all-in-one platform for digital creators and dreamers. Discover amazing digital products or start selling your own — from anywhere in the world.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn-explore">Explore Products</a>
+                <a href="#" class="btn-sell">Start Selling</a>
+            </div>
+            <div class="hero-features">
+                <div>🌐 <strong>Global Reach</strong><br>Sell worldwide</div>
+                <div>🔒 <strong>Secure Payments</strong><br>Safe & reliable</div>
+                <div>⚡ <strong>Instant Downloads</strong><br>Get your files immediately</div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <!-- مكان عرض صورة اللابتوب والمنتجات الرقمية لاحقاً -->
+            <div style="width: 450px; height: 300px; background: #e2def8; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: bold;">[ Mockup Preview Area ]</div>
+        </div>
+    </section>
 
 </body>
 </html>
