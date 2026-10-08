@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixeloria - إبداعك الرقمي، بين يديك</title>
+    <title>Pixeloria - متجرك الرقمي المتكامل</title>
     <style>
         * {
             margin: 0;
@@ -19,12 +19,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 50px;
+            padding: 20px 40px;
             background: #ffffff;
             border-bottom: 1px solid #eaeaea;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .logo {
-            font-weight: bold;
+            font-weight: 800;
             font-size: 24px;
             color: #6c5ce7;
             cursor: pointer;
@@ -36,32 +39,61 @@
             color: #555;
             font-size: 14px;
         }
-        .auth-buttons {
+        .nav-links li {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .nav-links li:hover {
+            color: #6c5ce7;
+        }
+        .header-actions {
             display: flex;
             gap: 15px;
+            align-items: center;
         }
         .btn-sign {
-            padding: 8px 20px;
+            padding: 8px 18px;
             border: 1px solid #ccc;
             background: transparent;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 13px;
         }
         .btn-create {
-            padding: 8px 20px;
+            padding: 8px 18px;
             background: #6c5ce7;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 13px;
+        }
+        .cart-icon-btn {
+            background: #f3f0ff;
+            color: #6c5ce7;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
         }
         .hero {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 60px 50px;
+            padding: 60px 40px;
             background: linear-gradient(135deg, #f3f0ff 0%, #faf8ff 100%);
         }
         .hero-content {
@@ -74,7 +106,7 @@
             margin-bottom: 15px;
         }
         .hero-title {
-            font-size: 44px;
+            font-size: 40px;
             font-weight: 800;
             line-height: 1.2;
             color: #111;
@@ -85,7 +117,7 @@
         }
         .hero-desc {
             color: #555;
-            font-size: 16px;
+            font-size: 15px;
             line-height: 1.6;
             margin-bottom: 30px;
         }
@@ -99,55 +131,91 @@
             cursor: pointer;
             border: none;
         }
-        .product-details-container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .products-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            padding: 40px;
         }
-        @media(max-width: 768px) {
-            .product-details-container {
-                grid-template-columns: 1fr;
-            }
-        }
-        .product-gallery {
-            background: #fff;
+        .product-card {
             border: 1px solid #eaeaea;
-            border-radius: 16px;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
         }
-        .main-preview-img {
-            height: 350px;
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+        .product-thumb {
+            height: 160px;
             background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #6c5ce7;
             font-weight: bold;
-            font-size: 22px;
+            font-size: 15px;
         }
-        .product-info-box {
+        .product-content {
+            padding: 20px;
+        }
+        .product-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 8px;
+        }
+        .product-desc {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        .product-footer {
+            padding: 0 20px 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .product-price {
+            font-weight: 800;
+            color: #111;
+            font-size: 17px;
+        }
+        .btn-details {
+            background: #6c5ce7;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        /* صفحة التفاصيل */
+        .details-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 30px;
+        }
+        @media(max-width: 768px) {
+            .details-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .details-box {
             background: #fff;
             border: 1px solid #eaeaea;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .badge-type {
-            display: inline-block;
-            background: #f3f0ff;
-            color: #6c5ce7;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 15px;
+            border-radius: 14px;
+            padding: 25px;
         }
         .spec-list {
             list-style: none;
@@ -159,204 +227,254 @@
         .spec-list li {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
+            font-size: 13px;
             color: #555;
             margin-bottom: 8px;
         }
-        .spec-list li span:last-child {
-            font-weight: 600;
-            color: #111;
+        /* نافذة السلة والـ Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: right;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo" onclick="location.reload()">Pixeloria</div>
+        <div class="logo" onclick="switchPage('home')">Pixeloria</div>
         <ul class="nav-links">
-            <li style="cursor: pointer;" onclick="location.reload()">الرئيسية</li>
-            <li style="cursor: pointer;" onclick="location.reload()">التصنيفات</li>
-            <li>للمبدعين</li>
+            <li onclick="switchPage('home')">الرئيسية</li>
+            <li onclick="document.getElementById('products-section').scrollIntoView({behavior: 'smooth'})">المنتجات</li>
             <li>الموارد</li>
         </ul>
-        <div class="auth-buttons">
-            <button class="btn-sign" onclick="openAuth(false)">تسجيل الدخول</button>
-            <button class="btn-create" onclick="openAuth(true)">إنشاء حساب</button>
+        <div class="header-actions">
+            <button class="cart-icon-btn" onclick="openCartModal()">🛒 السلة (<span id="cart-count">0</span>)</button>
+            <button class="btn-sign" onclick="openAuthModal(false)">تسجيل الدخول</button>
+            <button class="btn-create" onclick="openAuthModal(true)">حساب جديد</button>
         </div>
     </header>
 
     <!-- الصفحة الرئيسية -->
-    <div id="home-page">
+    <div id="home-page" class="page-section active">
         <section class="hero">
             <div class="hero-content">
-                <div class="hero-subtitle">Pixeloria</div>
+                <div class="hero-subtitle">متجر Pixeloria الرقمي</div>
                 <h1 class="hero-title">إبداعك الرقمي، <span>بين يديك</span></h1>
-                <p class="hero-desc">منتجات رقمية تلهم إبداعك. اكتشف أدوات وقوالب مميزة مصممة خصيصاً لمساعدتك على النمو والنجاح في مشاريعك الرقمية.</p>
-                <div>
-                    <button class="btn-explore" onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})">تسوق الآن</button>
-                </div>
+                <p class="hero-desc">قوالب وأدوات رقمية مصممة خصيصاً لمساعدتك على إنجاز مشاريعك الاحترافية بسرعة وبأعلى جودة.</p>
+                <button class="btn-explore" onclick="document.getElementById('products-section').scrollIntoView({behavior: 'smooth'})">تصفح المنتجات</button>
             </div>
         </section>
 
-        <section id="products" style="padding: 60px 50px; background: #ffffff;">
-            <div style="margin-bottom: 40px; text-align: center;">
-                <h2 style="font-size: 32px; font-weight: 800; color: #111; margin-bottom: 10px;">استكشف المنتجات الرقمية</h2>
-                <p style="color: #666; font-size: 15px;">أدوات وقوالب جاهزة للتحميل الفوري لمساعدة مشاريعك على النمو.</p>
+        <section id="products-section" style="padding: 40px 0;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="font-size: 28px; font-weight: 800; color: #111;">أحدث المنتجات الرقمية</h2>
             </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+            <div class="products-grid">
                 <!-- منتج 1 -->
-                <div style="border: 1px solid #eaeaea; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="product-card">
                     <div>
-                        <div style="height: 180px; background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%); display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: bold; font-size: 16px;">مخطط يومي بسيط</div>
-                        <div style="padding: 20px;">
-                            <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 8px;">مخطط يومي بسيط</h3>
-                            <p style="color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 20px;">خطط ليومك، ركز على مهامك الأساسية، وحقق أهدافك بكفاءة عالية.</p>
+                        <div class="product-thumb">مخطط يومي بسيط</div>
+                        <div class="product-content">
+                            <h3 class="product-title">مخطط يومي بسيط</h3>
+                            <p class="product-desc">خطط ليومك، ركز على مهامك الأساسية وحقق أهدافك بكفاءة.</p>
                         </div>
                     </div>
-                    <div style="padding: 0 20px 20px 20px; display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: 800; color: #111; font-size: 18px;">$7.99</span>
-                        <button onclick="openDetails('مخطط يومي بسيط', '7.99', 'PDF', '15 صفحة', 'خطط ليومك، ركز على مهامك الأساسية، وحقق أهدافك بكفاءة عالية.', 'ملف PDF عالي الجودة جاهز للطباعة أو الاستخدام المباشر على الأجهزة اللوحية.')" style="background: #6c5ce7; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600;">عرض التفاصيل</button>
+                    <div class="product-footer">
+                        <span class="product-price">$7.99</span>
+                        <button class="btn-details" onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'PDF', '15 صفحة', 'ملف PDF عالي الجودة جاهز للطباعة والاستخدام الفوري.')">التفاصيل</button>
                     </div>
                 </div>
 
                 <!-- منتج 2 -->
-                <div style="border: 1px solid #eaeaea; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="product-card">
                     <div>
-                        <div style="height: 180px; background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%); display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: bold; font-size: 16px;">دليل العناية الذاتية</div>
-                        <div style="padding: 20px;">
-                            <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 8px;">دليل العناية الذاتية</h3>
-                            <p style="color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 20px;">عادات صغيرة يومية تؤدي إلى تغييرات كبيرة وإيجابية في حياتك.</p>
+                        <div class="product-thumb">دليل العناية الذاتية</div>
+                        <div class="product-content">
+                            <h3 class="product-title">دليل العناية الذاتية</h3>
+                            <p class="product-desc">عادات صغيرة يومية تؤدي إلى تغييرات إيجابية كبرى في حياتك.</p>
                         </div>
                     </div>
-                    <div style="padding: 0 20px 20px 20px; display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: 800; color: #111; font-size: 18px;">$5.99</span>
-                        <button onclick="openDetails('دليل العناية الذاتية', '5.99', 'PDF / Workbook', '25 صفحة', 'عادات صغيرة يومية تؤدي إلى تغييرات كبيرة وإيجابية في حياتك.', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للعناية بالصحة النفسية بصيغة PDF.')" style="background: #6c5ce7; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600;">عرض التفاصيل</button>
+                    <div class="product-footer">
+                        <span class="product-price">$5.99</span>
+                        <button class="btn-details" onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'PDF Workbook', '25 صفحة', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للصحة النفسية.')">التفاصيل</button>
                     </div>
                 </div>
 
                 <!-- منتج 3 -->
-                <div style="border: 1px solid #eaeaea; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="product-card">
                     <div>
-                        <div style="height: 180px; background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%); display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: bold; font-size: 16px;">قوالب وسائل التواصل</div>
-                        <div style="padding: 20px;">
-                            <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 8px;">قوالب وسائل التواصل</h3>
-                            <p style="color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 20px;">50 قالباً احترافياً قابلاً للتعديل لتصميم منشورات جذابة بسرعة.</p>
+                        <div class="product-thumb">قوالب وسائل التواصل</div>
+                        <div class="product-content">
+                            <h3 class="product-title">قوالب وسائل التواصل</h3>
+                            <p class="product-desc">50 قالباً احترافياً قابلاً للتعديل لتصميم منشورات جذابة بسرعة.</p>
                         </div>
                     </div>
-                    <div style="padding: 0 20px 20px 20px; display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: 800; color: #111; font-size: 18px;">$12.00</span>
-                        <button onclick="openDetails('قوالب وسائل التواصل', '12.00', 'Canva Template', '50 قالب جاهز', '50 قالباً احترافياً قابلاً للتعديل لتصميم منشورات جذابة بسرعة.', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل لتناسب هويتك البصرية.')" style="background: #6c5ce7; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600;">عرض التفاصيل</button>
+                    <div class="product-footer">
+                        <span class="product-price">$12.00</span>
+                        <button class="btn-details" onclick="showProductDetails('قوالب وسائل التواصل', '12.00', 'Canva Template', '50 قالب جاهز', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل.')">التفاصيل</button>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- صفحة تفاصيل المنتج (مخفية افتراضياً) -->
-    <div id="product-page" style="display: none;">
-        <div class="product-details-container">
-            <div class="product-gallery">
-                <div class="main-preview-img" id="det-img">صورة معاينة المنتج</div>
-                <div style="padding: 20px;">
-                    <h4 style="font-size: 15px; font-weight: 700; color: #111; margin-bottom: 10px;">ماذا سيحصل عليه المشتري بالضبط:</h4>
-                    <p id="det-what-gets" style="color: #666; font-size: 14px; line-height: 1.6;"></p>
-                </div>
+    <!-- صفحة تفاصيل المنتج -->
+    <div id="product-details-page" class="page-section">
+        <div class="details-container">
+            <div class="details-box">
+                <div class="product-thumb" id="det-thumb" style="height: 280px; margin-bottom: 20px; border-radius: 10px;">صورة المنتج</div>
+                <h4 style="font-size: 14px; font-weight: 700; color: #111; margin-bottom: 8px;">ماذا ستحصل عليه:</h4>
+                <p id="det-what-gets" style="color: #666; font-size: 13px; line-height: 1.5;"></p>
             </div>
 
-            <div class="product-info-box">
+            <div class="details-box" style="display: flex; flex-direction: column; justify-content: space-between;">
                 <div>
-                    <span class="badge-type" id="det-type">PDF</span>
-                    <h2 id="det-title" style="font-size: 26px; font-weight: 800; color: #111; margin-bottom: 15px;">اسم المنتج</h2>
-                    <p id="det-desc" style="color: #666; font-size: 15px; line-height: 1.6; margin-bottom: 20px;"></p>
+                    <span style="display: inline-block; background: #f3f0ff; color: #6c5ce7; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 10px;" id="det-type">PDF</span>
+                    <h2 id="det-title" style="font-size: 22px; font-weight: 800; color: #111; margin-bottom: 10px;">اسم المنتج</h2>
+                    <p id="det-desc" style="color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 15px;"></p>
 
                     <ul class="spec-list">
                         <li><span>نوع الملف:</span> <span id="det-spec-type">PDF</span></li>
-                        <li><span>عدد الصفحات / المحتوى:</span> <span id="det-spec-pages">15 صفحة</span></li>
-                        <li><span>التسليم:</span> <span>تحميل فوري بعد الدفع مباشرة</span></li>
+                        <li><span>المحتوى:</span> <span id="det-spec-pages">15 صفحة</span></li>
+                        <li><span>التسليم:</span> <span>تحميل فوري بعد الدفع</span></li>
                     </ul>
                 </div>
 
                 <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <span style="font-size: 15px; color: #666;">السعر الإجمالي:</span>
-                        <span id="det-price" style="font-size: 28px; font-weight: 800; color: #111;">$7.99</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <span style="font-size: 14px; color: #666;">السعر:</span>
+                        <span id="det-price" style="font-size: 24px; font-weight: 800; color: #111;">$7.99</span>
                     </div>
-                    <button onclick="alert('تم النقر على زر الشراء! سيتم توجيهك لبوابة الدفع الآمنة.')" style="width: 100%; background: #6c5ce7; color: white; padding: 14px; border-radius: 10px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center;">شراء الآن</button>
-                    <button onclick="location.reload()" style="width: 100%; background: transparent; color: #666; padding: 10px; border: none; font-size: 14px; cursor: pointer; margin-top: 10px;">← العودة إلى الرئيسية</button>
+                    <button onclick="addToCartFromDetails()" style="width: 100%; background: #6c5ce7; color: white; padding: 12px; border-radius: 8px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 8px;">إضافة إلى السلة</button>
+                    <button onclick="switchPage('home')" style="width: 100%; background: transparent; color: #666; padding: 8px; border: none; font-size: 13px; cursor: pointer;">← العودة للرئيسية</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- نافذة السلة -->
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="font-size: 18px; font-weight: 700;">سلة المشتريات</h3>
+                <button onclick="closeModals()" style="background: none; border: none; font-size: 16px; cursor: pointer;">✕</button>
+            </div>
+            <div id="cart-items-list" style="margin-bottom: 15px; max-height: 200px; overflow-y: auto; font-size: 14px; color: #555;">
+                السلة فارغة حالياً.
+            </div>
+            <div style="border-top: 1px solid #eee; padding-top: 10px; display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 15px;">
+                <span>الإجمالي:</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button onclick="alert('تم الانتقال لبوابة الدفع الآمنة بنجاح!')" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer;">إتمام الشراء</button>
         </div>
     </div>
 
     <!-- نافذة تسجيل الدخول -->
-    <div id="auth-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
-        <div style="background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; text-align: right;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <button onclick="document.getElementById('auth-modal').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #666;">✕</button>
-                <h3 id="modal-title" style="font-size: 20px; font-weight: 700; color: #111;">تسجيل الدخول إلى Pixeloria</h3>
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 id="auth-modal-title" style="font-size: 18px; font-weight: 700;">تسجيل الدخول</h3>
+                <button onclick="closeModals()" style="background: none; border: none; font-size: 16px; cursor: pointer;">✕</button>
             </div>
-            
-            <form style="display: flex; flex-direction: column; gap: 15px;" onsubmit="handleAuth(event)">
-                <div id="name-field" style="display: none;">
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px;">الاسم الكامل</label>
-                    <input type="text" id="user-name" placeholder="اسمك الكريم" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; text-align: right;">
-                </div>
-                <div>
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px;">البريد الإلكتروني</label>
-                    <input type="email" id="user-email" placeholder="name@example.com" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; text-align: left;" required>
-                </div>
-                <div>
-                    <label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px;">كلمة المرور</label>
-                    <input type="password" id="user-pass" placeholder="••••••••" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; text-align: left;" required>
-                </div>
-                <button type="submit" id="submit-btn" style="background: #6c5ce7; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px;">تسجيل الدخول</button>
+            <form onsubmit="handleAuthSubmit(event)" style="display: flex; flex-direction: column; gap: 12px;">
+                <input type="email" id="auth-email" placeholder="البريد الإلكتروني" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; text-align: left;" required>
+                <input type="password" id="auth-pass" placeholder="كلمة المرور" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; text-align: left;" required>
+                <button type="submit" id="auth-submit-btn" style="background: #6c5ce7; color: white; padding: 10px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer;">دخول</button>
             </form>
-            
-            <div style="text-align: center; margin-top: 15px; font-size: 13px; color: #666;">
-                <span id="switch-text">ليس لديك حساب؟</span> 
-                <a href="#" onclick="toggleAuthMode(event)" id="switch-link" style="color: #6c5ce7; text-decoration: none; font-weight: 600; margin-right: 5px;">إنشاء حساب</a>
-            </div>
         </div>
     </div>
 
     <script>
-        function openDetails(title, price, type, pages, desc, whatGets) {
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('product-page').style.display = 'block';
-            
-            document.getElementById('det-title').innerText = title;
-            document.getElementById('det-price').innerText = '$' + price;
-            document.getElementById('det-type').innerText = type;
-            document.getElementById('det-desc').innerText = desc;
-            document.getElementById('det-what-gets').innerText = whatGets;
-            document.getElementById('det-spec-type').innerText = type;
-            document.getElementById('det-spec-pages').innerText = pages;
-            document.getElementById('det-img').innerText = title;
-            
+        let currentProduct = {};
+        let cart = [];
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            if(pageId === 'home') {
+                document.getElementById('home-page').classList.add('active');
+            } else if(pageId === 'details') {
+                document.getElementById('product-details-page').classList.add('active');
+            }
             window.scrollTo(0, 0);
         }
 
-        let isSignUp = false;
-        function openAuth(signUp) {
-            isSignUp = signUp;
+        function showProductDetails(title, price, type, pages, whatGets) {
+            currentProduct = { title, price, type, whatGets };
+            document.getElementById('det-title').innerText = title;
+            document.getElementById('det-price').innerText = '$' + price;
+            document.getElementById('det-type').innerText = type;
+            document.getElementById('det-spec-type').innerText = type;
+            document.getElementById('det-spec-pages').innerText = pages;
+            document.getElementById('det-what-gets').innerText = whatGets;
+            document.getElementById('det-thumb').innerText = title;
+            document.getElementById('det-desc').innerText = whatGets;
+            switchPage('details');
+        }
+
+        function addToCartFromDetails() {
+            cart.push(currentProduct);
+            document.getElementById('cart-count').innerText = cart.length;
+            alert('تمت إضافة المنتج إلى السلة بنجاح!');
+            switchPage('home');
+        }
+
+        function openCartModal() {
+            const listEl = document.getElementById('cart-items-list');
+            const totalEl = document.getElementById('cart-total');
+            if(cart.length === 0) {
+                listEl.innerHTML = 'السلة فارغة حالياً.';
+                totalEl.innerText = '$0.00';
+            } else {
+                let html = '';
+                let total = 0;
+                cart.forEach((item, idx) => {
+                    html += `<div style="display:justify; margin-bottom:6px;">• ${item.title} - $${item.price}</div>`;
+                    total += parseFloat(item.price);
+                });
+                listEl.innerHTML = html;
+                totalEl.innerText = '$' + total.toFixed(2);
+            }
+            document.getElementById('cart-modal').style.display = 'flex';
+        }
+
+        let isSignUpMode = false;
+        function openAuthModal(signUp) {
+            isSignUpMode = signUp;
+            document.getElementById('auth-modal-title').innerText = signUp ? 'إنشاء حساب جديد' : 'تسجيل الدخول';
+            document.getElementById('auth-submit-btn').innerText = signUp ? 'تسجيل الحساب' : 'دخول';
             document.getElementById('auth-modal').style.display = 'flex';
-            document.getElementById('modal-title').innerText = isSignUp ? 'إنشاء حساب جديد في Pixeloria' : 'تسجيل الدخول إلى Pixeloria';
-            document.getElementById('submit-btn').innerText = isSignUp ? 'إنشاء الحساب' : 'تسجيل الدخول';
-            document.getElementById('name-field').style.display = isSignUp ? 'block' : 'none';
-            document.getElementById('switch-text').innerText = isSignUp ? 'لديك حساب بالفعل؟' : 'ليس لديك حساب؟';
-            document.getElementById('switch-link').innerText = isSignUp ? 'تسجيل الدخول' : 'إنشاء حساب';
         }
-        function toggleAuthMode(e) {
-            e.preventDefault();
-            openAuth(!isSignUp);
-        }
-        function handleAuth(e) {
-            e.preventDefault();
-            const email = document.getElementById('user-email').value;
-            alert(isSignUp ? 'تم إنشاء الحساب بنجاح للبريد: ' + email : 'أهلاً بعودتك، ' + email);
+
+        function closeModals() {
+            document.getElementById('cart-modal').style.display = 'none';
             document.getElementById('auth-modal').style.display = 'none';
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            alert(isSignUpMode ? 'تم إنشاء الحساب بنجاح لـ: ' + email : 'أهلاً بعودتك، ' + email);
+            closeModals();
         }
     </script>
 </body>
 </html>
+
