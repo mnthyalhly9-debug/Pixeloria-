@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixeloria - السوق العالمي للمنتجات الرقمية</title>
+    <title>Pixeloria - إبداعك الرقمي، بين يديك</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #fcfcfc; color: #1a1a1a; }
@@ -20,21 +20,15 @@
             top: 0;
             z-index: 100;
         }
-        .logo { font-weight: 900; font-size: 22px; color: #6c5ce7; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .logo { font-weight: 900; font-size: 22px; color: #6c5ce7; }
+        .logo-tagline { font-size: 13px; color: #555; font-weight: 600; border-right: 2px solid #ddd; padding-right: 12px; }
+        
         .nav-links { display: flex; gap: 25px; list-style: none; color: #555; font-size: 14px; font-weight: 500; }
         .nav-links li { cursor: pointer; transition: color 0.2s; }
         .nav-links li:hover { color: #6c5ce7; }
         .header-actions { display: flex; gap: 12px; align-items: center; }
-        .search-bar-top {
-            display: flex;
-            align-items: center;
-            background: #f4f5f7;
-            border-radius: 20px;
-            padding: 6px 15px;
-            width: 250px;
-            border: 1px solid #e1e4e8;
-        }
-        .search-bar-top input { background: transparent; border: none; outline: none; width: 100%; font-size: 13px; text-align: right; }
+        
         .btn-sign { padding: 8px 16px; border: 1px solid #ddd; background: transparent; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .btn-create { padding: 8px 16px; background: #6c5ce7; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .cart-icon-btn { background: #f3f0ff; color: #6c5ce7; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; font-size: 13px; }
@@ -45,24 +39,21 @@
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #f5f0ff 0%, #fae6ff 100%);
-            padding: 50px 40px;
+            padding: 60px 40px;
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
             gap: 30px;
             align-items: center;
             overflow: hidden;
-            position: relative;
         }
         @media(max-width: 900px) { .hero { grid-template-columns: 1fr; padding: 30px 20px; } }
-        .hero-subtitle { color: #6c5ce7; font-weight: 700; font-size: 12px; letter-spacing: 0.5px; margin-bottom: 12px; text-transform: uppercase; }
-        .hero-title { font-size: 44px; font-weight: 900; line-height: 1.15; color: #111; margin-bottom: 15px; }
+        .hero-subtitle { color: #6c5ce7; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; margin-bottom: 12px; text-transform: uppercase; }
+        .hero-title { font-size: 42px; font-weight: 900; line-height: 1.2; color: #111; margin-bottom: 15px; }
         .hero-title span { color: #6c5ce7; }
-        .hero-desc { color: #555; font-size: 15px; line-height: 1.6; margin-bottom: 25px; max-width: 500px; }
+        .hero-desc { color: #555; font-size: 16px; line-height: 1.6; margin-bottom: 25px; max-width: 500px; font-weight: 600; }
         .hero-buttons { display: flex; gap: 12px; margin-bottom: 35px; }
         .btn-primary { background: #6c5ce7; color: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3); }
         .btn-secondary { background: #ffffff; color: #111; border: 1px solid #ddd; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; }
-        .hero-features { display: flex; gap: 20px; font-size: 12px; color: #666; font-weight: 600; }
-        .hero-features div { display: flex; align-items: center; gap: 5px; }
         
         .hero-graphic-mockup {
             background: white;
@@ -71,9 +62,7 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.08);
             border: 1px solid #eee;
             text-align: center;
-            position: relative;
         }
-        .hero-graphic-mockup img { width: 100%; border-radius: 8px; display: block; }
 
         /* Categories */
         .categories-section { padding: 40px; background: #fff; border-bottom: 1px solid #eaeaea; }
@@ -102,34 +91,7 @@
         .product-price { font-weight: 800; color: #111; font-size: 16px; }
         .btn-details { background: #6c5ce7; color: white; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
 
-        /* Creator Promo Banner */
-        .creator-banner {
-            margin: 40px;
-            background: linear-gradient(135deg, #f0ebff 0%, #fcf8ff 100%);
-            border: 1px solid #e2d9ff;
-            border-radius: 16px;
-            padding: 40px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            align-items: center;
-        }
-        @media(max-width: 768px) { .creator-banner { grid-template-columns: 1fr; padding: 25px; } }
-
-        /* Why Choose Us */
-        .why-section { padding: 40px; background: #fff; border-top: 1px solid #eaeaea; text-align: center; }
-        .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 30px; }
-        .why-card { padding: 20px; border-radius: 10px; background: #faf9fc; border: 1px solid #f0f0f5; text-align: right; }
-        .why-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #111; }
-        .why-card p { font-size: 12px; color: #666; line-height: 1.4; }
-
-        /* Footer */
-        footer { background: #0f0c1b; color: #a0a0ab; padding: 50px 40px 20px 40px; font-size: 13px; }
-        .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 30px; margin-bottom: 40px; border-bottom: 1px solid #231f3d; padding-bottom: 30px; }
-        @media(max-width: 768px) { .footer-top { grid-template-columns: 1fr; } }
-        .footer-bottom { display: flex; justify-content: space-between; align-items: center; color: #666; font-size: 12px; }
-
-        /* Details Page & Modals */
+        /* Details & Modals */
         .details-container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; }
         @media(max-width: 768px) { .details-container { grid-template-columns: 1fr; } }
         .details-box { background: #fff; border: 1px solid #eaeaea; border-radius: 12px; padding: 20px; }
@@ -143,10 +105,9 @@
 <body>
 
     <header>
-        <div class="logo" onclick="switchPage('home')">Pixeloria</div>
-        <div class="search-bar-top">
-            <input type="text" placeholder="ابحث عن منتج رقمي...">
-            <span>🔍</span>
+        <div class="logo-area" onclick="switchPage('home')">
+            <div class="logo">Pixeloria</div>
+            <div class="logo-tagline">إبداعك الرقمي، بين يديك</div>
         </div>
         <ul class="nav-links">
             <li onclick="switchPage('home')">الرئيسية</li>
@@ -162,25 +123,19 @@
 
     <!-- الصفحة الرئيسية -->
     <div id="home-page" class="page-section active">
-        <!-- Hero Section المطابق للصورة -->
         <section class="hero">
             <div>
-                <div class="hero-subtitle">السوق العالمي للمنتجات الرقمية</div>
-                <h1 class="hero-title">أنشئ. بع. <span>توسع.</span></h1>
-                <p class="hero-desc">Pixeloria هي المنصة المتكاملة للمبدعين والمبتكرين الرقميين. اكتشف منتجات مذهلة أو ابدأ ببيع منتجاتك الخاصة — من أي مكان في العالم.</p>
+                <div class="hero-subtitle">متجر Pixeloria الرقمي</div>
+                <h1 class="hero-title">إبداعك الرقمي، <span>بين يديك</span></h1>
+                <p class="hero-desc">منتجات رقمية تلهم إبداعك. اكتشف أدوات وقوالب مميزة مصممة خصيصاً لمساعدتك على النمو والنجاح في مشاريعك الرقمية.</p>
                 <div class="hero-buttons">
-                    <button class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">استكشف المنتجات</button>
-                    <button class="btn-secondary" onclick="openAuthModal(true)">ابدأ البيع</button>
-                </div>
-                <div class="hero-features">
-                    <div>🌍 انتشار عالمي</div>
-                    <div>🔒 مدفوعات آمنة</div>
-                    <div>⚡ تحميل فوري</div>
+                    <button class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">تسوق الآن</button>
+                    <button class="btn-secondary" onclick="openAuthModal(true)">حساب جديد</button>
                 </div>
             </div>
             <div class="hero-graphic-mockup">
-                <div style="background: linear-gradient(135deg, #ece5ff 0%, #d8c9ff 100%); height: 240px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: 800;">
-                    💻 معاينة لوحة التحكم والمنتجات
+                <div style="background: linear-gradient(135deg, #ece5ff 0%, #d8c9ff 100%); height: 220px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: 800;">
+                    💻 معاينة المنتجات الرقمية
                 </div>
             </div>
         </section>
@@ -189,8 +144,8 @@
         <section class="categories-section">
             <div class="section-header">
                 <div>
-                    <h2 class="section-title">أقسام المنتجات</h2>
-                    <p class="section-subtitle">استكشف ما تحتاجه — من أجل شيء أفضل.</p>
+                    <h2 class="section-title">استكشف المنتجات الرقمية</h2>
+                    <p class="section-subtitle">أدوات وقوالب جاهزة للتحميل الفوري لمساعدة مشاريعك على النمو.</p>
                 </div>
             </div>
             <div class="categories-grid">
@@ -201,7 +156,6 @@
                 <div class="category-card"><span>💻 برمجيات وأدوات</span></div>
                 <div class="category-card"><span>🎓 دورات تعليمية</span></div>
                 <div class="category-card"><span>🎵 موسيقى وصوتيات</span></div>
-                <div class="category-card"><span>🖼️ صور ورسومات</span></div>
                 <div class="category-card"><span>✨ المزيد</span></div>
             </div>
         </section>
@@ -210,8 +164,7 @@
         <section id="products-sec" class="products-section">
             <div class="section-header" style="margin-bottom: 20px;">
                 <div>
-                    <h2 class="section-title">المنتجات المميزة</h2>
-                    <p class="section-subtitle">منتجات رقمية مختارة بعناية من مبدعين حول العالم.</p>
+                    <h2 class="section-title">أحدث المنتجات الرقمية</h2>
                 </div>
             </div>
 
@@ -219,20 +172,15 @@
                 <!-- منتج 1 -->
                 <div class="product-card">
                     <div>
-                        <div class="product-thumb">
-                            <span class="badge-bestseller">الأكثر مبيعاً</span>
-                            مخطط يومي بسيط
-                        </div>
+                        <div class="product-thumb">مخطط يومي بسيط</div>
                         <div class="product-content">
-                            <span class="product-category-tag">مخططات ومنظمات</span>
                             <h3 class="product-title">مخطط يومي بسيط</h3>
                             <p class="product-desc">خطط ليومك، ركز على مهامك الأساسية وحقق أهدافك بكفاءة عالية.</p>
-                            <div class="product-rating">⭐ 4.9 (2.3k)</div>
                         </div>
                     </div>
                     <div class="product-footer">
                         <span class="product-price">$7.99</span>
-                        <button class="btn-details" onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'مخططات ومنظمات', '15 صفحة', 'ملف PDF عالي الجودة جاهز للطباعة والاستخدام الفوري.')">التفاصيل</button>
+                        <button class="btn-details" onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'مخططات ومنظمات', '15 صفحة', 'ملف PDF عالي الجودة جاهز للطباعة والاستخدام الفوري.')">عرض التفاصيل</button>
                     </div>
                 </div>
 
@@ -241,15 +189,13 @@
                     <div>
                         <div class="product-thumb">دليل العناية الذاتية</div>
                         <div class="product-content">
-                            <span class="product-category-tag">كتب إلكترونية</span>
                             <h3 class="product-title">دليل العناية الذاتية</h3>
                             <p class="product-desc">عادات صغيرة يومية تؤدي إلى تغييرات كبرى وإيجابية في حياتك.</p>
-                            <div class="product-rating">⭐ 4.8 (1.8k)</div>
                         </div>
                     </div>
                     <div class="product-footer">
                         <span class="product-price">$5.99</span>
-                        <button class="btn-details" onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'كتب إلكترونية', '25 صفحة', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للصحة النفسية.')">التفاصيل</button>
+                        <button class="btn-details" onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'كتب إلكترونية', '25 صفحة', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للصحة النفسية.')">عرض التفاصيل</button>
                     </div>
                 </div>
 
@@ -258,53 +204,14 @@
                     <div>
                         <div class="product-thumb">قوالب وسائل التواصل</div>
                         <div class="product-content">
-                            <span class="product-category-tag">قوالب وتصميم</span>
                             <h3 class="product-title">قوالب وسائل التواصل</h3>
                             <p class="product-desc">50 قالباً احترافياً قابلاً للتعديل لتصميم منشورات جذابة بسرعة.</p>
-                            <div class="product-rating">⭐ 4.9 (1.2k)</div>
                         </div>
                     </div>
                     <div class="product-footer">
                         <span class="product-price">$12.00</span>
-                        <button class="btn-details" onclick="showProductDetails('قوالب وسائل التواصل', '12.00', 'قوالب وتصميم', '50 قالب جاهز', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل.')">التفاصيل</button>
+                        <button class="btn-details" onclick="showProductDetails('قوالب وسائل التواصل', '12.00', 'قوالب وتصميم', '50 قالب جاهز', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل.')">عرض التفاصيل</button>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- بانر تحويل الأفكار إلى دخل -->
-        <div class="creator-banner">
-            <div>
-                <span style="color: #6c5ce7; font-weight: 700; font-size: 12px; display: block; margin-bottom: 5px;">هل أنت صانع محتوى؟</span>
-                <h2 style="font-size: 24px; font-weight: 800; color: #111; margin-bottom: 12px;">حوّل أفكارك إلى دخل</h2>
-                <p style="color: #555; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">انضم إلى Pixeloria وابدأ بيع منتجاتك الرقمية إلى جمهور عالمي. نقدم لك جميع الأدوات التي تحتاجها للنمو والنجاح.</p>
-                <button class="btn-primary" onclick="openAuthModal(true)">ابدأ البيع الآن</button>
-            </div>
-            <div style="background: #e8e1ff; border-radius: 12px; height: 160px; display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: 700;">
-                🎨 إبداعك له قيمة
-            </div>
-        </div>
-
-        <!-- لماذا تختار Pixeloria -->
-        <section class="why-section">
-            <h2 class="section-title">لماذا تختار Pixeloria؟</h2>
-            <p class="section-subtitle">أكثر من مجرد متجر — نحن شريكك في النجاح.</p>
-            <div class="why-grid">
-                <div class="why-card">
-                    <h4>جمهور عالمي</h4>
-                    <p>وصول إلى مشترين حول العالم بكل سهولة.</p>
-                </div>
-                <div class="why-card">
-                    <h4>دفع آمن وموثوق</h4>
-                    <p>معاملات آمنة وموثوقة لراحة بالك.</p>
-                </div>
-                <div class="why-card">
-                    <h4>سهل الاستخدام</h4>
-                    <p>إعداد في دقائق المعدودات دون تعقيد.</p>
-                </div>
-                <div class="why-card">
-                    <h4>دعم على مدار الساعة</h4>
-                    <p>نحن هنا لمساعدتك في كل خطوة.</p>
                 </div>
             </div>
         </section>
@@ -376,29 +283,6 @@
             </form>
         </div>
     </div>
-
-    <footer>
-        <div class="footer-top">
-            <div>
-                <div class="logo" style="color: #fff; margin-bottom: 12px;">Pixeloria</div>
-                <p style="max-width: 300px; line-height: 1.5; color: #aaa; font-size: 12px;">Create. Sell. Grow. السوق العالمي الأول للمبدعين والمطورين الرقميين.</p>
-            </div>
-            <div>
-                <h4 style="color: white; font-size: 13px; margin-bottom: 10px;">روابط سريعة</h4>
-                <p style="margin-bottom: 6px; cursor: pointer;">عن المنصة</p>
-                <p style="margin-bottom: 6px; cursor: pointer;">مركز المساعدة</p>
-                <p style="margin-bottom: 6px; cursor: pointer;">شروط الاستخدام</p>
-            </div>
-            <div>
-                <h4 style="color: white; font-size: 13px; margin-bottom: 10px;">تواصل معنا</h4>
-                <p style="color: #aaa; font-size: 12px;">support@pixeloria.com</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 Pixeloria. جميع الحقوق محفوظة.</p>
-            <p>السوق العالمي للمنتجات الرقمية</p>
-        </div>
-    </footer>
 
     <script>
         let currentProduct = {};
@@ -475,4 +359,3 @@
     </script>
 </body>
 </html>
-
