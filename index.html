@@ -57,12 +57,6 @@
             cursor: pointer;
             font-weight: 600;
         }
-        .page-section {
-            display: none;
-        }
-        .page-section.active {
-            display: block;
-        }
         .hero {
             display: flex;
             justify-content: space-between;
@@ -178,10 +172,10 @@
 <body>
 
     <header>
-        <div class="logo" onclick="showHome()">Pixeloria</div>
+        <div class="logo" onclick="location.reload()">Pixeloria</div>
         <ul class="nav-links">
-            <li style="cursor: pointer;" onclick="showHome()">الرئيسية</li>
-            <li style="cursor: pointer;" onclick="showHome()">التصنيفات</li>
+            <li style="cursor: pointer;" onclick="location.reload()">الرئيسية</li>
+            <li style="cursor: pointer;" onclick="location.reload()">التصنيفات</li>
             <li>للمبدعين</li>
             <li>الموارد</li>
         </ul>
@@ -191,7 +185,8 @@
         </div>
     </header>
 
-    <div id="home-page" class="page-section active">
+    <!-- الصفحة الرئيسية -->
+    <div id="home-page">
         <section class="hero">
             <div class="hero-content">
                 <div class="hero-subtitle">Pixeloria</div>
@@ -210,6 +205,7 @@
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+                <!-- منتج 1 -->
                 <div style="border: 1px solid #eaeaea; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
                         <div style="height: 180px; background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%); display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: bold; font-size: 16px;">مخطط يومي بسيط</div>
@@ -220,10 +216,11 @@
                     </div>
                     <div style="padding: 0 20px 20px 20px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-weight: 800; color: #111; font-size: 18px;">$7.99</span>
-                        <button onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'PDF', '15 صفحة', 'خطط ليومك، ركز على مهامك الأساسية، وحقق أهدافك بكفاءة عالية.', 'ملف PDF عالي الجودة جاهز للطباعة أو الاستخدام المباشر على الأجهزة اللوحية.')" style="background: #6c5ce7; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600;">عرض التفاصيل</button>
+                        <button onclick="openDetails('مخطط يومي بسيط', '7.99', 'PDF', '15 صفحة', 'خطط ليومك، ركز على مهامك الأساسية، وحقق أهدافك بكفاءة عالية.', 'ملف PDF عالي الجودة جاهز للطباعة أو الاستخدام المباشر على الأجهزة اللوحية.')" style="background: #6c5ce7; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600;">عرض التفاصيل</button>
                     </div>
                 </div>
 
+                <!-- منتج 2 -->
                 <div style="border: 1px solid #eaeaea; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
                         <div style="height: 180px; background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%); display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: bold; font-size: 16px;">دليل العناية الذاتية</div>
@@ -234,10 +231,11 @@
                     </div>
                     <div style="padding: 0 20px 20px 20px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-weight: 800; color: #111; font-size: 18px;">$5.99</span>
-                        <button onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'PDF / Workbook', '25 صفحة', 'عادات صغيرة يومية تؤدي إلى تغييرات كبيرة وإيجابية في حياتك.', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للعناية بالصحة النفسية بصيغة PDF.')" style="background: #6c5ce7; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600;">عرض التفاصيل</button>
+                        <button onclick="openDetails('دليل العناية الذاتية', '5.99', 'PDF / Workbook', '25 صفحة', 'عادات صغيرة يومية تؤدي إلى تغييرات كبيرة وإيجابية في حياتك.', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للعناية بالصحة النفسية بصيغة PDF.')" style="background: #6c5ce7; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600;">عرض التفاصيل</button>
                     </div>
                 </div>
 
+                <!-- منتج 3 -->
                 <div style="border: 1px solid #eaeaea; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
                         <div style="height: 180px; background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%); display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: bold; font-size: 16px;">قوالب وسائل التواصل</div>
@@ -248,14 +246,15 @@
                     </div>
                     <div style="padding: 0 20px 20px 20px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-weight: 800; color: #111; font-size: 18px;">$12.00</span>
-                        <button onclick="showProductDetails('قوالب وسائل التواصل', '12.00', 'Canva Template', '50 قالب جاهز', '50 قالباً احترافياً قابلاً للتعديل لتصميم منشورات جذابة بسرعة.', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل لتناسب هويتك البصرية.')" style="background: #6c5ce7; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600;">عرض التفاصيل</button>
+                        <button onclick="openDetails('قوالب وسائل التواصل', '12.00', 'Canva Template', '50 قالب جاهز', '50 قالباً احترافياً قابلاً للتعديل لتصميم منشورات جذابة بسرعة.', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل لتناسب هويتك البصرية.')" style="background: #6c5ce7; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600;">عرض التفاصيل</button>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
-    <div id="product-page" class="page-section">
+    <!-- صفحة تفاصيل المنتج (مخفية افتراضياً) -->
+    <div id="product-page" style="display: none;">
         <div class="product-details-container">
             <div class="product-gallery">
                 <div class="main-preview-img" id="det-img">صورة معاينة المنتج</div>
@@ -284,12 +283,13 @@
                         <span id="det-price" style="font-size: 28px; font-weight: 800; color: #111;">$7.99</span>
                     </div>
                     <button onclick="alert('تم النقر على زر الشراء! سيتم توجيهك لبوابة الدفع الآمنة.')" style="width: 100%; background: #6c5ce7; color: white; padding: 14px; border-radius: 10px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center;">شراء الآن</button>
-                    <button onclick="showHome()" style="width: 100%; background: transparent; color: #666; padding: 10px; border: none; font-size: 14px; cursor: pointer; margin-top: 10px;">← العودة إلى الرئيسية</button>
+                    <button onclick="location.reload()" style="width: 100%; background: transparent; color: #666; padding: 10px; border: none; font-size: 14px; cursor: pointer; margin-top: 10px;">← العودة إلى الرئيسية</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- نافذة تسجيل الدخول -->
     <div id="auth-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
         <div style="background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; text-align: right;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -297,7 +297,7 @@
                 <h3 id="modal-title" style="font-size: 20px; font-weight: 700; color: #111;">تسجيل الدخول إلى Pixeloria</h3>
             </div>
             
-            <form id="auth-form" style="display: flex; flex-direction: column; gap: 15px;" onsubmit="handleAuth(event)">
+            <form style="display: flex; flex-direction: column; gap: 15px;" onsubmit="handleAuth(event)">
                 <div id="name-field" style="display: none;">
                     <label style="display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 5px;">الاسم الكامل</label>
                     <input type="text" id="user-name" placeholder="اسمك الكريم" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; text-align: right;">
@@ -321,15 +321,9 @@
     </div>
 
     <script>
-        function showHome() {
-            document.getElementById('home-page').classList.add('active');
-            document.getElementById('product-page').classList.remove('active');
-            window.scrollTo(0, 0);
-        }
-
-        function showProductDetails(title, price, type, pages, desc, whatGets) {
-            document.getElementById('home-page').classList.remove('active');
-            document.getElementById('product-page').classList.add('active');
+        function openDetails(title, price, type, pages, desc, whatGets) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('product-page').style.display = 'block';
             
             document.getElementById('det-title').innerText = title;
             document.getElementById('det-price').innerText = '$' + price;
