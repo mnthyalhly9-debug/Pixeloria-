@@ -1,304 +1,39 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixeloria - إبداعك الرقمي، بين يديك</title>
-    <!-- استيراد مكتبة EmailJS للإرسال الفعلي للإيميلات -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            // ضع هنا Public Key الخاص بك من حسابك في EmailJS
-            emailjs.init("YOUR_PUBLIC_KEY");
-        })();
-    </script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #fcfcfc; color: #1a1a1a; }
-        
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 40px;
-            background: #ffffff;
-            border-bottom: 1px solid #eaeaea;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-right { display: flex; align-items: center; gap: 20px; }
-        .logo { font-weight: 900; font-size: 24px; color: #6c5ce7; cursor: pointer; }
-        
-        .btn-menu-drawer {
-            background: #6c5ce7;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 13px;
-            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
-        }
+<?php
+// السماح بالاتصال من أي مصدر
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
 
-        .nav-links { display: flex; gap: 25px; list-style: none; color: #555; font-size: 14px; font-weight: 500; }
-        .nav-links li { cursor: pointer; transition: color 0.2s; }
-        .nav-links li:hover { color: #6c5ce7; }
-        .header-actions { display: flex; gap: 10px; align-items: center; }
-        
-        .btn-sign { padding: 8px 14px; border: 1px solid #ddd; background: transparent; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
-        .btn-create { padding: 8px 14px; background: #6c5ce7; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
-        .cart-icon-btn { background: #f3f0ff; color: #6c5ce7; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; font-size: 13px; }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    
+    $toEmail = $data['email'] ?? '';
+    $toName = $data['name'] ?? '';
+    $otpCode = $data['otp'] ?? '';
 
-        .page-section { display: none; }
-        .page-section.active { display: block; }
+    if (empty($toEmail) || empty($otpCode)) {
+        echo json_encode(["status" => "error", "message" => "بيانات غير مكتملة"]);
+        exit;
+    }
 
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #f5f0ff 0%, #faf8ff 100%);
-            padding: 50px 30px;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 30px;
-            align-items: center;
-        }
-        @media(max-width: 900px) { .hero { grid-template-columns: 1fr; padding: 30px 20px; } }
-        .hero-subtitle { color: #6c5ce7; font-weight: 700; font-size: 13px; margin-bottom: 10px; }
-        .hero-title { font-size: 38px; font-weight: 900; line-height: 1.2; color: #111; margin-bottom: 15px; }
-        .hero-title span { color: #6c5ce7; }
-        .hero-desc { color: #555; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
-        .btn-primary { background: #6c5ce7; color: white; padding: 12px 25px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; }
+    // إعدادات البريد الإلكتروني (يفضل استخدام بريد Gmail مع App Password)
+    $fromEmail = "your-email@gmail.com"; // ضع بريدك الحقيقي هنا
+    $fromName = "Pixeloria Store";
+    $subject = "كود تفعيل حسابك في Pixeloria";
+    
+    $message = "مرحباً $toName،\n\nكود التفعيل الخاص بك هو: $otpCode\nصلاحية هذا الكود هي دقيقة واحدة فقط.\n\nشكراً لانضمامك إلينا!";
+    
+    $headers = "From: $fromName <$fromEmail>\r\n";
+    $headers .= "Reply-To: $fromEmail\r\n";
+    $headers .= "X-Mailer: PHP/" . phpversion();
 
-        .hero-banner-art {
-            background: linear-gradient(135deg, #4834d4 0%, #6c5ce7 50%, #a29bfe 100%);
-            border-radius: 20px;
-            height: 240px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.35);
-            text-align: center;
-            padding: 20px;
-        }
-        .hero-banner-art h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
-        .hero-banner-art p { font-size: 13px; opacity: 0.95; font-weight: 500; }
+    // إرسال الإيميل (يتطلب استضافة تدعم دالة mail أو PHPMailer)
+    $mailSent = mail($toEmail, $subject, $message, $headers);
 
-        /* Categories */
-        .categories-section { padding: 40px 30px; background: #fff; border-bottom: 1px solid #eaeaea; }
-        .section-title { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 8px; }
-        .section-subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
-        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
-        .category-card { background: #faf8ff; border: 1px solid #f0edff; padding: 16px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
-        .category-card:hover { background: #6c5ce7; color: white; transform: translateY(-3px); }
-        .category-card span { font-size: 12px; font-weight: 600; color: #333; display: block; }
+    if ($mailSent) {
+        echo json_encode(["status" => "success", "message" => "تم إرسال الكود بنجاح"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "فشل في إرسال البريد"]);
+    }
+}
+?>
 
-        /* Products Grid */
-        .products-section { padding: 40px 30px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .product-card { border: 1px solid #eaeaea; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; }
-        
-        .product-visual-badge {
-            height: 150px;
-            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #2d3436;
-            font-weight: 900;
-            font-size: 16px;
-            text-align: center;
-            padding: 15px;
-        }
-        .product-card:nth-child(2) .product-visual-badge { background: linear-gradient(135deg, #81ecec 0%, #00cec9 100%); color: white; }
-        .product-card:nth-child(3) .product-visual-badge { background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%); color: white; }
-
-        .product-content { padding: 15px; }
-        .product-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 6px; }
-        .product-desc { color: #666; font-size: 12px; line-height: 1.4; margin-bottom: 12px; }
-        .product-footer { padding: 0 15px 15px 15px; display: flex; justify-content: space-between; align-items: center; }
-        .product-price { font-weight: 800; color: #111; font-size: 16px; }
-        .btn-details { background: #6c5ce7; color: white; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
-
-        /* لوحة التحكم المسحوبة */
-        #drawer-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 9999;
-        }
-        #drawer-panel {
-            position: fixed;
-            top: 0; right: -320px; width: 310px; height: 100%;
-            background: white;
-            box-shadow: -5px 0 25px rgba(0,0,0,0.3);
-            transition: right 0.3s ease-in-out;
-            z-index: 10000;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow-y: auto;
-        }
-        .drawer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .drawer-links li { font-weight: 700; font-size: 13px; color: #333; cursor: pointer; padding: 10px; background: #f8f9fa; border-radius: 8px; border-right: 4px solid #6c5ce7; }
-        .drawer-links li:hover { background: #f3f0ff; color: #6c5ce7; }
-
-        /* نافذة حماية المالك (PIN Code Modal) */
-        .pin-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 20000;
-            justify-content: center;
-            align-items: center;
-        }
-        .pin-modal-box {
-            background: white;
-            padding: 30px;
-            border-radius: 14px;
-            width: 90%;
-            max-width: 340px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        /* Details & Modals */
-        .details-container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; }
-        @media(max-width: 768px) { .details-container { grid-template-columns: 1fr; } }
-        .details-box { background: #fff; border: 1px solid #eaeaea; border-radius: 12px; padding: 20px; }
-        .spec-list { list-style: none; margin: 15px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 12px 0; }
-        .spec-list li { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 6px; }
-
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 10000; }
-        .modal-box { background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: right; }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="header-right">
-            <button class="btn-menu-drawer" type="button" onclick="requestOwnerAccess()">☰ لوحة التحكم</button>
-            <div class="logo" onclick="switchPage('home')">Pixeloria</div>
-        </div>
-        <ul class="nav-links">
-            <li onclick="switchPage('home')">الرئيسية</li>
-            <li onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">التصنيفات</li>
-            <li>الموارد</li>
-        </ul>
-        <div class="header-actions">
-            <button class="cart-icon-btn" type="button" onclick="openCartModal()">🛒 السلة (<span id="cart-count">0</span>)</button>
-            <button class="btn-sign" type="button" onclick="openAuthModal(false)">تسجيل الدخول</button>
-            <button class="btn-create" type="button" onclick="openAuthModal(true)">إنشاء حساب</button>
-        </div>
-    </header>
-
-    <!-- نافذة إدخال كود حماية المالك -->
-    <div id="pin-modal" class="pin-modal-overlay">
-        <div class="pin-modal-box">
-            <h3 style="color: #6c5ce7; font-size: 18px; font-weight: 800; margin-bottom: 10px;">🔐 حماية لوحة التحكم</h3>
-            <p style="color: #666; font-size: 13px; margin-bottom: 15px;">الرجاء إدخال كود المالك السري للوصول:</p>
-            <input type="password" id="owner-pin-input" placeholder="أدخل الكود السري" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-size: 16px; margin-bottom: 15px;">
-            <div style="display: flex; gap: 10px;">
-                <button type="button" onclick="verifyOwnerPin()" style="flex: 1; background: #6c5ce7; color: white; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">دخول</button>
-                <button type="button" onclick="closePinModal()" style="flex: 1; background: #eee; color: #333; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة إدخال كود التفعيل المؤقت (OTP) -->
-    <div id="otp-modal" class="pin-modal-overlay">
-        <div class="pin-modal-box">
-            <h3 style="color: #6c5ce7; font-size: 18px; font-weight: 800; margin-bottom: 10px;">⏳ أدخل كود التفعيل المرسل</h3>
-            <p style="color: #666; font-size: 13px; margin-bottom: 10px;" id="otp-instruction">تم إرسال كود حقيقي إلى بريدك الإلكتروني:</p>
-            <div style="font-size: 14px; font-weight: bold; color: #e17055; margin-bottom: 10px;" id="otp-timer">الوقت المتبقي لصلاحية الكود: 60 ثانية</div>
-            <input type="text" id="otp-input" placeholder="أدخل كود التفعيل (6 أرقام)" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-size: 16px; margin-bottom: 10px;" maxlength="6">
-            
-            <div id="resend-container" style="display: none; margin-bottom: 10px;">
-                <button type="button" onclick="resendOtpCode()" style="background: none; border: none; color: #6c5ce7; font-weight: bold; font-size: 12px; cursor: pointer; text-decoration: underline;">🔄 انتهت صلاحية الكود! اضغط لإعادة إرسال كود جديد</button>
-            </div>
-
-            <div style="display: flex; gap: 10px;">
-                <button type="button" onclick="verifyOtpCode()" style="flex: 1; background: #00b894; color: white; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">تأكيد الكود</button>
-                <button type="button" onclick="closeOtpModal()" style="flex: 1; background: #eee; color: #333; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- قائمة السحب الجانبية (لوحة التحكم) -->
-    <div id="drawer-overlay" onclick="closeDrawerPanel()"></div>
-    <div id="drawer-panel">
-        <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 12px;">
-                <h3 style="font-size: 16px; font-weight: 800; color: #6c5ce7;">لوحة تحكم المالك</h3>
-                <button type="button" onclick="closeDrawerPanel()" style="background: none; border: none; font-size: 18px; cursor: pointer;">✕</button>
-            </div>
-            
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center; border: 1px solid #eee;">
-                <span style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">الرصيد الإجمالي القابل للسحب</span>
-                <h2 style="font-size: 22px; font-weight: 900; color: #2d3436; margin-bottom: 12px;" id="owner-balance-display">$148.00</h2>
-                
-                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 5px; text-align: right;">اختر وسيلة السحب:</label>
-                <select id="withdrawal-method" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px; margin-bottom: 10px;">
-                    <option value="RedotPay">💳 بطاقة RedotPay</option>
-                    <option value="PayPal">🅿️ حساب PayPal</option>
-                    <option value="Dahabia_CCP">🇩🇿 البطاقة الذهبية / حساب CCP</option>
-                </select>
-
-                <button type="button" onclick="requestWithdrawal()" style="width: 100%; background: #00b894; color: white; border: none; padding: 9px; border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer;">💸 تنفيذ طلب السحب</button>
-            </div>
-
-            <div style="margin-top: 15px; background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 8px;">
-                <h4 style="font-size: 13px; font-weight: 800; color: #333; margin-bottom: 8px;">📦 سجل عمليات البيع والطلبات</h4>
-                <div id="sales-log-list" style="max-height: 140px; overflow-y: auto; font-size: 11px; color: #555;">
-                    لا توجد عمليات بيع مسجلة حديثاً.
-                </div>
-            </div>
-
-            <ul class="drawer-links">
-                <li onclick="closeDrawerPanel(); alert('📦 إدارة المنتجات: 3 منتجات رقمية نشطة ومعروضة للبيع.')">📦 إدارة المنتجات</li>
-                <li onclick="closeDrawerPanel(); alert('⚙️ إعدادات المتجر العامة مفعلة بنجاح.')">⚙️ إعدادات المتجر</li>
-            </ul>
-        </div>
-        <div style="border-top: 1px solid #eee; padding-top: 10px; font-size: 11px; color: #888; text-align: center;">
-            Pixeloria Secure v1.0
-        </div>
-    </div>
-
-    <!-- الصفحة الرئيسية -->
-    <div id="home-page" class="page-section active">
-        <section class="hero">
-            <div>
-                <div class="hero-subtitle">Pixeloria</div>
-                <h1 class="hero-title">إبداعك الرقمي، <span>بين يديك</span></h1>
-                <p class="hero-desc">منتجات رقمية تلهم إبداعك. اكتشف أدوات وقوالب مميزة مصممة خصيصاً لمساعدتك على النمو والنجاح في مشاريعك الرقمية.</p>
-                <button type="button" class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">تسوق الآن</button>
-            </div>
-            <div class="hero-banner-art">
-                <span style="font-size: 40px; margin-bottom: 10px;">💻✨</span>
-                <h3>منصة Pixeloria الرقمية</h3>
-                <p>عالم متكامل من القوالب والكتب الرقمية والمخططات الاحترافية</p>
-            </div>
-        </section>
-
-        <!-- التصنيفات -->
-        <section class="categories-section">
-            <h2 class="section-title">استكشف المنتجات الرقمية</h2>
-            <p class="section-subtitle">أدوات وقوالب جاهزة للتحميل الفوري لمساعدة مشاريعك على النمو.</p>
-            <div class="categories-grid">
-                <div class="category-card"><span>📚 كتب إلكترونية</span></div>
-                <div class="category-card"><span>📅 مخططات ومنظمات</span></div>
-                <div class="category-card"><span>🎨 قوالب وسائل التواصل</span></div>
-            </div>
-        </section>
-
-        <!-- المنتجات المميزة -->
-        <section id="products-sec" class="products-section">
-            <h2 class="section-title">أحدث المنتجات الرقمية</h2>
-            <div class="products-grid" style="margin-top: 20px;">
-                <!-- منت
