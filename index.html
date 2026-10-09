@@ -19,14 +19,31 @@
             top: 0;
             z-index: 100;
         }
+        .header-right { display: flex; align-items: center; gap: 20px; }
         .logo { font-weight: 900; font-size: 24px; color: #6c5ce7; cursor: pointer; }
+        
+        /* زر السحب/القائمة الجانبية */
+        .btn-menu-drawer {
+            background: #f3f0ff;
+            color: #6c5ce7;
+            border: 1px solid #dcd0ff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         .nav-links { display: flex; gap: 25px; list-style: none; color: #555; font-size: 14px; font-weight: 500; }
         .nav-links li { cursor: pointer; transition: color 0.2s; }
         .nav-links li:hover { color: #6c5ce7; }
-        .header-actions { display: flex; gap: 12px; align-items: center; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
         
-        .btn-sign { padding: 8px 16px; border: 1px solid #ddd; background: transparent; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
-        .btn-create { padding: 8px 16px; background: #6c5ce7; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+        .btn-sign { padding: 8px 14px; border: 1px solid #ddd; background: transparent; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+        .btn-create { padding: 8px 14px; background: #6c5ce7; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .cart-icon-btn { background: #f3f0ff; color: #6c5ce7; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; font-size: 13px; }
 
         .page-section { display: none; }
@@ -48,7 +65,6 @@
         .hero-desc { color: #555; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
         .btn-primary { background: #6c5ce7; color: white; padding: 12px 25px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3); }
 
-        /* حاوية مرئية ملونة ومذهلة للكمبيوتر والمنصة */
         .hero-banner-art {
             background: linear-gradient(135deg, #4834d4 0%, #6c5ce7 50%, #a29bfe 100%);
             border-radius: 20px;
@@ -61,20 +77,8 @@
             box-shadow: 0 15px 35px rgba(108, 92, 231, 0.35);
             text-align: center;
             padding: 20px;
-            position: relative;
-            overflow: hidden;
         }
-        .hero-banner-art::after {
-            content: '';
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            top: -30px;
-            right: -30px;
-        }
-        .hero-banner-art h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .hero-banner-art h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
         .hero-banner-art p { font-size: 13px; opacity: 0.95; font-weight: 500; }
 
         /* Categories */
@@ -107,14 +111,8 @@
             text-align: center;
             padding: 15px;
         }
-        .product-card:nth-child(2) .product-visual-badge {
-            background: linear-gradient(135deg, #81ecec 0%, #00cec9 100%);
-            color: white;
-        }
-        .product-card:nth-child(3) .product-visual-badge {
-            background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%);
-            color: white;
-        }
+        .product-card:nth-child(2) .product-visual-badge { background: linear-gradient(135deg, #81ecec 0%, #00cec9 100%); color: white; }
+        .product-card:nth-child(3) .product-visual-badge { background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%); color: white; }
 
         .product-content { padding: 15px; }
         .product-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 6px; }
@@ -122,6 +120,38 @@
         .product-footer { padding: 0 15px 15px 15px; display: flex; justify-content: space-between; align-items: center; }
         .product-price { font-weight: 800; color: #111; font-size: 16px; }
         .btn-details { background: #6c5ce7; color: white; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
+
+        /* لوحة التحكم المسحوبة (Drawer Sidebar) */
+        .drawer-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .drawer-panel {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 300px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 1100;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .drawer-panel.open { right: 0; }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+        .drawer-links { list-style: none; display: flex; flex-direction: column; gap: 15px; }
+        .drawer-links li { font-weight: 600; font-size: 14px; color: #333; cursor: pointer; padding: 8px; border-radius: 6px; transition: background 0.2s; }
+        .drawer-links li:hover { background: #f3f0ff; color: #6c5ce7; }
 
         /* Details & Modals */
         .details-container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; }
@@ -137,7 +167,10 @@
 <body>
 
     <header>
-        <div class="logo" onclick="switchPage('home')">Pixeloria</div>
+        <div class="header-right">
+            <button class="btn-menu-drawer" onclick="toggleDrawer(true)">☰ لوحة التحكم</button>
+            <div class="logo" onclick="switchPage('home')">Pixeloria</div>
+        </div>
         <ul class="nav-links">
             <li onclick="switchPage('home')">الرئيسية</li>
             <li onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">التصنيفات</li>
@@ -150,6 +183,26 @@
         </div>
     </header>
 
+    <!-- قائمة السحب الجانبية (لوحة التحكم) -->
+    <div id="drawer-overlay" class="drawer-overlay" onclick="toggleDrawer(false)"></div>
+    <div id="drawer-panel" class="drawer-panel">
+        <div>
+            <div class="drawer-header">
+                <h3 style="font-size: 18px; font-weight: 800; color: #6c5ce7;">لوحة تحكم التاجر</h3>
+                <button onclick="toggleDrawer(false)" style="background: none; border: none; font-size: 16px; cursor: pointer;">✕</button>
+            </div>
+            <ul class="drawer-links">
+                <li onclick="toggleDrawer(false); alert('إحصائيات المبيعات: $148.00 هذا الأسبوع')">📊 إحصائيات المبيعات</li>
+                <li onclick="toggleDrawer(false); alert('إدارة المنتجات الرقمية (نشطة: 3 منتجات)')">📦 إدارة المنتجات</li>
+                <li onclick="toggleDrawer(false); alert('طلبات العملاء: لا توجد طلبات جديدة معلقة')">🛒 طلبات العملاء</li>
+                <li onclick="toggleDrawer(false); openAuthModal(true)">⚙️ إعدادات الحساب</li>
+            </ul>
+        </div>
+        <div style="border-top: 1px solid #eee; padding-top: 15px; font-size: 11px; color: #888; text-align: center;">
+            Pixeloria Dashboard v1.0
+        </div>
+    </div>
+
     <!-- الصفحة الرئيسية -->
     <div id="home-page" class="page-section active">
         <section class="hero">
@@ -159,7 +212,6 @@
                 <p class="hero-desc">منتجات رقمية تلهم إبداعك. اكتشف أدوات وقوالب مميزة مصممة خصيصاً لمساعدتك على النمو والنجاح في مشاريعك الرقمية.</p>
                 <button class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">تسوق الآن</button>
             </div>
-            <!-- واجهة فنية ملونة وثابتة -->
             <div class="hero-banner-art">
                 <span style="font-size: 40px; margin-bottom: 10px;">💻✨</span>
                 <h3>منصة Pixeloria الرقمية</h3>
@@ -246,145 +298,4 @@
                 <div id="det-badge-box" style="height: 200px; background: #6c5ce7; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 800; margin-bottom: 15px; text-align: center; padding: 15px;">
                     صورة المنتج
                 </div>
-                <h4 style="font-size: 13px; font-weight: 700; color: #111; margin-bottom: 6px;">ماذا ستحصل عليه:</h4>
-                <p id="det-what-gets" style="color: #666; font-size: 12px; line-height: 1.5;"></p>
-            </div>
-
-            <div class="details-box" style="display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <span style="display: inline-block; background: #f3f0ff; color: #6c5ce7; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 8px;" id="det-type">PDF</span>
-                    <h2 id="det-title" style="font-size: 20px; font-weight: 800; color: #111; margin-bottom: 8px;">اسم المنتج</h2>
-                    <p id="det-desc" style="color: #666; font-size: 13px; line-height: 1.5; margin-bottom: 12px;"></p>
-
-                    <ul class="spec-list">
-                        <li><span>نوع الملف:</span> <span id="det-spec-type">PDF</span></li>
-                        <li><span>المحتوى:</span> <span id="det-spec-pages">15 صفحة</span></li>
-                        <li><span>التسليم:</span> <span>تحميل فوري بعد الدفع</span></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <span style="font-size: 13px; color: #666;">السعر:</span>
-                        <span id="det-price" style="font-size: 22px; font-weight: 800; color: #111;">$7.99</span>
-                    </div>
-                    <button onclick="addToCartFromDetails()" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; margin-bottom: 6px;">إضافة إلى السلة</button>
-                    <button onclick="switchPage('home')" style="width: 100%; background: transparent; color: #666; padding: 6px; border: none; font-size: 12px; cursor: pointer;">← العودة للرئيسية</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة السلة -->
-    <div id="cart-modal" class="modal-overlay">
-        <div class="modal-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 style="font-size: 16px; font-weight: 700;">سلة المشتريات</h3>
-                <button onclick="closeModals()" style="background: none; border: none; font-size: 14px; cursor: pointer;">✕</button>
-            </div>
-            <div id="cart-items-list" style="margin-bottom: 12px; max-height: 180px; overflow-y: auto; font-size: 13px; color: #555;">
-                السلة فارغة حالياً.
-            </div>
-            <div style="border-top: 1px solid #eee; padding-top: 8px; display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 12px; font-size: 14px;">
-                <span>الإجمالي:</span>
-                <span id="cart-total">$0.00</span>
-            </div>
-            <button onclick="alert('تم الانتقال لبوابة الدفع الآمنة بنجاح!')" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">إتمام الشراء</button>
-        </div>
-    </div>
-
-    <!-- نافذة تسجيل الدخول -->
-    <div id="auth-modal" class="modal-overlay">
-        <div class="modal-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 id="auth-modal-title" style="font-size: 16px; font-weight: 700;">تسجيل الدخول</h3>
-                <button onclick="closeModals()" style="background: none; border: none; font-size: 14px; cursor: pointer;">✕</button>
-            </div>
-            <form onsubmit="handleAuthSubmit(event)" style="display: flex; flex-direction: column; gap: 10px;">
-                <input type="email" id="auth-email" placeholder="البريد الإلكتروني" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: left; font-size: 13px;" required>
-                <input type="password" id="auth-pass" placeholder="كلمة المرور" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: left; font-size: 13px;" required>
-                <button type="submit" id="auth-submit-btn" style="background: #6c5ce7; color: white; padding: 9px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">دخول</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        let currentProduct = {};
-        let cart = [];
-
-        function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-            if(pageId === 'home') {
-                document.getElementById('home-page').classList.add('active');
-            } else if(pageId === 'details') {
-                document.getElementById('product-details-page').classList.add('active');
-            }
-            window.scrollTo(0, 0);
-        }
-
-        function showProductDetails(title, price, type, pages, whatGets, badgeText, bgGrad) {
-            currentProduct = { title, price, type, whatGets };
-            document.getElementById('det-title').innerText = title;
-            document.getElementById('det-price').innerText = '$' + price;
-            document.getElementById('det-type').innerText = type;
-            document.getElementById('det-spec-type').innerText = type;
-            document.getElementById('det-spec-pages').innerText = pages;
-            document.getElementById('det-what-gets').innerText = whatGets;
-            
-            const badgeBox = document.getElementById('det-badge-box');
-            badgeBox.innerText = badgeText;
-            badgeBox.style.background = bgGrad;
-            
-            document.getElementById('det-desc').innerText = whatGets;
-            switchPage('details');
-        }
-
-        function addToCartFromDetails() {
-            cart.push(currentProduct);
-            document.getElementById('cart-count').innerText = cart.length;
-            alert('تمت إضافة المنتج إلى السلة بنجاح!');
-            switchPage('home');
-        }
-
-        function openCartModal() {
-            const listEl = document.getElementById('cart-items-list');
-            const totalEl = document.getElementById('cart-total');
-            if(cart.length === 0) {
-                listEl.innerHTML = 'السلة فارغة حالياً.';
-                totalEl.innerText = '$0.00';
-            } else {
-                let html = '';
-                let total = 0;
-                cart.forEach((item) => {
-                    html += `<div style="margin-bottom:5px;">• ${item.title} - $${item.price}</div>`;
-                    total += parseFloat(item.price);
-                });
-                listEl.innerHTML = html;
-                totalEl.innerText = '$' + total.toFixed(2);
-            }
-            document.getElementById('cart-modal').style.display = 'flex';
-        }
-
-        let isSignUpMode = false;
-        function openAuthModal(signUp) {
-            isSignUpMode = signUp;
-            document.getElementById('auth-modal-title').innerText = signUp ? 'إنشاء حساب جديد' : 'تسجيل الدخول';
-            document.getElementById('auth-submit-btn').innerText = signUp ? 'تسجيل الحساب' : 'دخول';
-            document.getElementById('auth-modal').style.display = 'flex';
-        }
-
-        function closeModals() {
-            document.getElementById('cart-modal').style.display = 'none';
-            document.getElementById('auth-modal').style.display = 'none';
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            alert(isSignUpMode ? 'تم إنشاء الحساب بنجاح لـ: ' + email : 'أهلاً بعودتك، ' + email);
-            closeModals();
-        }
-    </script>
-</body>
-</html>
-
+                <h4 style="font-size: 13px; font-weight: 700;
