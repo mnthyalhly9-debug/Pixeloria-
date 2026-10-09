@@ -1,4 +1,4 @@
-Enter<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -203,7 +203,7 @@ Enter<!DOCTYPE html>
         </div>
     </div>
 
-    <!-- قائمة السحب الجانبية (لوحة التحكم مع خيارات السحب المتقدمة) -->
+    <!-- قائمة السحب الجانبية (لوحة التحكم مع قسم إدارة البيع والأرباح) -->
     <div id="drawer-overlay" onclick="closeDrawerPanel()"></div>
     <div id="drawer-panel">
         <div>
@@ -212,10 +212,10 @@ Enter<!DOCTYPE html>
                 <button onclick="closeDrawerPanel()" style="background: none; border: none; font-size: 18px; cursor: pointer;">✕</button>
             </div>
             
-            <!-- قسم الأرباح -->
+            <!-- قسم الرصيد والسحب -->
             <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center; border: 1px solid #eee;">
                 <span style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">الرصيد الإجمالي القابل للسحب</span>
-                <h2 style="font-size: 22px; font-weight: 900; color: #2d3436; margin-bottom: 12px;">$148.00</h2>
+                <h2 style="font-size: 22px; font-weight: 900; color: #2d3436; margin-bottom: 12px;" id="owner-balance-display">$148.00</h2>
                 
                 <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 5px; text-align: right;">اختر وسيلة السحب:</label>
                 <select id="withdrawal-method" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px; margin-bottom: 10px;">
@@ -227,11 +227,17 @@ Enter<!DOCTYPE html>
                 <button onclick="requestWithdrawal()" style="width: 100%; background: #00b894; color: white; border: none; padding: 9px; border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer;">💸 تنفيذ طلب السحب</button>
             </div>
 
+            <!-- قسم إدارة سجل البيع والطلبات -->
+            <div style="margin-top: 15px; background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 8px;">
+                <h4 style="font-size: 13px; font-weight: 800; color: #333; margin-bottom: 8px;">📦 سجل عمليات البيع والطلبات</h4>
+                <div id="sales-log-list" style="max-height: 140px; overflow-y: auto; font-size: 11px; color: #555;">
+                    لا توجد عمليات بيع مسجلة حديثاً.
+                </div>
+            </div>
+
             <ul class="drawer-links">
-                <li onclick="closeDrawerPanel(); alert('📊 تقرير مبيعات المتجر نشط وآمن.')">📊 تقرير المبيعات</li>
-                <li onclick="closeDrawerPanel(); alert('📦 إدارة المنتجات: 3 منتجات رقمية معروضة.')">📦 إدارة المنتجات</li>
-                <li onclick="closeDrawerPanel(); alert('🛒 الطلبات: لا توجد طلبات جديدة.')">🛒 طلبات العملاء</li>
-                <li onclick="closeDrawerPanel(); alert('⚙️ إعدادات المتجر العامة مفعلة.')">⚙️ إعدادات المتجر</li>
+                <li onclick="closeDrawerPanel(); alert('📦 إدارة المنتجات: 3 منتجات رقمية نشطة ومعروضة للبيع.')">📦 إدارة المنتجات</li>
+                <li onclick="closeDrawerPanel(); alert('⚙️ إعدادات المتجر العامة مفعلة بنجاح.')">⚙️ إعدادات المتجر</li>
             </ul>
         </div>
         <div style="border-top: 1px solid #eee; padding-top: 10px; font-size: 11px; color: #888; text-align: center;">
@@ -363,21 +369,32 @@ Enter<!DOCTYPE html>
         </div>
     </div>
 
-    <!-- نافذة السلة -->
+    <!-- نافذة السلة مع اختيار وسيلة الدفع -->
     <div id="cart-modal" class="modal-overlay">
         <div class="modal-box">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 style="font-size: 16px; font-weight: 700;">سلة المشتريات</h3>
+                <h3 style="font-size: 16px; font-weight: 700;">سلة المشتريات والدفع</h3>
                 <button onclick="closeModals()" style="background: none; border: none; font-size: 14px; cursor: pointer;">✕</button>
             </div>
-            <div id="cart-items-list" style="margin-bottom: 12px; max-height: 180px; overflow-y: auto; font-size: 13px; color: #555;">
+            <div id="cart-items-list" style="margin-bottom: 10px; max-height: 140px; overflow-y: auto; font-size: 13px; color: #555;">
                 السلة فارغة حالياً.
             </div>
-            <div style="border-top: 1px solid #eee; padding-top: 8px; display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 12px; font-size: 14px;">
+            <div style="border-top: 1px solid #eee; padding-top: 8px; display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 10px; font-size: 14px;">
                 <span>الإجمالي:</span>
                 <span id="cart-total">$0.00</span>
             </div>
-            <button onclick="alert('تم الانتقال لبوابة الدفع الآمنة بنجاح!')" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">إتمام الشراء</button>
+
+            <!-- اختيار وسيلة الدفع للعميل -->
+            <div style="margin-bottom: 12px; text-align: right;">
+                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 4px;">اختر طريقة الدفع المناسبة:</label>
+                <select id="checkout-payment-method" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px;">
+                    <option value="RedotPay">💳 بطاقة RedotPay</option>
+                    <option value="PayPal">🅿️ حساب PayPal</option>
+                    <option value="Dahabia_CCP">🇩🇿 البطاقة الذهبية / حساب CCP</option>
+                </select>
+            </div>
+
+            <button onclick="checkoutCart()" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">تأكيد وإتمام الشراء</button>
         </div>
     </div>
 
@@ -399,6 +416,10 @@ Enter<!DOCTYPE html>
     <script>
         let currentProduct = {};
         let cart = [];
+        let ownerBalance = 148.00;
+        let salesLog = [
+            { item: "مخطط يومي بسيط", price: 7.99, time: "منذ ساعتين" }
+        ];
 
         // كود حماية المالك السري
         const OWNER_PIN = "1234";
@@ -417,6 +438,7 @@ Enter<!DOCTYPE html>
             const enteredPin = document.getElementById('owner-pin-input').value;
             if (enteredPin === OWNER_PIN) {
                 closePinModal();
+                updateDashboardUI();
                 openDrawerPanel();
             } else {
                 alert('⚠️ الكود السري غير صحيح! الوصول مرفوض.');
@@ -424,13 +446,54 @@ Enter<!DOCTYPE html>
             }
         }
 
+        function updateDashboardUI() {
+            document.getElementById('owner-balance-display').innerText = '$' + ownerBalance.toFixed(2);
+            let html = '';
+            if (salesLog.length === 0) {
+                html = 'لا توجد عمليات بيع مسجلة حديثاً.';
+            } else {
+                salesLog.forEach(sale => {
+                    html += `<div style="border-bottom: 1px solid #f0f0f0; padding: 5px 0;">🛍️ ${sale.item} - <b>$${sale.price}</b> <span style="color:#888; float:left;">${sale.time}</span></div>`;
+                });
+            }
+            document.getElementById('sales-log-list').innerHTML = html;
+        }
+
         function requestWithdrawal() {
             const method = document.getElementById('withdrawal-method').value;
-            const amount = prompt("أدخل مبلغ السحب المطلوب (بالدولار):", "148.00");
+            if (ownerBalance <= 0) {
+                alert("⚠️ لا يوجد رصيد كافي للسحب حالياً.");
+                return;
+            }
+            const amount = prompt("أدخل مبلغ السحب المطلوب (بالدولار):", ownerBalance.toFixed(2));
             if (amount) {
+                if (parseFloat(amount) > ownerBalance) {
+                    alert("⚠️ المبلغ المطلوب يتجاوز رصيدك الحالي!");
+                    return;
+                }
+                ownerBalance -= parseFloat(amount);
+                updateDashboardUI();
                 alert("✅ تم تقديم طلب سحب مبلغ $" + amount + " بنجاح عبر وسيلة (" + method + ")! سيتم المعالجة في أقرب وقت.");
                 closeDrawerPanel();
             }
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                alert("السلة فارغة!");
+                return;
+            }
+            const paymentMethod = document.getElementById('checkout-payment-method').value;
+            let cartTotal = 0;
+            cart.forEach(item => {
+                cartTotal += parseFloat(item.price);
+                salesLog.unshift({ item: item.title, price: parseFloat(item.price), time: "الآن" });
+            });
+            ownerBalance += cartTotal;
+            cart = [];
+            document.getElementById('cart-count').innerText = 0;
+            closeModals();
+            alert("🎉 تم إتمام الشراء بنجاح عبر وسيلة الدفع (" + paymentMethod + ")! تم إضافة الأرباح إلى رصيد المتجر وتسجيل الطلب بنجاح.");
         }
 
         function openDrawerPanel() {
@@ -498,7 +561,7 @@ Enter<!DOCTYPE html>
 
         let isSignUpMode = false;
         function openAuthModal(signUp) {
-            isSignUpMode, isSignUpMode = signUp;
+            isSignUpMode = signUp;
             document.getElementById('auth-modal-title').innerText = signUp ? 'إنشاء حساب جديد' : 'تسجيل الدخول';
             document.getElementById('auth-submit-btn').innerText = signUp ? 'تسجيل الحساب' : 'دخول';
             document.getElementById('auth-modal').style.display = 'flex';
