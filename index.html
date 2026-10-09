@@ -8,7 +8,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #fcfcfc; color: #1a1a1a; }
         
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -20,10 +19,7 @@
             top: 0;
             z-index: 100;
         }
-        .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .logo { font-weight: 900; font-size: 22px; color: #6c5ce7; }
-        .logo-tagline { font-size: 13px; color: #555; font-weight: 600; border-right: 2px solid #ddd; padding-right: 12px; }
-        
+        .logo { font-weight: 900; font-size: 24px; color: #6c5ce7; cursor: pointer; }
         .nav-links { display: flex; gap: 25px; list-style: none; color: #555; font-size: 14px; font-weight: 500; }
         .nav-links li { cursor: pointer; transition: color 0.2s; }
         .nav-links li:hover { color: #6c5ce7; }
@@ -38,58 +34,42 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #f5f0ff 0%, #fae6ff 100%);
+            background: linear-gradient(135deg, #f5f0ff 0%, #faf8ff 100%);
             padding: 60px 40px;
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-columns: 1.2fr 0.8fr;
             gap: 30px;
             align-items: center;
-            overflow: hidden;
         }
         @media(max-width: 900px) { .hero { grid-template-columns: 1fr; padding: 30px 20px; } }
-        .hero-subtitle { color: #6c5ce7; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; margin-bottom: 12px; text-transform: uppercase; }
-        .hero-title { font-size: 42px; font-weight: 900; line-height: 1.2; color: #111; margin-bottom: 15px; }
+        .hero-subtitle { color: #6c5ce7; font-weight: 700; font-size: 13px; margin-bottom: 12px; }
+        .hero-title { font-size: 42px; font-weight: 900; line-height: 1.2; color: #111; margin-bottom: 20px; }
         .hero-title span { color: #6c5ce7; }
-        .hero-desc { color: #555; font-size: 16px; line-height: 1.6; margin-bottom: 25px; max-width: 500px; font-weight: 600; }
-        .hero-buttons { display: flex; gap: 12px; margin-bottom: 35px; }
-        .btn-primary { background: #6c5ce7; color: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3); }
-        .btn-secondary { background: #ffffff; color: #111; border: 1px solid #ddd; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; }
-        
-        .hero-graphic-mockup {
-            background: white;
-            border-radius: 16px;
-            padding: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-            border: 1px solid #eee;
-            text-align: center;
-        }
+        .hero-desc { color: #555; font-size: 15px; line-height: 1.6; margin-bottom: 30px; max-width: 520px; }
+        .btn-primary { background: #6c5ce7; color: white; padding: 12px 25px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3); }
 
         /* Categories */
         .categories-section { padding: 40px; background: #fff; border-bottom: 1px solid #eaeaea; }
-        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; }
-        .section-title { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 5px; }
-        .section-subtitle { color: #666; font-size: 13px; }
-        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
-        .category-card { background: #faf8ff; border: 1px solid #f0edff; padding: 18px 8px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .section-title { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 8px; }
+        .section-subtitle { color: #666; font-size: 13px; margin-bottom: 25px; }
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 15px; }
+        .category-card { background: #faf8ff; border: 1px solid #f0edff; padding: 18px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
         .category-card:hover { background: #6c5ce7; color: white; transform: translateY(-3px); }
         .category-card:hover span { color: white; }
-        .category-card span { font-size: 11px; font-weight: 600; color: #333; display: block; margin-top: 6px; }
+        .category-card span { font-size: 12px; font-weight: 600; color: #333; display: block; margin-top: 6px; }
 
         /* Products Grid */
         .products-section { padding: 40px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
         .product-card { border: 1px solid #eaeaea; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s; }
         .product-card:hover { transform: translateY(-3px); }
-        .product-thumb { height: 160px; background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%); display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: bold; font-size: 14px; position: relative; }
-        .badge-bestseller { position: absolute; top: 10px; right: 10px; background: #ff9f43; color: white; font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 700; }
-        .product-content { padding: 15px; }
-        .product-category-tag { font-size: 11px; color: #6c5ce7; font-weight: 700; margin-bottom: 4px; display: block; }
-        .product-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 6px; }
-        .product-desc { color: #666; font-size: 12px; line-height: 1.4; margin-bottom: 12px; }
-        .product-rating { font-size: 12px; color: #f39c12; margin-bottom: 12px; font-weight: 600; }
-        .product-footer { padding: 0 15px 15px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .product-thumb { height: 160px; background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%); display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: bold; font-size: 14px; }
+        .product-content { padding: 18px; }
+        .product-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 8px; }
+        .product-desc { color: #666; font-size: 13px; line-height: 1.5; margin-bottom: 15px; }
+        .product-footer { padding: 0 18px 18px 18px; display: flex; justify-content: space-between; align-items: center; }
         .product-price { font-weight: 800; color: #111; font-size: 16px; }
-        .btn-details { background: #6c5ce7; color: white; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .btn-details { background: #6c5ce7; color: white; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; }
 
         /* Details & Modals */
         .details-container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; }
@@ -105,19 +85,16 @@
 <body>
 
     <header>
-        <div class="logo-area" onclick="switchPage('home')">
-            <div class="logo">Pixeloria</div>
-            <div class="logo-tagline">إبداعك الرقمي، بين يديك</div>
-        </div>
+        <div class="logo" onclick="switchPage('home')">Pixeloria</div>
         <ul class="nav-links">
             <li onclick="switchPage('home')">الرئيسية</li>
-            <li onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">المنتجات</li>
+            <li onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">التصنيفات</li>
             <li>الموارد</li>
         </ul>
         <div class="header-actions">
             <button class="cart-icon-btn" onclick="openCartModal()">🛒 السلة (<span id="cart-count">0</span>)</button>
             <button class="btn-sign" onclick="openAuthModal(false)">تسجيل الدخول</button>
-            <button class="btn-create" onclick="openAuthModal(true)">حساب جديد</button>
+            <button class="btn-create" onclick="openAuthModal(true)">إنشاء حساب</button>
         </div>
     </header>
 
@@ -125,50 +102,31 @@
     <div id="home-page" class="page-section active">
         <section class="hero">
             <div>
-                <div class="hero-subtitle">متجر Pixeloria الرقمي</div>
+                <div class="hero-subtitle">Pixeloria</div>
                 <h1 class="hero-title">إبداعك الرقمي، <span>بين يديك</span></h1>
                 <p class="hero-desc">منتجات رقمية تلهم إبداعك. اكتشف أدوات وقوالب مميزة مصممة خصيصاً لمساعدتك على النمو والنجاح في مشاريعك الرقمية.</p>
-                <div class="hero-buttons">
-                    <button class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">تسوق الآن</button>
-                    <button class="btn-secondary" onclick="openAuthModal(true)">حساب جديد</button>
-                </div>
+                <button class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">تسوق الآن</button>
             </div>
-            <div class="hero-graphic-mockup">
-                <div style="background: linear-gradient(135deg, #ece5ff 0%, #d8c9ff 100%); height: 220px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: 800;">
-                    💻 معاينة المنتجات الرقمية
-                </div>
+            <div style="background: #e9e2ff; border-radius: 16px; height: 260px; display: flex; align-items: center; justify-content: center; color: #6c5ce7; font-weight: 700;">
+                💻 معاينة المنتجات الرقمية
             </div>
         </section>
 
         <!-- التصنيفات -->
         <section class="categories-section">
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">استكشف المنتجات الرقمية</h2>
-                    <p class="section-subtitle">أدوات وقوالب جاهزة للتحميل الفوري لمساعدة مشاريعك على النمو.</p>
-                </div>
-            </div>
+            <h2 class="section-title">استكشف المنتجات الرقمية</h2>
+            <p class="section-subtitle">أدوات وقوالب جاهزة للتحميل الفوري لمساعدة مشاريعك على النمو.</p>
             <div class="categories-grid">
-                <div class="category-card"><span>🎨 قوالب وتصميم</span></div>
-                <div class="category-card"><span>📚 كتب إلكترونية</span></div>
-                <div class="category-card"><span>📅 مخططات ومنظمات</span></div>
-                <div class="category-card"><span>🤖 أدوات الذكاء الاصطناعي</span></div>
-                <div class="category-card"><span>💻 برمجيات وأدوات</span></div>
-                <div class="category-card"><span>🎓 دورات تعليمية</span></div>
-                <div class="category-card"><span>🎵 موسيقى وصوتيات</span></div>
-                <div class="category-card"><span>✨ المزيد</span></div>
+                <div class="category-card"><span>دليل العناية الذاتية</span></div>
+                <div class="category-card"><span>مخطط يومي بسيط</span></div>
+                <div class="category-card"><span>قوالب وسائل التواصل</span></div>
             </div>
         </section>
 
         <!-- المنتجات المميزة -->
         <section id="products-sec" class="products-section">
-            <div class="section-header" style="margin-bottom: 20px;">
-                <div>
-                    <h2 class="section-title">أحدث المنتجات الرقمية</h2>
-                </div>
-            </div>
-
-            <div class="products-grid">
+            <h2 class="section-title">أحدث المنتجات الرقمية</h2>
+            <div class="products-grid" style="margin-top: 20px;">
                 <!-- منتج 1 -->
                 <div class="product-card">
                     <div>
@@ -180,7 +138,7 @@
                     </div>
                     <div class="product-footer">
                         <span class="product-price">$7.99</span>
-                        <button class="btn-details" onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'مخططات ومنظمات', '15 صفحة', 'ملف PDF عالي الجودة جاهز للطباعة والاستخدام الفوري.')">عرض التفاصيل</button>
+                        <button class="btn-details" onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'PDF', '15 صفحة', 'ملف PDF عالي الجودة جاهز للطباعة والاستخدام الفوري.')">عرض التفاصيل</button>
                     </div>
                 </div>
 
@@ -195,7 +153,7 @@
                     </div>
                     <div class="product-footer">
                         <span class="product-price">$5.99</span>
-                        <button class="btn-details" onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'كتب إلكترونية', '25 صفحة', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للصحة النفسية.')">عرض التفاصيل</button>
+                        <button class="btn-details" onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'PDF Workbook', '25 صفحة', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للصحة النفسية.')">عرض التفاصيل</button>
                     </div>
                 </div>
 
@@ -210,7 +168,7 @@
                     </div>
                     <div class="product-footer">
                         <span class="product-price">$12.00</span>
-                        <button class="btn-details" onclick="showProductDetails('قوالب وسائل التواصل', '12.00', 'قوالب وتصميم', '50 قالب جاهز', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل.')">عرض التفاصيل</button>
+                        <button class="btn-details" onclick="showProductDetails('قوالب وسائل التواصل', '12.00', 'Canva Template', '50 قالب جاهز', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل.')">عرض التفاصيل</button>
                     </div>
                 </div>
             </div>
@@ -233,7 +191,7 @@
                     <p id="det-desc" style="color: #666; font-size: 13px; line-height: 1.5; margin-bottom: 12px;"></p>
 
                     <ul class="spec-list">
-                        <li><span>التصنيف:</span> <span id="det-spec-cat">كتب</span></li>
+                        <li><span>نوع الملف:</span> <span id="det-spec-type">PDF</span></li>
                         <li><span>المحتوى:</span> <span id="det-spec-pages">15 صفحة</span></li>
                         <li><span>التسليم:</span> <span>تحميل فوري بعد الدفع</span></li>
                     </ul>
@@ -298,12 +256,12 @@
             window.scrollTo(0, 0);
         }
 
-        function showProductDetails(title, price, category, pages, whatGets) {
-            currentProduct = { title, price, category, whatGets };
+        function showProductDetails(title, price, type, pages, whatGets) {
+            currentProduct = { title, price, type, whatGets };
             document.getElementById('det-title').innerText = title;
             document.getElementById('det-price').innerText = '$' + price;
-            document.getElementById('det-type').innerText = category;
-            document.getElementById('det-spec-cat').innerText = category;
+            document.getElementById('det-type').innerText = type;
+            document.getElementById('det-spec-type').innerText = type;
             document.getElementById('det-spec-pages').innerText = pages;
             document.getElementById('det-what-gets').innerText = whatGets;
             document.getElementById('det-thumb').innerText = title;
