@@ -115,7 +115,7 @@
         .product-price { font-weight: 800; color: #111; font-size: 16px; }
         .btn-details { background: #6c5ce7; color: white; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
 
-        /* لوحة التحكم المسحوبة وزر السحب */
+        /* لوحة التحكم المسحوبة */
         #drawer-overlay {
             display: none;
             position: fixed;
@@ -125,7 +125,7 @@
         }
         #drawer-panel {
             position: fixed;
-            top: 0; right: -320px; width: 280px; height: 100%;
+            top: 0; right: -320px; width: 300px; height: 100%;
             background: white;
             box-shadow: -5px 0 25px rgba(0,0,0,0.3);
             transition: right 0.3s ease-in-out;
@@ -135,8 +135,8 @@
             flex-direction: column;
             justify-content: space-between;
         }
-        .drawer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-        .drawer-links li { font-weight: 700; font-size: 14px; color: #333; cursor: pointer; padding: 12px; background: #f8f9fa; border-radius: 8px; border-right: 4px solid #6c5ce7; }
+        .drawer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .drawer-links li { font-weight: 700; font-size: 13px; color: #333; cursor: pointer; padding: 10px; background: #f8f9fa; border-radius: 8px; border-right: 4px solid #6c5ce7; }
         .drawer-links li:hover { background: #f3f0ff; color: #6c5ce7; }
 
         /* نافذة حماية المالك (PIN Code Modal) */
@@ -202,7 +202,7 @@
         </div>
     </div>
 
-    <!-- قائمة السحب الجانبية (لوحة التحكم) -->
+    <!-- قائمة السحب الجانبية (لوحة التحكم مع زر سحب الأرباح) -->
     <div id="drawer-overlay" onclick="closeDrawerPanel()"></div>
     <div id="drawer-panel">
         <div>
@@ -210,11 +210,19 @@
                 <h3 style="font-size: 16px; font-weight: 800; color: #6c5ce7;">لوحة تحكم المالك</h3>
                 <button onclick="closeDrawerPanel()" style="background: none; border: none; font-size: 18px; cursor: pointer;">✕</button>
             </div>
+            
+            <!-- قسم الأرباح والرصيد السحب -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center; border: 1px solid #eee;">
+                <span style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">الرصيد القابل للسحب</span>
+                <h2 style="font-size: 22px; font-weight: 900; color: #2d3436; margin-bottom: 10px;">$148.00</h2>
+                <button onclick="requestWithdrawal()" style="width: 100%; background: #00b894; color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer;">💸 سحب الأرباح الآن</button>
+            </div>
+
             <ul class="drawer-links">
-                <li onclick="closeDrawerPanel(); alert('إحصائيات المبيعات: $148.00')">📊 إحصائيات المبيعات</li>
-                <li onclick="closeDrawerPanel(); alert('إدارة المنتجات الرقمية (نشطة: 3 منتجات)')">📦 إدارة المنتجات</li>
-                <li onclick="closeDrawerPanel(); alert('طلبات العملاء: لا توجد طلبات جديدة')">🛒 طلبات العملاء</li>
-                <li onclick="closeDrawerPanel(); alert('إعدادات المتجر العامة')">⚙️ إعدادات المتجر</li>
+                <li onclick="closeDrawerPanel(); alert('إجمالي المبيعات هذا الشهر: $350.00')">📊 تقرير المبيعات</li>
+                <li onclick="closeDrawerPanel(); alert('إدارة المنتجات الرقمية (3 منتجات نشطة)')">📦 إدارة المنتجات</li>
+                <li onclick="closeDrawerPanel(); alert('طلبات العملاء: لا توجد طلبات جديدة معلقة')">🛒 طلبات العملاء</li>
+                <li onclick="closeDrawerPanel(); alert('إعدادات المتجر العامة مفعلة')">⚙️ إعدادات المتجر</li>
             </ul>
         </div>
         <div style="border-top: 1px solid #eee; padding-top: 10px; font-size: 11px; color: #888; text-align: center;">
@@ -383,7 +391,7 @@
         let currentProduct = {};
         let cart = [];
 
-        // كود حماية المالك (يمكنك تغييره هنا إلى أي رقم تريده، مثلاً: "1234")
+        // كود حماية المالك السري
         const OWNER_PIN = "1234";
 
         function requestOwnerAccess() {
@@ -404,6 +412,14 @@
             } else {
                 alert('⚠️ الكود السري غير صحيح! الوصول مرفوض.');
                 document.getElementById('owner-pin-input').value = '';
+            }
+        }
+
+        function requestWithdrawal() {
+            const amount = prompt("أدخل مبلغ السحب المطلوب (بالدولار):", "148.00");
+            if (amount) {
+                alert("✅ تم تقديم طلب سحب مبلغ $" + amount + " بنجاح! سيتم تحويل الأرباح إلى حسابك قريباً.");
+                closeDrawerPanel();
             }
         }
 
@@ -492,4 +508,3 @@
     </script>
 </body>
 </html>
-
