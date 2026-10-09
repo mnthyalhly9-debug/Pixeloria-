@@ -50,7 +50,6 @@
         .btn-create { padding: 8px 14px; background: #6c5ce7; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .cart-icon-btn { background: #f3f0ff; color: #6c5ce7; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; font-size: 13px; }
 
-        /* تعديل هنا لضمان ظهور الأقسام بشكل صحيح افتراضياً */
         .page-section { display: none; }
         .page-section.active { display: block; }
 
@@ -269,7 +268,7 @@
         </div>
     </div>
 
-    <!-- الصفحة الرئيسية (تمت إضافة active افتراضياً لضمان ظهورها فوراً) -->
+    <!-- الصفحة الرئيسية -->
     <div id="home-page" class="page-section active">
         <section class="hero">
             <div>
@@ -393,14 +392,14 @@
         </div>
     </div>
 
-    <!-- نافذة السلة مع اختيار وسيلة الدفع -->
+    <!-- نافذة السلة مع اختيار وسيلة الدفع والبطاقة المحفوظة -->
     <div id="cart-modal" class="modal-overlay">
-        <div class="modal-box">
+        <div class="modal-box" style="max-width: 420px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 style="font-size: 16px; font-weight: 700;">سلة المشتريات والدفع</h3>
+                <h3 style="font-size: 16px; font-weight: 700;">سلة المشتريات والدفع السريع</h3>
                 <button type="button" onclick="closeModals()" style="background: none; border: none; font-size: 14px; cursor: pointer;">✕</button>
             </div>
-            <div id="cart-items-list" style="margin-bottom: 10px; max-height: 140px; overflow-y: auto; font-size: 13px; color: #555;">
+            <div id="cart-items-list" style="margin-bottom: 10px; max-height: 120px; overflow-y: auto; font-size: 13px; color: #555;">
                 السلة فارغة حالياً.
             </div>
             <div style="border-top: 1px solid #eee; padding-top: 8px; display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 10px; font-size: 14px;">
@@ -408,16 +407,24 @@
                 <span id="cart-total">$0.00</span>
             </div>
 
-            <div style="margin-bottom: 12px; text-align: right;">
-                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 4px;">اختر طريقة الدفع المناسبة:</label>
-                <select id="checkout-payment-method" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px;">
+            <!-- عرض البطاقة المخزنة مسبقاً إذا وجدت -->
+            <div id="saved-card-section" style="background: #f3f0ff; border: 1px solid #dcd6ff; padding: 12px; border-radius: 8px; margin-bottom: 12px; display: none;">
+                <div style="font-size: 12px; font-weight: 700; color: #6c5ce7; margin-bottom: 4px;">💳 بطاقتك المحفوظة في الحساب:</div>
+                <div id="saved-card-info" style="font-size: 12px; color: #333; font-weight: 600;"></div>
+            </div>
+
+            <!-- حقول إدخال وحفظ البطاقة إذا لم تكن مخزنة -->
+            <div id="new-card-section" style="margin-bottom: 12px; text-align: right; background: #faf8ff; padding: 10px; border-radius: 8px; border: 1px solid #eee;">
+                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 4px;">اختر وسيلة الدفع وأدخل معلومات البطاقة للحفظ التلقائي:</label>
+                <select id="checkout-payment-method" style="width: 100%; padding: 7px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px; margin-bottom: 8px;">
                     <option value="RedotPay">💳 بطاقة RedotPay</option>
                     <option value="PayPal">🅿️ حساب PayPal</option>
                     <option value="Dahabia_CCP">🇩🇿 البطاقة الذهبية / حساب CCP</option>
                 </select>
+                <input type="text" id="user-card-details" placeholder="رقم البطاقة أو إيميل الحساب (سيتم حفظه لدفعاتك القادمة)" style="width: 100%; padding: 7px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; text-align: left;">
             </div>
 
-            <button type="button" onclick="checkoutCart()" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">تأكيد وإتمام الشراء</button>
+            <button type="button" onclick="checkoutCart()" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">تأكيد وإتمام الشراء بضغطة واحدة</button>
         </div>
     </div>
 
@@ -451,6 +458,7 @@
         ];
 
         let registeredUsers = [];
+        let currentUser = null; // لتتبع المستخدم المنجز لتسجيل الدخول حالياً
         const OWNER_PIN = "1234";
 
         let pendingUser = null;
@@ -532,8 +540,29 @@
                 alert("السلة فارغة!");
                 return;
             }
-            const paymentMethodEl = document.getElementById('checkout-payment-method');
-            const paymentMethod = paymentMethodEl ? paymentMethodEl.value : 'RedotPay';
+
+            let paymentMethod = "";
+            let cardInfo = "";
+
+            if (currentUser && currentUser.savedCard) {
+                paymentMethod = currentUser.savedCard.method;
+                cardInfo = currentUser.savedCard.details;
+            } else {
+                const methodEl = document.getElementById('checkout-payment-method');
+                const cardDetailsEl = document.getElementById('user-card-details');
+                paymentMethod = methodEl ? methodEl.value : 'RedotPay';
+                cardInfo = cardDetailsEl ? cardDetailsEl.value.trim() : '';
+
+                if (!cardInfo) {
+                    alert("⚠️ الرجاء إدخال تفاصيل البطاقة لإتمام وحفظ الشراء المستقبلي.");
+                    return;
+                }
+
+                // حفظ البطاقة تلقائياً في حساب المستخدم الحالي إذا كان مسجلاً
+                if (currentUser) {
+                    currentUser.savedCard = { method: paymentMethod, details: cardInfo };
+                }
+            }
             
             let cartTotal = 0;
             cart.forEach(item => {
@@ -547,7 +576,7 @@
             if(cartCountEl) cartCountEl.innerText = 0;
             
             closeModals();
-            alert("🎉 تم إتمام الشراء بنجاح عبر وسيلة الدفع (" + paymentMethod + ")! تم إضافة الأرباح إلى رصيد المتجر وتسجيل الطلب بنجاح.");
+            alert("🎉 تم إتمام الشراء بنجاح وسحب المبلغ باستخدام البطاقة المحفوظة (" + paymentMethod + ")!\nتم حفظ معلومات بطاقتك لتسهيل مشترياتك القادمة.");
         }
 
         function openDrawerPanel() {
@@ -616,6 +645,9 @@
         function openCartModal() {
             const listEl = document.getElementById('cart-items-list');
             const totalEl = document.getElementById('cart-total');
+            const savedCardSection = document.getElementById('saved-card-section');
+            const savedCardInfo = document.getElementById('saved-card-info');
+            const newCardSection = document.getElementById('new-card-section');
             
             if(cart.length === 0) {
                 if(listEl) listEl.innerHTML = 'السلة فارغة حالياً.';
@@ -630,6 +662,17 @@
                 if(listEl) listEl.innerHTML = html;
                 if(totalEl) totalEl.innerText = '$' + total.toFixed(2);
             }
+
+            // فحص إذا كان المستخدم مسجلاً ولديه بطاقة محفوظة مسبقاً
+            if (currentUser && currentUser.savedCard) {
+                if(savedCardSection) savedCardSection.style.display = 'block';
+                if(savedCardInfo) savedCardInfo.innerText = `${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
+                if(newCardSection) newCardSection.style.display = 'none'; // إخفاء إدخال بطاقة جديدة لأنها محفوظة
+            } else {
+                if(savedCardSection) savedCardSection.style.display = 'none';
+                if(newCardSection) newCardSection.style.display = 'block';
+            }
+
             const cartModal = document.getElementById('cart-modal');
             if(cartModal) cartModal.style.display = 'flex';
         }
@@ -707,7 +750,7 @@
                     return;
                 }
 
-                pendingUser = { email, fname, lname, pass };
+                pendingUser = { email, fname, lname, pass, savedCard: null };
                 closeModals();
                 sendNewOtpCode();
             } else {
@@ -716,6 +759,7 @@
                     alert('⚠️ البريد الإلكتروني أو الرقم السري غير صحيح!');
                     return;
                 }
+                currentUser = user || { email, savedCard: null };
                 alert('أهلاً بعودتك، ' + email);
                 closeModals();
             }
@@ -749,7 +793,7 @@
             const otpModal = document.getElementById('otp-modal');
             const otpTimer = document.getElementById('otp-timer');
 
-            if(otpInput) otpInput.value, otpInput.value = '';
+            if(otpInput) otpInput.value = '';
             if(resendContainer) resendContainer.style.display = 'none';
             if(otpModal) otpModal.style.display = 'flex';
             if(otpInput) otpInput.focus();
@@ -792,6 +836,7 @@
                 clearInterval(otpTimerInterval);
                 if(pendingUser) {
                     registeredUsers.push(pendingUser);
+                    currentUser = pendingUser; // تعيينه كمستخدم حالي مسجل
                     alert('🎉 تم تفعيل الحساب بنجاح وأهلاً بك ' + pendingUser.fname + ' ' + pendingUser.lname + '!');
                 }
                 closeOtpModal();
@@ -803,3 +848,4 @@
     </script>
 </body>
 </html>
+
