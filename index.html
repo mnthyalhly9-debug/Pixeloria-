@@ -1,527 +1,402 @@
-Enter<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixeloria - متجرك الرقمي</title>
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            emailjs.init("OLoDdnNPGd4EqEeY5");
-        })();
-    </script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #fcfcfc; color: #1a1a1a; padding-bottom: 40px; }
-        
-        header {
-            background: #ffffff;
-            border-bottom: 1px solid #eaeaea;
-            padding: 10px 15px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .logo { font-weight: 900; font-size: 18px; color: #6c5ce7; cursor: pointer; }
-        
-        .header-actions { display: flex; gap: 4px; flex-wrap: wrap; }
-        .btn-action { 
-            background: #f3f0ff; 
-            color: #6c5ce7; 
-            border: none; 
-            padding: 5px 8px; 
-            border-radius: 6px; 
-            font-size: 11px; 
-            font-weight: bold; 
-            cursor: pointer; 
-        }
-        .btn-main { background: #6c5ce7; color: white; }
-
-        .nav-links { 
-            display: flex; 
-            gap: 12px; 
-            list-style: none; 
-            font-size: 11px; 
-            font-weight: 600; 
-            color: #555; 
-            overflow-x: auto; 
-            white-space: nowrap; 
-            padding-bottom: 2px;
-        }
-        .nav-links::-webkit-scrollbar { display: none; }
-        .nav-links li { cursor: pointer; }
-
-        .page-section { display: none; }
-        .page-section.active { display: block; }
-
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, #f5f0ff 0%, #faf8ff 100%);
-            padding: 30px 15px;
-            text-align: center;
-        }
-        .hero-title { font-size: 24px; font-weight: 900; color: #111; margin-bottom: 8px; }
-        .hero-title span { color: #6c5ce7; }
-        .hero-desc { color: #555; font-size: 12px; line-height: 1.5; margin-bottom: 15px; }
-        .btn-primary { background: #6c5ce7; color: white; padding: 9px 18px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none; font-size: 12px; }
-
-        /* Products */
-        .products-section { padding: 25px 15px; text-align: right; }
-        .section-title { font-size: 18px; font-weight: 800; color: #111; margin-bottom: 12px; }
-        
-        .product-card { 
-            border: 1px solid #eaeaea; 
-            border-radius: 10px; 
-            background: #fff; 
-            padding: 14px; 
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        }
-        .product-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 4px; }
-        .product-desc { color: #666; font-size: 11px; margin-bottom: 10px; line-height: 1.4; }
-        .product-footer { display: flex; justify-content: space-between; align-items: center; }
-        .product-price { font-weight: 800; color: #111; font-size: 15px; }
-        .btn-details { background: #6c5ce7; color: white; padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 11px; font-weight: bold; }
-
-        /* لوحة التحكم الجانبية الملاصقة تماماً لليمين */
-        #drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; }
-        #drawer-panel {
-            position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
-            background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.25);
-            transition: right 0.3s ease-in-out; z-index: 10000; padding: 18px; text-align: right; overflow-y: auto;
-        }
-
-        /* Modals */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 20000; padding: 15px; }
-        .modal-box { background: white; padding: 20px; border-radius: 12px; width: 100%; max-width: 330px; text-align: right; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixeloria - متجرك الرقمي</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Public frontend settings. Never place a Supabase secret/service_role key in this file.
+const PIXELORIA_SUPABASE_URL = "https://iksqnhcrfpnqppxfyxqt.supabase.co";
+const PIXELORIA_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_z7yzvMEV08VTIDx-X6Sk0w_UJsl-jF3";
+const pixeloriaSupabase = window.supabase.createClient(
+  PIXELORIA_SUPABASE_URL,
+  PIXELORIA_SUPABASE_PUBLISHABLE_KEY,
+  { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+);
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+body{background:#fcfcfc;color:#1a1a1a;padding-bottom:40px}
+header{background:#fff;border-bottom:1px solid #eaeaea;padding:10px 15px;position:sticky;top:0;z-index:100}
+.header-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.logo{font-weight:900;font-size:18px;color:#6c5ce7;cursor:pointer}
+.header-actions{display:flex;gap:4px;flex-wrap:wrap}
+.btn-action{background:#f3f0ff;color:#6c5ce7;border:0;padding:7px 8px;border-radius:6px;font-size:11px;font-weight:bold;cursor:pointer}
+.btn-main{background:#6c5ce7;color:white}
+.nav-links{display:flex;gap:12px;list-style:none;font-size:11px;font-weight:600;color:#555;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
+.nav-links::-webkit-scrollbar{display:none}.nav-links li{cursor:pointer}
+.page-section{display:none}.page-section.active{display:block}
+.hero{background:radial-gradient(circle at 12% 18%,rgba(167,139,250,.32),transparent 34%),linear-gradient(125deg,#211342 0%,#49308b 52%,#7657df 100%);padding:32px 16px 26px;text-align:right;color:#fff;overflow:hidden;position:relative}
+.hero-inner{max-width:1100px;margin:auto;display:grid;grid-template-columns:1fr;gap:22px;align-items:center}
+.hero-copy{position:relative;z-index:2}.hero-kicker{display:inline-block;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.24);border-radius:30px;padding:6px 11px;font-size:11px;margin-bottom:12px;color:#f0eaff}
+.hero-title{font-size:29px;line-height:1.35;font-weight:900;color:#fff;margin-bottom:10px}.hero-title span{color:#d6c8ff}
+.hero-desc{color:#eee8ff;font-size:13px;line-height:1.9;margin-bottom:17px;max-width:520px}
+.hero-actions{display:flex;gap:9px;flex-wrap:wrap}.hero .btn-primary{background:#fff;color:#4e32a1;padding:11px 17px;border-radius:9px;font-size:12px}.btn-secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.45);padding:10px 15px;border-radius:9px;font-size:12px;font-weight:bold;cursor:pointer}
+.hero-visual{position:relative;min-height:200px;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.25);box-shadow:0 18px 40px rgba(14,7,40,.28);background:#2b1a50}
+.hero-visual img{display:block;width:100%;height:230px;object-fit:cover;opacity:.92}.hero-visual::after{content:'ملفات رقمية • قوالب • كتب إلكترونية';position:absolute;bottom:12px;right:12px;left:12px;padding:10px 12px;border-radius:10px;background:rgba(31,18,62,.78);backdrop-filter:blur(8px);font-size:11px;color:white;text-align:center}
+.trust-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:14px 12px;background:#fff;border-bottom:1px solid #eee8ff}.trust-pill{background:#f6f2ff;color:#5235a2;border:1px solid #e7ddff;border-radius:30px;padding:8px 11px;font-size:11px;font-weight:700}
+.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0 24px}.category-tile{border:1px solid #eee8ff;border-radius:13px;overflow:hidden;background:#fff;box-shadow:0 5px 16px rgba(58,35,105,.06);cursor:pointer;text-align:right}.category-tile img{width:100%;height:105px;object-fit:cover;display:block}.category-tile div{padding:10px}.category-tile strong{font-size:12px;color:#332052;display:block;margin-bottom:4px}.category-tile span{font-size:10px;color:#777;line-height:1.5;display:block}
+@media(min-width:700px){.hero{padding:48px 6%}.hero-inner{grid-template-columns:1.02fr .98fr;gap:38px}.hero-title{font-size:42px}.hero-desc{font-size:15px}.hero-visual img{height:310px}.category-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.category-tile img{height:145px}.products-section{padding:32px 6%}.product-card{max-width:900px;margin:0 auto 12px}.trust-row{gap:14px}}
+.btn-primary{background:#6c5ce7;color:white;padding:9px 18px;border-radius:6px;font-weight:bold;cursor:pointer;border:0;font-size:12px}
+.products-section{padding:25px 15px;text-align:right}.section-title{font-size:18px;font-weight:800;color:#111;margin-bottom:12px}
+.product-card{border:1px solid #eaeaea;border-radius:10px;background:#fff;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.02)}
+.product-title{font-size:15px;font-weight:700;color:#111;margin-bottom:4px}.product-desc{color:#666;font-size:11px;margin-bottom:10px;line-height:1.5}
+.product-footer{display:flex;justify-content:space-between;align-items:center}.product-price{font-weight:800;color:#111;font-size:15px}
+.btn-details{background:#6c5ce7;color:white;padding:7px 12px;border-radius:6px;border:0;cursor:pointer;font-size:11px;font-weight:bold}
+#drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999}
+#drawer-panel{position:fixed;top:0;right:-300px;width:280px;max-width:90vw;height:100%;background:white;box-shadow:-5px 0 25px rgba(0,0,0,.25);transition:right .3s ease-in-out;z-index:10000;padding:18px;text-align:right;overflow-y:auto}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);justify-content:center;align-items:center;z-index:20000;padding:15px}
+.modal-box{background:white;padding:20px;border-radius:12px;width:100%;max-width:330px;text-align:right;box-shadow:0 10px 25px rgba(0,0,0,.2)}
+.modal-box input,.modal-box select{max-width:100%}
+</style>
 </head>
 <body>
-
-    <header>
-        <div class="header-top">
-            <div class="logo" onclick="switchPage('home')">Pixeloria</div>
-            <div class="header-actions">
-                <button class="btn-action btn-main" type="button" onclick="requestOwnerAccess()">لوحة التحكم</button>
-                <button class="btn-action" type="button" onclick="openCartModal()">🛒 (<span id="cart-count">0</span>)</button>
-                <button class="btn-action" type="button" onclick="openAuthModal(false)">دخول</button>
-                <button class="btn-action btn-main" type="button" onclick="openAuthModal(true)">حساب جديد</button>
-            </div>
-        </div>
-        <ul class="nav-links">
-            <li onclick="switchPage('home')">الرئيسية</li>
-            <li onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">التصنيفات</li>
-            <li onclick="alert('📚 الموارد والكتب الرقمية المجانية.')">الموارد</li>
-            <li onclick="openCardSettingsModal()" style="color: #6c5ce7; font-weight: bold;">💳 بطاقاتي</li>
-        </ul>
-    </header>
-
-    <!-- نافذة البطاقات -->
-    <div id="card-settings-modal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 style="font-size: 15px; font-weight: 700; color: #6c5ce7; margin-bottom: 8px;">💳 إدارة بطاقة الدفع</h3>
-            <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 3px;">اختر وسيلة الدفع:</label>
-            <select id="user-pref-method" style="width: 100%; padding: 7px; border-radius: 6px; border: 1px solid #ccc; font-size: 11px; margin-bottom: 8px;">
-                <option value="RedotPay">💳 RedotPay</option>
-                <option value="PayPal">🅿️ PayPal</option>
-                <option value="Dahabia_CCP">🇩🇿 الذهبية / CCP</option>
-            </select>
-            <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 3px;">رقم البطاقة أو الإيميل:</label>
-            <input type="text" id="user-pref-details" placeholder="أدخل تفاصيل البطاقة" style="width: 100%; padding: 7px; border: 1px solid #ccc; border-radius: 6px; font-size: 11px; margin-bottom: 10px; text-align: left;">
-            <div id="current-saved-card-status" style="font-size: 11px; color: #00b894; font-weight: bold; margin-bottom: 10px; text-align: center;">لا توجد بطاقة محفوظة.</div>
-            <div style="display: flex; gap: 8px;">
-                <button type="button" onclick="saveUserCardInfo()" style="flex: 1; background: #6c5ce7; color: white; padding: 8px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer;">حفظ</button>
-                <button type="button" onclick="closeModals()" style="flex: 1; background: #eee; border: none; padding: 8px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer;">إغلاق</button>
-            </div>
-        </div>
+<header>
+  <div class="header-top">
+    <div class="logo" onclick="switchPage('home')">Pixeloria</div>
+    <div class="header-actions">
+      <button class="btn-action btn-main" type="button" onclick="requestOwnerAccess()">لوحة التحكم</button>
+      <button class="btn-action" type="button" onclick="openCartModal()">🛒 (<span id="cart-count">0</span>)</button>
+      <button class="btn-action" type="button" onclick="openAuthModal(false)">دخول</button>
+      <button class="btn-action btn-main" type="button" onclick="openAuthModal(true)">حساب جديد</button>
+      <button class="btn-action" id="logout-btn" type="button" onclick="logoutUser()" style="display:none">خروج</button>
     </div>
+  </div>
+  <ul class="nav-links">
+    <li onclick="switchPage('home')">الرئيسية</li>
+    <li onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})">التصنيفات</li>
+    <li onclick="alert('📚 الموارد والكتب الرقمية المجانية.')">الموارد</li>
+    <li onclick="openCardSettingsModal()" style="color:#6c5ce7;font-weight:bold">💳 بطاقاتي</li>
+  </ul>
+</header>
 
-    <!-- نافذة PIN المالك -->
-    <div id="pin-modal" class="modal-overlay">
-        <div class="modal-box" style="text-align: center;">
-            <h3 style="color: #6c5ce7; font-size: 16px; margin-bottom: 10px;">🔐 حماية لوحة التحكم</h3>
-            <input type="password" id="owner-pin-input" placeholder="الكود السري" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: center; font-size: 15px; margin-bottom: 12px;">
-            <div style="display: flex; gap: 8px;">
-                <button type="button" onclick="verifyOwnerPin()" style="flex: 1; background: #6c5ce7; color: white; padding: 8px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer;">دخول</button>
-                <button type="button" onclick="closeModals()" style="flex: 1; background: #eee; border: none; padding: 8px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer;">إلغاء</button>
-            </div>
-        </div>
+<div id="card-settings-modal" class="modal-overlay">
+ <div class="modal-box">
+  <h3 style="font-size:15px;color:#6c5ce7;margin-bottom:8px">💳 إدارة بطاقة الدفع</h3>
+  <label style="font-size:11px;font-weight:bold;display:block;margin-bottom:3px">اختر وسيلة الدفع:</label>
+  <select id="user-pref-method" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;margin-bottom:8px">
+   <option value="RedotPay">💳 RedotPay</option><option value="PayPal">🅿️ PayPal</option><option value="Dahabia_CCP">🇩🇿 الذهبية / CCP</option>
+  </select>
+  <label style="font-size:11px;font-weight:bold;display:block;margin-bottom:3px">رقم البطاقة أو الإيميل:</label>
+  <input type="text" id="user-pref-details" placeholder="أدخل تفاصيل البطاقة" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;margin-bottom:10px;text-align:left">
+  <div id="current-saved-card-status" style="font-size:11px;color:#00b894;font-weight:bold;margin-bottom:10px;text-align:center">لا توجد بطاقة محفوظة.</div>
+  <div style="display:flex;gap:8px">
+   <button type="button" onclick="saveUserCardInfo()" style="flex:1;background:#6c5ce7;color:white;padding:8px;border:0;border-radius:6px;font-weight:bold">حفظ</button>
+   <button type="button" onclick="closeModals()" style="flex:1;background:#eee;border:0;padding:8px;border-radius:6px">إغلاق</button>
+  </div>
+ </div>
+</div>
+
+<div id="pin-modal" class="modal-overlay">
+ <div class="modal-box" style="text-align:center">
+  <h3 style="color:#6c5ce7;font-size:16px;margin-bottom:10px">🔐 حماية لوحة التحكم</h3>
+  <input type="password" id="owner-pin-input" placeholder="الكود السري" style="width:100%;padding:9px;border:1px solid #ccc;border-radius:6px;text-align:center;margin-bottom:12px">
+  <div style="display:flex;gap:8px">
+   <button type="button" onclick="verifyOwnerPin()" style="flex:1;background:#6c5ce7;color:white;padding:8px;border:0;border-radius:6px;font-weight:bold">دخول</button>
+   <button type="button" onclick="closeModals()" style="flex:1;background:#eee;border:0;padding:8px;border-radius:6px">إلغاء</button>
+  </div>
+ </div>
+</div>
+
+
+<div id="drawer-overlay" onclick="closeDrawerPanel()"></div>
+<div id="drawer-panel">
+ <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:10px;margin-bottom:12px">
+  <h3 style="font-size:15px;color:#6c5ce7">لوحة التحكم والمعلومات</h3><button type="button" onclick="closeDrawerPanel()" style="background:none;border:0;font-size:16px">✕</button>
+ </div>
+ <div style="background:#f8f9fa;padding:12px;border-radius:8px;text-align:center;margin-bottom:12px;border:1px solid #eee">
+  <span style="font-size:11px;color:#666">الرصيد الإجمالي القابل للسحب</span>
+  <h2 id="owner-balance-display" style="font-size:20px;color:#2d3436;margin:5px 0">$148.00</h2>
+  <select id="withdrawal-method" style="width:100%;padding:6px;font-size:11px;margin-bottom:8px;border-radius:5px;border:1px solid #ccc">
+   <option value="RedotPay">💳 RedotPay</option><option value="PayPal">🅿️ PayPal</option><option value="CCP">🇩🇿 CCP</option>
+  </select>
+  <button type="button" onclick="requestWithdrawal()" style="width:100%;background:#00b894;color:white;border:0;padding:7px;border-radius:5px;font-weight:bold">سحب الأرباح</button>
+ </div>
+ <div style="background:#faf8ff;border:1px solid #eae5ff;padding:10px;border-radius:8px;margin-bottom:12px">
+  <h4 style="font-size:11px;color:#6c5ce7;margin-bottom:6px">👤 معلومات الحساب والبطاقات المسجلة:</h4>
+  <div id="drawer-user-info" style="font-size:11px;color:#444;line-height:1.6">يرجى تسجيل الدخول لعرض معلوماتك.</div>
+ </div>
+ <div style="font-size:11px;color:#666;font-weight:bold;margin-bottom:4px">سجل الطلبات والمبيعات:</div>
+ <div id="sales-log-list" style="font-size:11px;color:#444;max-height:120px;overflow-y:auto">لا توجد عمليات بيع.</div>
+</div>
+
+<div id="home-page" class="page-section active">
+ <section class="hero">
+  <div class="hero-inner">
+   <div class="hero-copy">
+    <div class="hero-kicker">✦ متجرك للعالم الرقمي</div>
+    <h1 class="hero-title">إبداعك الرقمي،<br><span>بين يديك</span></h1>
+    <p class="hero-desc">اكتشفي كتبًا إلكترونية، قوالب جاهزة، مخططات وموارد رقمية تساعدك على التعلّم والتنظيم والإبداع — في مكان واحد.</p>
+    <div class="hero-actions">
+     <button type="button" class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})">تصفحي المنتجات ←</button>
+     <button type="button" class="btn-secondary" onclick="document.getElementById('categories-sec').scrollIntoView({behavior:'smooth'})">اكتشفي التصنيفات</button>
     </div>
+   </div>
+   <div class="hero-visual"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85" alt="حاسوب محمول ومساحة عمل رقمية" loading="lazy"></div>
+  </div>
+ </section>
+ <div class="trust-row"><span class="trust-pill">📥 منتجات رقمية</span><span class="trust-pill">✨ موارد متنوعة</span><span class="trust-pill">🌍 إلهام بلا حدود</span></div>
+ <section class="products-section" id="categories-sec">
+  <h2 class="section-title">تصفحي حسب التصنيف</h2>
+  <p style="font-size:12px;color:#777;line-height:1.8;margin-bottom:12px">اختاري النوع اللي يناسب احتياجاتك وابدئي اكتشاف المنتجات.</p>
+  <div class="category-grid">
+   <div class="category-tile" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})"><img src="https://images.unsplash.com/photo-1512820542661-1e8a6b5a9b9f?auto=format&fit=crop&w=600&q=80" alt="كتب إلكترونية" loading="lazy"><div><strong>كتب إلكترونية</strong><span>أدلة وكتب للقراءة والتعلّم</span></div></div>
+   <div class="category-tile" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})"><img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80" alt="قوالب وملفات رقمية" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80'"><div><strong>قوالب رقمية</strong><span>تصاميم وملفات قابلة للاستخدام</span></div></div>
+   <div class="category-tile" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})"><img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&w=600&q=80" alt="مخططات وتنظيم" loading="lazy"><div><strong>مخططات وتنظيم</strong><span>خططي لأيامك وأهدافك</span></div></div>
+   <div class="category-tile" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="موارد تعليمية رقمية" loading="lazy"><div><strong>موارد تعليمية</strong><span>ملفات تساعدك على اكتساب مهارات</span></div></div>
+  </div>
+ </section>
+ <section id="products-sec" class="products-section">
+  <h2 class="section-title">منتجات مختارة لك</h2>
+  <div class="product-card">
+   <div class="product-title">📅 مخطط يومي بسيط</div><div class="product-desc">خطط ليومك وحقق أهدافك بكفاءة عالية.</div>
+   <div class="product-footer"><span class="product-price">$7.99</span><button type="button" class="btn-details" onclick="showProductDetails('مخطط يومي بسيط','7.99','PDF','15 صفحة','ملف PDF عالي الجودة للطباعة.')">شراء</button></div>
+  </div>
+  <div class="product-card">
+   <div class="product-title">📖 دليل العناية الذاتية</div><div class="product-desc">عادات صغيرة يومية تؤدي لتغييرات كبرى.</div>
+   <div class="product-footer"><span class="product-price">$5.99</span><button type="button" class="btn-details" onclick="showProductDetails('دليل العناية الذاتية','5.99','PDF','25 صفحة','دليل شامل وتمارين عملية.')">شراء</button></div>
+  </div>
+  <div class="product-card">
+   <div class="product-title">📚 دفتر تعلّم اللغات</div><div class="product-desc">صفحات رقمية لتسجيل الكلمات الجديدة والتدرب يوميًا.</div>
+   <div class="product-footer"><span class="product-price">$4.99</span><button type="button" class="btn-details" onclick="showProductDetails('دفتر تعلّم اللغات','4.99','PDF','20 صفحة','دفتر رقمي لتسجيل المفردات والأهداف.')">عرض المنتج</button></div>
+  </div>
+  <div class="product-card">
+   <div class="product-title">🎨 حزمة قوالب إبداعية</div><div class="product-desc">قوالب رقمية قابلة للتخصيص لمشاريعك وأفكارك.</div>
+   <div class="product-footer"><span class="product-price">$6.99</span><button type="button" class="btn-details" onclick="showProductDetails('حزمة قوالب إبداعية','6.99','ملفات رقمية','حزمة','قوالب رقمية قابلة للتخصيص.')">عرض المنتج</button></div>
+  </div>
+ </section>
+</div>
 
-    <!-- نافذة OTP -->
-    <div id="otp-modal" class="modal-overlay">
-        <div class="modal-box" style="text-align: center;">
-            <h3 style="color: #6c5ce7; font-size: 16px; margin-bottom: 8px;">⏳ تأكيد البريد الإلكتروني</h3>
-            <p style="font-size: 11px; color: #666; margin-bottom: 8px;" id="otp-timer">الوقت المتبقي: 60 ثانية</p>
-            <input type="text" id="otp-input" placeholder="أدخل كود 6 أرقام" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: center; font-size: 15px; margin-bottom: 10px;" maxlength="6">
-            <div style="display: flex; gap: 8px;">
-                <button type="button" onclick="verifyOtpCode()" style="flex: 1; background: #00b894; color: white; padding: 8px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer;">تأكيد</button>
-                <button type="button" onclick="closeModals()" style="flex: 1; background: #eee; border: none; padding: 8px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer;">إلغاء</button>
-            </div>
-        </div>
-    </div>
+<div id="product-details-page" class="page-section" style="padding:20px;text-align:right">
+ <h2 id="det-title" style="font-size:18px;color:#6c5ce7;margin-bottom:8px"></h2>
+ <p id="det-desc" style="font-size:13px;color:#555;margin-bottom:12px"></p>
+ <div id="det-price" style="font-size:20px;font-weight:bold;margin-bottom:15px"></div>
+ <button type="button" onclick="addToCartFromDetails()" style="width:100%;background:#6c5ce7;color:white;padding:9px;border:0;border-radius:6px;font-weight:bold;margin-bottom:8px">إضافة إلى السلة</button>
+ <button type="button" onclick="switchPage('home')" style="width:100%;background:none;border:0;color:#666">← العودة للرئيسية</button>
+</div>
 
-    <!-- لوحة التحكم الجانبية الملاصقة تماماً لليمين ومعلومات المستخدم -->
-    <div id="drawer-overlay" onclick="closeDrawerPanel()"></div>
-    <div id="drawer-panel">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 12px;">
-            <h3 style="font-size: 15px; color: #6c5ce7; font-weight: bold;">لوحة التحكم والمعلومات</h3>
-            <button type="button" onclick="closeDrawerPanel()" style="background: none; border: none; font-size: 16px; cursor: pointer;">✕</button>
-        </div>
-        
-        <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 12px; border: 1px solid #eee;">
-            <span style="font-size: 11px; color: #666;">الرصيد الإجمالي القابل للسحب</span>
-            <h2 style="font-size: 20px; color: #2d3436; margin: 5px 0;" id="owner-balance-display">$148.00</h2>
-            <select id="withdrawal-method" style="width: 100%; padding: 6px; font-size: 11px; margin-bottom: 8px; border-radius: 5px; border: 1px solid #ccc;">
-                <option value="RedotPay">💳 RedotPay</option>
-                <option value="PayPal">🅿️ PayPal</option>
-                <option value="CCP">🇩🇿 CCP</option>
-            </select>
-            <button type="button" onclick="requestWithdrawal()" style="width: 100%; background: #00b894; color: white; border: none; padding: 7px; border-radius: 5px; font-weight: bold; font-size: 12px; cursor: pointer;">سحب الأرباح</button>
-        </div>
+<div id="cart-modal" class="modal-overlay">
+ <div class="modal-box">
+  <h3 style="font-size:15px;margin-bottom:10px">سلة المشتريات</h3>
+  <div id="cart-items-list" style="font-size:12px;color:#555;margin-bottom:10px">السلة فارغة.</div>
+  <div style="font-size:14px;font-weight:bold;margin-bottom:12px">الإجمالي: <span id="cart-total">$0.00</span></div>
+  <button type="button" onclick="checkoutCart()" style="width:100%;background:#6c5ce7;color:white;padding:9px;border:0;border-radius:6px;font-weight:bold;margin-bottom:8px">إتمام الشراء السريع</button>
+  <button type="button" onclick="closeModals()" style="width:100%;background:#eee;border:0;padding:7px;border-radius:6px">إغلاق</button>
+ </div>
+</div>
 
-        <div style="background: #faf8ff; border: 1px solid #eae5ff; padding: 10px; border-radius: 8px; margin-bottom: 12px;">
-            <h4 style="font-size: 11px; font-weight: bold; color: #6c5ce7; margin-bottom: 6px;">👤 معلومات الحساب والبطاقات المسجلة:</h4>
-            <div id="drawer-user-info" style="font-size: 11px; color: #444; line-height: 1.5;">
-                يرجى تسجيل الدخول لعرض معلوماتك وبطاقاتك المسجلة.
-            </div>
-        </div>
+<div id="auth-modal" class="modal-overlay">
+ <div class="modal-box">
+  <h3 id="auth-modal-title" style="font-size:15px;margin-bottom:10px">تسجيل الدخول</h3>
+  <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+   <div id="signup-fields" style="display:none">
+    <label style="font-size:11px;font-weight:bold;display:block;margin-bottom:3px">الاسم واللقب الحقيقيين:</label>
+    <input type="text" id="auth-name" placeholder="الاسم واللقب" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid #ccc;border-radius:6px;text-align:right">
+   </div>
+   <label style="font-size:11px;font-weight:bold;display:block;margin-bottom:3px">البريد الإلكتروني:</label>
+   <input type="email" id="auth-email" placeholder="name@example.com" required style="width:100%;padding:8px;margin-bottom:8px;border:1px solid #ccc;border-radius:6px;text-align:left">
+   <label style="font-size:11px;font-weight:bold;display:block;margin-bottom:3px">الرقم السري:</label>
+   <input type="password" id="auth-pass" placeholder="8 أحرف على الأقل" minlength="8" required style="width:100%;padding:8px;margin-bottom:8px;border:1px solid #ccc;border-radius:6px;text-align:left">
+   <div id="signup-confirm-box" style="display:none">
+    <label style="font-size:11px;font-weight:bold;display:block;margin-bottom:3px">تأكيد الرقم السري:</label>
+    <input type="password" id="auth-pass-confirm" placeholder="أعيدي كتابة الرقم السري" style="width:100%;padding:8px;margin-bottom:10px;border:1px solid #ccc;border-radius:6px;text-align:left">
+   </div>
+   <button type="submit" id="auth-submit-btn" style="width:100%;background:#6c5ce7;color:white;padding:9px;border:0;border-radius:6px;font-weight:bold;margin-bottom:8px">دخول</button>
+  </form>
+  <button type="button" onclick="closeModals()" style="width:100%;background:none;border:0;color:#666">إغلاق</button>
+ </div>
+</div>
 
-        <div style="font-size: 11px; color: #666; font-weight: bold; margin-bottom: 4px;">سجل الطلبات والمبيعات:</div>
-        <div id="sales-log-list" style="font-size: 11px; color: #444; max-height: 120px; overflow-y: auto;">لا توجد عمليات بيع.</div>
-    </div>
+<script>
+let currentProduct = {};
+let cart = [];
+let ownerBalance = 148.00;
+let salesLog = [];
+let currentUser = null;
+const OWNER_PIN = "1234"; // غيّريه، لكنه ليس حماية حقيقية ما دام في الواجهة الأمامية
+let isSignUp = false;
 
-    <!-- الصفحة الرئيسية -->
-    <div id="home-page" class="page-section active">
-        <section class="hero">
-            <h1 class="hero-title">إبداعك الرقمي، <span>بين يديك</span></h1>
-            <p class="hero-desc">منتجات رقمية وقوالب جاهزة لمساعدتك على النجاح.</p>
-            <button type="button" class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">تصفح المنتجات</button>
-        </section>
-
-        <section id="products-sec" class="products-section">
-            <h2 class="section-title">أحدث المنتجات</h2>
-            
-            <div class="product-card">
-                <div class="product-title">📅 مخطط يومي بسيط</div>
-                <div class="product-desc">خطط ليومك وحقق أهدافك بكفاءة عالية.</div>
-                <div class="product-footer">
-                    <span class="product-price">$7.99</span>
-                    <button type="button" class="btn-details" onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'PDF', '15 صفحة', 'ملف PDF عالي الجودة للطباعة.')">شراء</button>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-title">📖 دليل العناية الذاتية</div>
-                <div class="product-desc">عادات صغيرة يومية تؤدي لتغييرات كبرى.</div>
-                <div class="product-footer">
-                    <span class="product-price">$5.99</span>
-                    <button type="button" class="btn-details" onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'PDF', '25 صفحة', 'دليل شامل وتمارين عملية.')">شراء</button>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- صفحة التفاصيل -->
-    <div id="product-details-page" class="page-section" style="padding: 20px; text-align: right;">
-        <h2 id="det-title" style="font-size: 18px; color: #6c5ce7; margin-bottom: 8px;"></h2>
-        <p id="det-desc" style="font-size: 13px; color: #555; margin-bottom: 12px;"></p>
-        <div id="det-price" style="font-size: 20px; font-weight: bold; margin-bottom: 15px;"></div>
-        <button type="button" onclick="addToCartFromDetails()" style="width: 100%; background: #6c5ce7; color: white; padding: 9px; border: none; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; margin-bottom: 8px;">إضافة إلى السلة</button>
-        <button type="button" onclick="switchPage('home')" style="width: 100%; background: none; border: none; color: #666; font-size: 12px; cursor: pointer;">← العودة للرئيسية</button>
-    </div>
-
-    <!-- نافذة السلة -->
-    <div id="cart-modal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 style="font-size: 15px; margin-bottom: 10px; font-weight: bold;">سلة المشتريات</h3>
-            <div id="cart-items-list" style="font-size: 12px; color: #555; margin-bottom: 10px;">السلة فارغة.</div>
-            <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px;">الإجمالي: <span id="cart-total">$0.00</span></div>
-            <button type="button" onclick="checkoutCart()" style="width: 100%; background: #6c5ce7; color: white; padding: 9px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; margin-bottom: 8px;">إتمام الشراء السريع</button>
-            <button type="button" onclick="closeModals()" style="width: 100%; background: #eee; border: none; padding: 7px; border-radius: 6px; font-size: 12px; cursor: pointer;">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- نافذة التسجيل (دخول / إنشاء حساب بالاسم الحقيقي وتأكيد الرقم السري مرتين) -->
-    <div id="auth-modal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 id="auth-modal-title" style="font-size: 15px; margin-bottom: 10px; font-weight: bold;">تسجيل الدخول</h3>
-            <form id="auth-form" onsubmit="handleAuthSubmit(event)">
-                <div id="signup-fields" style="display: none;">
-                    <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 3px;">الاسم واللقب الحقيقيين:</label>
-                    <input type="text" id="auth-name" placeholder="الاسم واللقب" style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; text-align: right;">
-                </div>
-                <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 3px;">البريد الإلكتروني:</label>
-                <input type="email" id="auth-email" placeholder="name@example.com" style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; text-align: left;" required>
-                
-                <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 3px;">الرقم السري:</label>
-                <input type="password" id="auth-pass" placeholder="••••••••" style="width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; text-align: left;" required>
-                
-                <div id="signup-confirm-box" style="display: none;">
-                    <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 3px;">تأكيد الرقم السري:</label>
-                    <input type="password" id="auth-pass-confirm" placeholder="••••••••" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; text-align: left;">
-                </div>
-
-                <button type="submit" id="auth-submit-btn" style="width: 100%; background: #6c5ce7; color: white; padding: 9px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; margin-bottom: 8px;">دخول</button>
-            </form>
-            <button type="button" onclick="closeModals()" style="width: 100%; background: none; border: none; color: #666; font-size: 11px; cursor: pointer;">إغلاق</button>
-        </div>
-    </div>
-
-    <script>
-        let currentProduct = {};
-        let cart = [];
-        let ownerBalance = 148.00;
-        let salesLog = [];
-        let registeredUsers = [];
-        let currentUser = null;
-        const OWNER_PIN = "1234";
-        let pendingUser = null;
-        let generatedOtp = "";
-        let otpTimerInterval = null;
-        let timeLeft = 60;
-
-        function requestOwnerAccess() {
-            document.getElementById('pin-modal').style.display = 'flex';
-            document.getElementById('owner-pin-input').value = '';
-            document.getElementById('owner-pin-input').focus();
-        }
-        function verifyOwnerPin() {
-            let pinVal = document.getElementById('owner-pin-input').value;
-            if (pinVal === OWNER_PIN) {
-                closeModals();
-                updateDrawerUserInfo();
-                document.getElementById('drawer-panel').style.right = '0';
-                document.getElementById('drawer-overlay').style.display = 'block';
-            } else { 
-                alert('⚠️ الكود السري خاطئ!'); 
-                document.getElementById('owner-pin-input').value = '';
-            }
-        }
-        function closeDrawerPanel() {
-            document.getElementById('drawer-panel').style.right = '-300px';
-            document.getElementById('drawer-overlay').style.display = 'none';
-        }
-        function closeModals() {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
-            clearInterval(otpTimerInterval);
-        }
-        function switchPage(p) {
-            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-            document.getElementById(p === 'home' ? 'home-page' : 'product-details-page').classList.add('active');
-            window.scrollTo(0,0);
-        }
-        function showProductDetails(title, price, type, pages, desc) {
-            currentProduct = { title, price };
-            document.getElementById('det-title').innerText = title;
-            document.getElementById('det-price').innerText = '$' + price;
-            document.getElementById('det-desc').innerText = desc;
-            switchPage('details');
-        }
-        function addToCartFromDetails() {
-            cart.push(currentProduct);
-            document.getElementById('cart-count').innerText = cart.length;
-            alert('تمت الإضافة للسلة بنجاح!');
-            switchPage('home');
-        }
-        function openCartModal() {
-            let list = document.getElementById('cart-items-list');
-            let total = document.getElementById('cart-total');
-            if (cart.length === 0) { 
-                list.innerHTML = 'السلة فارغة.'; 
-                total.innerText = '$0.00'; 
-            } else {
-                let html = ''; let sum = 0;
-                cart.forEach(i => { html += `• ${i.title} - $${i.price}<br>`; sum += parseFloat(i.price); });
-                list.innerHTML = html; 
-                total.innerText = '$' + sum.toFixed(2);
-            }
-            document.getElementById('cart-modal').style.display = 'flex';
-        }
-        function checkoutCart() {
-            if (cart.length === 0) {
-                alert('السلة فارغة!');
-                return;
-            }
-            let total = cart.reduce((sum, i) => sum + parseFloat(i.price), 0);
-            ownerBalance += total;
-            salesLog.unshift(`شراء منتج بـ $${total}`);
-            if(currentUser) {
-                currentUser.purchases = (currentUser.purchases || 0) + 1;
-            }
-            cart = [];
-            document.getElementById('cart-count').innerText = 0;
-            closeModals();
-            alert('🎉 تم الشراء بنجاح!');
-        }
-
-        let isSignUp = false;
-        function openAuthModal(signUp) {
-            isSignUp = signUp;
-            document.getElementById('auth-modal-title').innerText = signUp ? 'إنشاء حساب جديد' : 'تسجيل الدخول';
-            document.getElementById('auth-submit-btn').innerText = signUp ? 'إرسال كود التفعيل للإيميل' : 'دخول';
-            document.getElementById('signup-fields').style.display = signUp ? 'block' : 'none';
-            document.getElementById('signup-confirm-box').style.display = signUp ? 'block' : 'none';
-            
-            document.getElementById('auth-email').value = '';
-            document.getElementById('auth-pass').value = '';
-            if(signUp) {
-                document.getElementById('auth-name').value = '';
-                document.getElementById('auth-pass-confirm').value = '';
-            }
-            document.getElementById('auth-modal').style.display = 'flex';
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            let email = document.getElementById('auth-email').value.trim().toLowerCase();
-            let pass = document.getElementById('auth-pass').value;
-
-            if (isSignUp) {
-                let name = document.getElementById('auth-name').value.trim();
-                let confirmPass = document.getElementById('auth-pass-confirm').value;
-
-                if (!name) {
-                    alert('⚠️ يرجى إدخال الاسم واللقب الحقيقيين.');
-                    return;
-                }
-                if (pass !== confirmPass) {
-                    alert('⚠️ الرقم السري غير متطابق في الحقلين!');
-                    return;
-                }
-                pendingUser = { name, email, pass, savedCard: null, purchases: 0 };
-                closeModals();
-                sendOtp(email, name);
-            } else {
-                let found = registeredUsers.find(u => u.email === email && u.pass === pass);
-                if (!found && registeredUsers.length > 0) {
-                    alert('⚠️ البريد الإلكتروني أو الرقم السري غير صحيح!');
-                    return;
-                }
-                currentUser = found || { name: email.split('@')[0], email, savedCard: null, purchases: 0 };
-                alert('أهلاً بعودتك، ' + currentUser.name);
-                closeModals();
-            }
-        }
-
-        function sendOtp(email, name) {
-            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-            
-            let templateParams = {
-                to_email: email,
-                to_name: name,
-                otp_code: generatedOtp
-            };
-
-            emailjs.send('service_ub4irih', 'template_z6433e5', templateParams)
-                .then(() => {
-                    alert('📩 تم إرسال كود التفعيل إلى بريدك الإلكتروني بنجاح!');
-                    startOtpTimer();
-                }, (error) => {
-                    alert('❌ حدث خطأ في إرسال الإيميل. تأكد من إعدادات EmailJS.');
-                    console.error(error);
-                });
-        }
-
-        function startOtpTimer() {
-            timeLeft = 60;
-            document.getElementById('otp-input').value = '';
-            document.getElementById('otp-modal').style.display = 'flex';
-            document.getElementById('otp-input').focus();
-            
-            clearInterval(otpTimerInterval);
-            otpTimerInterval = setInterval(() => {
-                timeLeft--;
-                if (timeLeft > 0) {
-                    document.getElementById('otp-timer').innerText = `الوقت المتبقي لصلاحية الكود: ${timeLeft} ثانية`;
-                } else {
-                    clearInterval(otpTimerInterval);
-                    document.getElementById('otp-timer').innerText = `❌ انتهت صلاحية الكود!`;
-                }
-            }, 1000);
-        }
-
-        function verifyOtpCode() {
-            let entered = document.getElementById('otp-input').value.trim();
-            if (entered === generatedOtp) {
-                registeredUsers.push(pendingUser);
-                currentUser = pendingUser;
-                alert('🎉 تم تفعيل الحساب بنجاح وأهلاً بك ' + pendingUser.name + '!');
-                closeModals();
-                pendingUser = null;
-            } else { 
-                alert('❌ كود التفعيل غير صحيح!'); 
-            }
-        }
-
-        function openCardSettingsModal() {
-            if (!currentUser) { 
-                alert('⚠️ يرجى تسجيل الدخول أولاً لإدارة بطاقاتك!'); 
-                openAuthModal(false); 
-                return; 
-            }
-            let statusEl = document.getElementById('current-saved-card-status');
-            if(currentUser.savedCard) {
-                statusEl.innerText = `✅ البطاقة المسجلة: ${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
-                document.getElementById('user-pref-method').value = currentUser.savedCard.method;
-                document.getElementById('user-pref-details').value = currentUser.savedCard.details;
-            } else {
-                statusEl.innerText = "❌ لا توجد بطاقة محفوظة حتى الآن.";
-                document.getElementById('user-pref-details').value = '';
-            }
-            document.getElementById('card-settings-modal').style.display = 'flex';
-        }
-
-        function saveUserCardInfo() {
-            if (!currentUser) return;
-            let method = document.getElementById('user-pref-method').value;
-            let details = document.getElementById('user-pref-details').value.trim();
-            if(!details) {
-                alert('⚠️ يرجى إدخال تفاصيل البطاقة.');
-                return;
-            }
-            currentUser.savedCard = { method, details };
-            alert('✅ تم حفظ البطاقة في حسابك بنجاح!');
-            closeModals();
-        }
-
-        function updateDrawerUserInfo() {
-            let box = document.getElementById('drawer-user-info');
-            if (!currentUser) {
-                box.innerHTML = 'لم تقم بتسجيل الدخول بعد.';
-                return;
-            }
-            let cardText = currentUser.savedCard ? `${currentUser.savedCard.method} (${currentUser.savedCard.details})` : 'لا توجد بطاقة مسجلة';
-            box.innerHTML = `الاسم: <b>${currentUser.name}</b><br>الإيميل: ${currentUser.email}<br>عدد المشتريات: ${currentUser.purchases || 0}<br>البطاقة: <span style="color:#00b894;">${cardText}</span>`;
-            
-            let salesListEl = document.getElementById('sales-log-list');
-            if (salesLog.length === 0) {
-                salesListEl.innerHTML = 'لا توجد عمليات بيع مسجلة.';
-            } else {
-                let html = '';
-                salesLog.forEach(s => { html += `• ${s}<br>`; });
-                salesListEl.innerHTML = html;
-            }
-        }
-
-        function requestWithdrawal() {
-            let amt = prompt('أدخل مبلغ السحب (بالدولار):', ownerBalance);
-            if (amt && parseFloat(amt) <= ownerBalance) {
-                ownerBalance -= parseFloat(amt);
-                document.getElementById('owner-balance-display').innerText = '$' + ownerBalance.toFixed(2);
-                alert('✅ تم طلب سحب الأرباح بنجاح!');
-                closeDrawerPanel();
-            } else if(amt) {
-                alert('⚠️ المبلغ المطلوب يتجاوز الرصيد المتاح!');
-            }
-        }
-    </script>
+function requestOwnerAccess(){
+ document.getElementById('pin-modal').style.display='flex';
+ document.getElementById('owner-pin-input').value='';
+}
+function verifyOwnerPin(){
+ if(document.getElementById('owner-pin-input').value===OWNER_PIN){
+  closeModals();updateDrawerUserInfo();
+  document.getElementById('drawer-panel').style.right='0';
+  document.getElementById('drawer-overlay').style.display='block';
+ }else{alert('⚠️ الكود السري خاطئ!');document.getElementById('owner-pin-input').value='';}
+}
+function closeDrawerPanel(){document.getElementById('drawer-panel').style.right='-300px';document.getElementById('drawer-overlay').style.display='none'}
+function closeModals(){document.querySelectorAll('.modal-overlay').forEach(m=>m.style.display='none')}
+function switchPage(page){
+ document.querySelectorAll('.page-section').forEach(el=>el.classList.remove('active'));
+ document.getElementById(page==='home'?'home-page':'product-details-page').classList.add('active');
+ window.scrollTo(0,0);
+}
+function showProductDetails(title,price,type,pages,desc){
+ currentProduct={title,price,type,pages,desc};
+ document.getElementById('det-title').innerText=title;
+ document.getElementById('det-price').innerText='$'+price;
+ document.getElementById('det-desc').innerText=desc;
+ switchPage('details');
+}
+function addToCartFromDetails(){cart.push(currentProduct);document.getElementById('cart-count').innerText=cart.length;alert('تمت الإضافة للسلة بنجاح!');switchPage('home')}
+function openCartModal(){
+ const list=document.getElementById('cart-items-list'),total=document.getElementById('cart-total');
+ if(!cart.length){list.textContent='السلة فارغة.';total.textContent='$0.00'}
+ else{
+  list.innerHTML='';let sum=0;
+  cart.forEach(item=>{const row=document.createElement('div');row.textContent=`${item.title} - $${item.price}`;list.appendChild(row);sum+=Number(item.price)});
+  total.textContent='$'+sum.toFixed(2);
+ }
+ document.getElementById('cart-modal').style.display='flex';
+}
+function checkoutCart(){
+ if(!cart.length){alert('السلة فارغة!');return}
+ const total=cart.reduce((sum,item)=>sum+Number(item.price),0);
+ ownerBalance+=total;salesLog.unshift(`شراء منتج بـ $${total.toFixed(2)}`);
+ if(currentUser)currentUser.purchases=(currentUser.purchases||0)+cart.length;
+ cart=[];document.getElementById('cart-count').innerText='0';closeModals();
+ alert('هذه نسخة تجريبية فقط: لم يتم تحصيل أي مبلغ حقيقي.');
+}
+function openAuthModal(signUp){
+ isSignUp=signUp;
+ document.getElementById('auth-modal-title').innerText=signUp?'إنشاء حساب جديد':'تسجيل الدخول';
+ document.getElementById('auth-submit-btn').innerText=signUp?'إنشاء الحساب وإرسال رابط التأكيد':'دخول';
+ document.getElementById('signup-fields').style.display=signUp?'block':'none';
+ document.getElementById('signup-confirm-box').style.display=signUp?'block':'none';
+ document.getElementById('auth-name').required=signUp;
+ document.getElementById('auth-pass-confirm').required=signUp;
+ document.getElementById('auth-email').value='';
+ document.getElementById('auth-pass').value='';
+ document.getElementById('auth-name').value='';
+ document.getElementById('auth-pass-confirm').value='';
+ document.getElementById('auth-modal').style.display='flex';
+}
+async function handleAuthSubmit(event){
+ event.preventDefault();
+ const email=document.getElementById('auth-email').value.trim().toLowerCase();
+ const pass=document.getElementById('auth-pass').value;
+ const submit=document.getElementById('auth-submit-btn');
+ if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+  alert('تحققي من البريد الإلكتروني. اكتبيه مثل name@gmail.com');
+  document.getElementById('auth-email').focus(); return;
+ }
+ if(isSignUp){
+  const name=document.getElementById('auth-name').value.trim();
+  const confirmPass=document.getElementById('auth-pass-confirm').value;
+  if(!name){alert('يرجى إدخال الاسم واللقب.');return}
+  if(pass.length<8){alert('اختاري كلمة سر من 8 أحرف على الأقل.');return}
+  if(pass!==confirmPass){alert('كلمتا المرور غير متطابقتين.');return}
+  submit.disabled=true;
+  try{
+   const {data,error}=await pixeloriaSupabase.auth.signUp({
+    email, password:pass,
+    options:{data:{full_name:name}, emailRedirectTo:'https://mnthyalhly9-debug.github.io/Pixeloria-/'}
+   });
+   if(error) throw error;
+   closeModals();
+   if(data.session){
+    currentUser={name,email,purchases:0,savedCard:null};
+    alert('تم إنشاء الحساب وتسجيل الدخول بنجاح.');
+   }else{
+    alert('تم تسجيل طلب إنشاء الحساب. افتحي بريدك الإلكتروني واضغطي رابط التأكيد من Supabase، ثم ارجعي إلى الموقع وسجّلي الدخول. تحققي من الرسائل غير المرغوب فيها أيضًا.');
+   }
+  }catch(error){
+   console.error('Supabase signup error:',error);
+   alert('تعذّر إنشاء الحساب: '+(error?.message||'تحققي من اتصال الإنترنت وإعدادات البريد في Supabase.'));
+  }finally{submit.disabled=false}
+ }else{
+  submit.disabled=true;
+  try{
+   const {data,error}=await pixeloriaSupabase.auth.signInWithPassword({email,password:pass});
+   if(error) throw error;
+   const user=data.user;
+   currentUser={name:user.user_metadata?.full_name||user.email?.split('@')[0]||'مستخدم',email:user.email,purchases:0,savedCard:null};
+   closeModals();
+   alert('أهلاً بعودتك، '+currentUser.name+'!');
+   updateDrawerUserInfo();
+  }catch(error){
+   console.error('Supabase login error:',error);
+   alert('تعذّر تسجيل الدخول: '+(error?.message||'تحققي من البريد وكلمة المرور، وإذا كان الحساب جديدًا أكّدي البريد أولًا.'));
+  }finally{submit.disabled=false}
+ }
+}
+async function cancelSignup(){closeModals()}
+async function initPixeloriaAuth(){
+ try{
+  const {data,error}=await pixeloriaSupabase.auth.getSession();
+  if(error) throw error;
+  const user=data.session?.user;
+  if(user){currentUser={name:user.user_metadata?.full_name||user.email?.split('@')[0]||'مستخدم',email:user.email,purchases:0,savedCard:null};updateDrawerUserInfo()}
+  pixeloriaSupabase.auth.onAuthStateChange((_event,session)=>{
+   const user=session?.user;
+   currentUser=user?{name:user.user_metadata?.full_name||user.email?.split('@')[0]||'مستخدم',email:user.email,purchases:0,savedCard:null}:null;
+   updateDrawerUserInfo();
+  });
+ }catch(error){console.error('Supabase session error:',error)}
+}
+document.addEventListener('DOMContentLoaded',initPixeloriaAuth);
+async function logoutUser(){
+ try{
+  const {error}=await pixeloriaSupabase.auth.signOut();
+  if(error) throw error;
+  currentUser=null;
+  updateDrawerUserInfo();
+  closeModals();
+  alert('تم تسجيل الخروج بنجاح. يمكنك تسجيل الدخول مرة أخرى في أي وقت.');
+ }catch(error){
+  console.error('Supabase signout error:',error);
+  alert('تعذّر تسجيل الخروج: '+(error?.message||'حاولي مرة أخرى.'));
+ }
+}
+function openCardSettingsModal(){
+ if(!currentUser){alert('يرجى تسجيل الدخول أولاً لإدارة بطاقاتك!');openAuthModal(false);return}
+ const status=document.getElementById('current-saved-card-status');
+ if(currentUser.savedCard){
+  status.innerText=`البطاقة المسجلة: ${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
+  document.getElementById('user-pref-method').value=currentUser.savedCard.method;
+  document.getElementById('user-pref-details').value=currentUser.savedCard.details;
+ }else{status.innerText='لا توجد بطاقة محفوظة حتى الآن.';document.getElementById('user-pref-details').value=''}
+ document.getElementById('card-settings-modal').style.display='flex';
+}
+function saveUserCardInfo(){
+ if(!currentUser)return;
+ const method=document.getElementById('user-pref-method').value;
+ const details=document.getElementById('user-pref-details').value.trim();
+ if(!details){alert('يرجى إدخال التفاصيل.');return}
+ currentUser.savedCard={method,details};alert('تم حفظ التفضيل في هذه الجلسة. لا تدخلي رقم البطاقة الكامل أو رمز CVV في هذا الموقع.');closeModals();
+}
+function updateDrawerUserInfo(){
+ const logoutButton=document.getElementById('logout-btn');
+ if(logoutButton) logoutButton.style.display=currentUser?'inline-block':'none';
+ const box=document.getElementById('drawer-user-info');
+ if(!currentUser){box.textContent='لم تقومي بتسجيل الدخول بعد.'}
+ else{
+  const cardText=currentUser.savedCard?`${currentUser.savedCard.method} (تم تسجيل التفاصيل)`:'لا توجد وسيلة دفع محفوظة';
+  box.innerHTML=`الاسم: <b>${escapeHtml(currentUser.name)}</b><br>الإيميل: ${escapeHtml(currentUser.email)}<br>عدد المشتريات: ${currentUser.purchases||0}<br>وسيلة الدفع: ${escapeHtml(cardText)}`;
+ }
+ const sales=document.getElementById('sales-log-list');
+ sales.innerHTML='';
+ if(!salesLog.length)sales.textContent='لا توجد عمليات بيع مسجلة.';
+ else salesLog.forEach(item=>{const row=document.createElement('div');row.textContent='• '+item;sales.appendChild(row)});
+ document.getElementById('owner-balance-display').innerText='$'+ownerBalance.toFixed(2);
+}
+function escapeHtml(value){
+ return String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+function requestWithdrawal(){
+ const raw=prompt('أدخل مبلغ السحب (بالدولار):',ownerBalance.toFixed(2));
+ if(raw===null||raw.trim()==='')return;
+ const amount=Number(raw);
+ if(!Number.isFinite(amount)||amount<=0){alert('أدخلي مبلغًا صحيحًا أكبر من صفر.');return}
+ if(amount>ownerBalance){alert('المبلغ المطلوب يتجاوز الرصيد المعروض.');return}
+ ownerBalance-=amount;document.getElementById('owner-balance-display').innerText='$'+ownerBalance.toFixed(2);
+ alert('هذه واجهة تجريبية فقط؛ لم يتم إرسال طلب سحب حقيقي.');
+ closeDrawerPanel();
+}
+</script>
 </body>
-</html>
+                                                                                                                                       </html>
