@@ -187,6 +187,7 @@
         <ul class="nav-links">
             <li onclick="switchPage('home')">الرئيسية</li>
             <li onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">التصنيفات</li>
+            <li onclick="openResourcesModal()">الموارد</li>
             <li onclick="openCardSettingsModal()" style="color: #6c5ce7; font-weight: bold;">💳 بطاقاتي المحفوظة</li>
         </ul>
         <div class="header-actions">
@@ -195,6 +196,20 @@
             <button class="btn-create" type="button" onclick="openAuthModal(true)">إنشاء حساب</button>
         </div>
     </header>
+
+    <!-- نافذة الموارد -->
+    <div id="resources-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 380px; text-align: center;">
+            <h3 style="color: #6c5ce7; font-size: 18px; font-weight: 800; margin-bottom: 10px;">📚 الموارد والكتب المجانية</h3>
+            <p style="font-size: 13px; color: #666; margin-bottom: 15px;">استفد من أدلة مجانية وقوالب مصممة لرفع إنتاجيتك الرقمية.</p>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: right; font-size: 12px; color: #333;">
+                • دليل البدء السريع في التجارة الرقمية (PDF)<br>
+                • أفضل 10 أدوات لزيادة المبيعات عبر الإنترنت<br>
+                • قوالب تصميم جاهزة للاستخدام
+            </div>
+            <button type="button" onclick="closeModals()" style="width: 100%; background: #6c5ce7; color: white; padding: 9px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer;">إغلاق النافذة</button>
+        </div>
+    </div>
 
     <!-- نافذة إدارة وتخزين تفاصيل البطاقة الخاصة بالمستخدم -->
     <div id="card-settings-modal" class="modal-overlay">
@@ -321,9 +336,9 @@
             <h2 class="section-title">استكشف المنتجات الرقمية</h2>
             <p class="section-subtitle">أدوات وقوالب جاهزة للتحميل الفوري لمساعدة مشاريعك على النمو.</p>
             <div class="categories-grid">
-                <div class="category-card"><span>📚 كتب إلكترونية</span></div>
-                <div class="category-card"><span>📅 مخططات ومنظمات</span></div>
-                <div class="category-card"><span>🎨 قوالب وسائل التواصل</span></div>
+                <div class="category-card" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})"><span>📚 كتب إلكترونية</span></div>
+                <div class="category-card" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})"><span>📅 مخططات ومنظمات</span></div>
+                <div class="category-card" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})"><span>🎨 قوالب وسائل التواصل</span></div>
             </div>
         </section>
 
@@ -439,7 +454,7 @@
                 <span id="cart-total">$0.00</span>
             </div>
 
-            <!-- عرض البطاقة المخزنة مسبقاً إن وجدت -->
+            <!-- عرض البطاقة المحفوظة إن وجدت -->
             <div id="cart-saved-card-box" style="background: #f3f0ff; border: 1px solid #dcd6ff; padding: 10px; border-radius: 8px; margin-bottom: 12px; display: none;">
                 <div style="font-size: 11px; font-weight: 700; color: #6c5ce7; margin-bottom: 2px;">💳 سيتم الدفع ببطاقتك المحفوظة:</div>
                 <div id="cart-saved-card-text" style="font-size: 12px; color: #333; font-weight: 600;"></div>
@@ -490,7 +505,7 @@
         ];
 
         let registeredUsers = [];
-        let currentUser = null; // المستخدم الحالي المسجل دخول
+        let currentUser = null; 
         const OWNER_PIN = "1234";
 
         let pendingUser = null;
@@ -567,7 +582,11 @@
             }
         }
 
-        // فتح نافذة حفظ البطاقة الخاصة بالمستخدم
+        function openResourcesModal() {
+            const resModal = document.getElementById('resources-modal');
+            if(resModal) resModal.style.display = 'flex';
+        }
+
         function openCardSettingsModal() {
             if (!currentUser) {
                 alert("⚠️ يرجى تسجيل الدخول أولاً لتتمكن من إدارة وحفظ بطاقاتك!");
@@ -629,7 +648,6 @@
                     return;
                 }
 
-                // حفظها تلقائياً إذا كان مسجلاً
                 if (currentUser) {
                     currentUser.savedCard = { method: paymentMethod, details: cardInfo };
                 }
@@ -734,7 +752,6 @@
                 if(totalEl) totalEl.innerText = '$' + total.toFixed(2);
             }
 
-            // إظهار البطاقة المحفوظة إن وجدت
             if (currentUser && currentUser.savedCard) {
                 if(savedCardBox) savedCardBox.style.display = 'block';
                 if(savedCardText) savedCardText.innerText = `${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
@@ -907,10 +924,10 @@
                 clearInterval(otpTimerInterval);
                 if(pendingUser) {
                     registeredUsers.push(pendingUser);
-                    currentUser = pendingUser; // تفعيل الحساب للمستخدم الحالي
+                    currentUser = pendingUser; 
                     alert('🎉 تم تفعيل الحساب بنجاح وأهلاً بك ' + pendingUser.fname + ' ' + pendingUser.lname + '!');
                 }
-                closeModals();
+                closeOtpModal();
                 pendingUser = null;
             } else {
                 alert('❌ الكود الذي أدخلته غير صحيح! تأكد منه وحاول مجدداً.');
@@ -919,3 +936,4 @@
     </script>
 </body>
 </html>
+
