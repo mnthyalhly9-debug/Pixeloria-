@@ -187,7 +187,7 @@
         <ul class="nav-links">
             <li onclick="switchPage('home')">الرئيسية</li>
             <li onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">التصنيفات</li>
-            <li>الموارد</li>
+            <li onclick="openCardSettingsModal()" style="color: #6c5ce7; font-weight: bold;">💳 بطاقاتي المحفوظة</li>
         </ul>
         <div class="header-actions">
             <button class="cart-icon-btn" type="button" onclick="openCartModal()">🛒 السلة (<span id="cart-count">0</span>)</button>
@@ -195,6 +195,38 @@
             <button class="btn-create" type="button" onclick="openAuthModal(true)">إنشاء حساب</button>
         </div>
     </header>
+
+    <!-- نافذة إدارة وتخزين تفاصيل البطاقة الخاصة بالمستخدم -->
+    <div id="card-settings-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 400px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="font-size: 16px; font-weight: 700; color: #6c5ce7;">💳 إدارة بطاقة الدفع المحفوظة</h3>
+                <button type="button" onclick="closeModals()" style="background: none; border: none; font-size: 14px; cursor: pointer;">✕</button>
+            </div>
+            <p style="font-size: 12px; color: #666; margin-bottom: 12px;">احفظ معلومات بطاقتك مرة واحدة لتتمكن من الشراء السريع بضغطة زر دون إدخالها في كل مرة:</p>
+            
+            <div style="margin-bottom: 12px; text-align: right;">
+                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 4px;">اختر وسيلة الدفع:</label>
+                <select id="user-pref-method" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px; margin-bottom: 8px;">
+                    <option value="RedotPay">💳 بطاقة RedotPay</option>
+                    <option value="PayPal">🅿️ حساب PayPal</option>
+                    <option value="Dahabia_CCP">🇩🇿 البطاقة الذهبية / حساب CCP</option>
+                </select>
+                
+                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 4px;">رقم البطاقة أو بريد الحساب:</label>
+                <input type="text" id="user-pref-details" placeholder="أدخل تفاصيل البطاقة للحفظ" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; text-align: left; margin-bottom: 12px;">
+            </div>
+
+            <div id="current-saved-card-status" style="font-size: 11px; color: #00b894; font-weight: bold; margin-bottom: 12px; text-align: center;">
+                لا توجد بطاقة محفوظة حالياً.
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button type="button" onclick="saveUserCardInfo()" style="flex: 1; background: #6c5ce7; color: white; padding: 9px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px;">حفظ البطاقة في الحساب</button>
+                <button type="button" onclick="closeModals()" style="flex: 1; background: #eee; color: #333; padding: 9px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px;">إغلاق</button>
+            </div>
+        </div>
+    </div>
 
     <!-- نافذة إدخال كود حماية المالك -->
     <div id="pin-modal" class="pin-modal-overlay">
@@ -392,7 +424,7 @@
         </div>
     </div>
 
-    <!-- نافذة السلة مع اختيار وسيلة الدفع والبطاقة المحفوظة -->
+    <!-- نافذة السلة والدفع السريع -->
     <div id="cart-modal" class="modal-overlay">
         <div class="modal-box" style="max-width: 420px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -407,24 +439,24 @@
                 <span id="cart-total">$0.00</span>
             </div>
 
-            <!-- عرض البطاقة المخزنة مسبقاً إذا وجدت -->
-            <div id="saved-card-section" style="background: #f3f0ff; border: 1px solid #dcd6ff; padding: 12px; border-radius: 8px; margin-bottom: 12px; display: none;">
-                <div style="font-size: 12px; font-weight: 700; color: #6c5ce7; margin-bottom: 4px;">💳 بطاقتك المحفوظة في الحساب:</div>
-                <div id="saved-card-info" style="font-size: 12px; color: #333; font-weight: 600;"></div>
+            <!-- عرض البطاقة المخزنة مسبقاً إن وجدت -->
+            <div id="cart-saved-card-box" style="background: #f3f0ff; border: 1px solid #dcd6ff; padding: 10px; border-radius: 8px; margin-bottom: 12px; display: none;">
+                <div style="font-size: 11px; font-weight: 700; color: #6c5ce7; margin-bottom: 2px;">💳 سيتم الدفع ببطاقتك المحفوظة:</div>
+                <div id="cart-saved-card-text" style="font-size: 12px; color: #333; font-weight: 600;"></div>
             </div>
 
-            <!-- حقول إدخال وحفظ البطاقة إذا لم تكن مخزنة -->
-            <div id="new-card-section" style="margin-bottom: 12px; text-align: right; background: #faf8ff; padding: 10px; border-radius: 8px; border: 1px solid #eee;">
-                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 4px;">اختر وسيلة الدفع وأدخل معلومات البطاقة للحفظ التلقائي:</label>
+            <!-- خانة البطاقة المؤقتة في حال لم يحفظ المستخدم بطاقة بعد -->
+            <div id="cart-manual-card-box" style="margin-bottom: 12px; text-align: right; background: #faf8ff; padding: 10px; border-radius: 8px; border: 1px solid #eee;">
+                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 4px;">اختر وسيلة الدفع وأدخل رقم البطاقة لحفظها مستقبلاً:</label>
                 <select id="checkout-payment-method" style="width: 100%; padding: 7px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px; margin-bottom: 8px;">
                     <option value="RedotPay">💳 بطاقة RedotPay</option>
                     <option value="PayPal">🅿️ حساب PayPal</option>
                     <option value="Dahabia_CCP">🇩🇿 البطاقة الذهبية / حساب CCP</option>
                 </select>
-                <input type="text" id="user-card-details" placeholder="رقم البطاقة أو إيميل الحساب (سيتم حفظه لدفعاتك القادمة)" style="width: 100%; padding: 7px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; text-align: left;">
+                <input type="text" id="manual-card-details" placeholder="أدخل رقم البطاقة أو إيميل الحساب" style="width: 100%; padding: 7px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; text-align: left;">
             </div>
 
-            <button type="button" onclick="checkoutCart()" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">تأكيد وإتمام الشراء بضغطة واحدة</button>
+            <button type="button" onclick="checkoutCart()" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">تأكيد وإتمام الشراء السريع</button>
         </div>
     </div>
 
@@ -458,7 +490,7 @@
         ];
 
         let registeredUsers = [];
-        let currentUser = null; // لتتبع المستخدم المنجز لتسجيل الدخول حالياً
+        let currentUser = null; // المستخدم الحالي المسجل دخول
         const OWNER_PIN = "1234";
 
         let pendingUser = null;
@@ -535,6 +567,45 @@
             }
         }
 
+        // فتح نافذة حفظ البطاقة الخاصة بالمستخدم
+        function openCardSettingsModal() {
+            if (!currentUser) {
+                alert("⚠️ يرجى تسجيل الدخول أولاً لتتمكن من إدارة وحفظ بطاقاتك!");
+                openAuthModal(false);
+                return;
+            }
+
+            const statusEl = document.getElementById('current-saved-card-status');
+            const methodSelect = document.getElementById('user-pref-method');
+            const detailsInput = document.getElementById('user-pref-details');
+
+            if (currentUser.savedCard) {
+                statusEl.innerText = `✅ بطاقتك المحفوظة حالياً: ${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
+                methodSelect.value = currentUser.savedCard.method;
+                detailsInput.value = currentUser.savedCard.details;
+            } else {
+                statusEl.innerText = "❌ لا توجد بطاقة محفوظة حتى الآن.";
+                detailsInput.value = '';
+            }
+
+            document.getElementById('card-settings-modal').style.display = 'flex';
+        }
+
+        function saveUserCardInfo() {
+            if (!currentUser) return;
+            const method = document.getElementById('user-pref-method').value;
+            const details = document.getElementById('user-pref-details').value.trim();
+
+            if (!details) {
+                alert("⚠️ يرجى إدخال رقم البطاقة أو الإيميل الخاص بالدفع.");
+                return;
+            }
+
+            currentUser.savedCard = { method, details };
+            alert("✅ تمت وُفّقت عملية حفظ البطاقة في حسابك بنجاح! ستستخدم تلقائياً عند كل عملية شراء.");
+            closeModals();
+        }
+
         function checkoutCart() {
             if (cart.length === 0) {
                 alert("السلة فارغة!");
@@ -549,16 +620,16 @@
                 cardInfo = currentUser.savedCard.details;
             } else {
                 const methodEl = document.getElementById('checkout-payment-method');
-                const cardDetailsEl = document.getElementById('user-card-details');
+                const manualDetailsEl = document.getElementById('manual-card-details');
                 paymentMethod = methodEl ? methodEl.value : 'RedotPay';
-                cardInfo = cardDetailsEl ? cardDetailsEl.value.trim() : '';
+                cardInfo = manualDetailsEl ? manualDetailsEl.value.trim() : '';
 
                 if (!cardInfo) {
-                    alert("⚠️ الرجاء إدخال تفاصيل البطاقة لإتمام وحفظ الشراء المستقبلي.");
+                    alert("⚠️ الرجاء إدخال تفاصيل البطاقة لإتمام العملية.");
                     return;
                 }
 
-                // حفظ البطاقة تلقائياً في حساب المستخدم الحالي إذا كان مسجلاً
+                // حفظها تلقائياً إذا كان مسجلاً
                 if (currentUser) {
                     currentUser.savedCard = { method: paymentMethod, details: cardInfo };
                 }
@@ -576,7 +647,7 @@
             if(cartCountEl) cartCountEl.innerText = 0;
             
             closeModals();
-            alert("🎉 تم إتمام الشراء بنجاح وسحب المبلغ باستخدام البطاقة المحفوظة (" + paymentMethod + ")!\nتم حفظ معلومات بطاقتك لتسهيل مشترياتك القادمة.");
+            alert("🎉 تم إتمام الشراء بنجاح باستخدام البطاقة (" + paymentMethod + ")!\nتم حفظ معلومات البطاقة في حسابك للمشتريات القادمة.");
         }
 
         function openDrawerPanel() {
@@ -645,9 +716,9 @@
         function openCartModal() {
             const listEl = document.getElementById('cart-items-list');
             const totalEl = document.getElementById('cart-total');
-            const savedCardSection = document.getElementById('saved-card-section');
-            const savedCardInfo = document.getElementById('saved-card-info');
-            const newCardSection = document.getElementById('new-card-section');
+            const savedCardBox = document.getElementById('cart-saved-card-box');
+            const savedCardText = document.getElementById('cart-saved-card-text');
+            const manualCardBox = document.getElementById('cart-manual-card-box');
             
             if(cart.length === 0) {
                 if(listEl) listEl.innerHTML = 'السلة فارغة حالياً.';
@@ -663,14 +734,14 @@
                 if(totalEl) totalEl.innerText = '$' + total.toFixed(2);
             }
 
-            // فحص إذا كان المستخدم مسجلاً ولديه بطاقة محفوظة مسبقاً
+            // إظهار البطاقة المحفوظة إن وجدت
             if (currentUser && currentUser.savedCard) {
-                if(savedCardSection) savedCardSection.style.display = 'block';
-                if(savedCardInfo) savedCardInfo.innerText = `${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
-                if(newCardSection) newCardSection.style.display = 'none'; // إخفاء إدخال بطاقة جديدة لأنها محفوظة
+                if(savedCardBox) savedCardBox.style.display = 'block';
+                if(savedCardText) savedCardText.innerText = `${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
+                if(manualCardBox) manualCardBox.style.display = 'none';
             } else {
-                if(savedCardSection) savedCardSection.style.display = 'none';
-                if(newCardSection) newCardSection.style.display = 'block';
+                if(savedCardBox) savedCardBox.style.display = 'none';
+                if(manualCardBox) manualCardBox.style.display = 'block';
             }
 
             const cartModal = document.getElementById('cart-modal');
@@ -836,10 +907,10 @@
                 clearInterval(otpTimerInterval);
                 if(pendingUser) {
                     registeredUsers.push(pendingUser);
-                    currentUser = pendingUser; // تعيينه كمستخدم حالي مسجل
+                    currentUser = pendingUser; // تفعيل الحساب للمستخدم الحالي
                     alert('🎉 تم تفعيل الحساب بنجاح وأهلاً بك ' + pendingUser.fname + ' ' + pendingUser.lname + '!');
                 }
-                closeOtpModal();
+                closeModals();
                 pendingUser = null;
             } else {
                 alert('❌ الكود الذي أدخلته غير صحيح! تأكد منه وحاول مجدداً.');
@@ -848,4 +919,3 @@
     </script>
 </body>
 </html>
-
