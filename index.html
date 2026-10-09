@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixeloria - إبداعك الرقمي، بين يديك</title>
-    <!-- استيراد مكتبة EmailJS للإرسال الفعلي للإيميلات عبر الـ Frontend -->
+    <!-- استيراد مكتبة EmailJS للإرسال الفعلي للإيميلات -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            // ضع هنا Public Key الخاص بك من حسابك في EmailJS
             emailjs.init("YOUR_PUBLIC_KEY");
         })();
     </script>
@@ -51,6 +50,7 @@
         .btn-create { padding: 8px 14px; background: #6c5ce7; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .cart-icon-btn { background: #f3f0ff; color: #6c5ce7; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; font-size: 13px; }
 
+        /* تعديل هنا لضمان ظهور الأقسام بشكل صحيح افتراضياً */
         .page-section { display: none; }
         .page-section.active { display: block; }
 
@@ -168,7 +168,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        /* Details & Modals */
         .details-container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; }
         @media(max-width: 768px) { .details-container { grid-template-columns: 1fr; } }
         .details-box { background: #fff; border: 1px solid #eaeaea; border-radius: 12px; padding: 20px; }
@@ -188,4 +187,619 @@
         </div>
         <ul class="nav-links">
             <li onclick="switchPage('home')">الرئيسية</li>
-            <li onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">التصني
+            <li onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">التصنيفات</li>
+            <li>الموارد</li>
+        </ul>
+        <div class="header-actions">
+            <button class="cart-icon-btn" type="button" onclick="openCartModal()">🛒 السلة (<span id="cart-count">0</span>)</button>
+            <button class="btn-sign" type="button" onclick="openAuthModal(false)">تسجيل الدخول</button>
+            <button class="btn-create" type="button" onclick="openAuthModal(true)">إنشاء حساب</button>
+        </div>
+    </header>
+
+    <!-- نافذة إدخال كود حماية المالك -->
+    <div id="pin-modal" class="pin-modal-overlay">
+        <div class="pin-modal-box">
+            <h3 style="color: #6c5ce7; font-size: 18px; font-weight: 800; margin-bottom: 10px;">🔐 حماية لوحة التحكم</h3>
+            <p style="color: #666; font-size: 13px; margin-bottom: 15px;">الرجاء إدخال كود المالك السري للوصول:</p>
+            <input type="password" id="owner-pin-input" placeholder="أدخل الكود السري" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-size: 16px; margin-bottom: 15px;">
+            <div style="display: flex; gap: 10px;">
+                <button type="button" onclick="verifyOwnerPin()" style="flex: 1; background: #6c5ce7; color: white; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">دخول</button>
+                <button type="button" onclick="closePinModal()" style="flex: 1; background: #eee; color: #333; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إدخال كود التفعيل المؤقت (OTP) -->
+    <div id="otp-modal" class="pin-modal-overlay">
+        <div class="pin-modal-box">
+            <h3 style="color: #6c5ce7; font-size: 18px; font-weight: 800; margin-bottom: 10px;">⏳ أدخل كود التفعيل</h3>
+            <p style="color: #666; font-size: 13px; margin-bottom: 10px;" id="otp-instruction">تم إرسال كود التفعيل إلى بريدك الإلكتروني:</p>
+            <div style="font-size: 14px; font-weight: bold; color: #e17055; margin-bottom: 10px;" id="otp-timer">الوقت المتبقي لصلاحية الكود: 60 ثانية</div>
+            <input type="text" id="otp-input" placeholder="أدخل كود التفعيل (6 أرقام)" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; text-align: center; font-size: 16px; margin-bottom: 10px;" maxlength="6">
+            
+            <div id="resend-container" style="display: none; margin-bottom: 10px;">
+                <button type="button" onclick="resendOtpCode()" style="background: none; border: none; color: #6c5ce7; font-weight: bold; font-size: 12px; cursor: pointer; text-decoration: underline;">🔄 انتهت صلاحية الكود! اضغط لإعادة إرسال كود جديد</button>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button type="button" onclick="verifyOtpCode()" style="flex: 1; background: #00b894; color: white; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">تأكيد الكود</button>
+                <button type="button" onclick="closeOtpModal()" style="flex: 1; background: #eee; color: #333; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- قائمة السحب الجانبية (لوحة التحكم) -->
+    <div id="drawer-overlay" onclick="closeDrawerPanel()"></div>
+    <div id="drawer-panel">
+        <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 12px;">
+                <h3 style="font-size: 16px; font-weight: 800; color: #6c5ce7;">لوحة تحكم المالك</h3>
+                <button type="button" onclick="closeDrawerPanel()" style="background: none; border: none; font-size: 18px; cursor: pointer;">✕</button>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center; border: 1px solid #eee;">
+                <span style="font-size: 12px; color: #666; display: block; margin-bottom: 4px;">الرصيد الإجمالي القابل للسحب</span>
+                <h2 style="font-size: 22px; font-weight: 900; color: #2d3436; margin-bottom: 12px;" id="owner-balance-display">$148.00</h2>
+                
+                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 5px; text-align: right;">اختر وسيلة السحب:</label>
+                <select id="withdrawal-method" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px; margin-bottom: 10px;">
+                    <option value="RedotPay">💳 بطاقة RedotPay</option>
+                    <option value="PayPal">🅿️ حساب PayPal</option>
+                    <option value="Dahabia_CCP">🇩🇿 البطاقة الذهبية / حساب CCP</option>
+                </select>
+
+                <button type="button" onclick="requestWithdrawal()" style="width: 100%; background: #00b894; color: white; border: none; padding: 9px; border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer;">💸 تنفيذ طلب السحب</button>
+            </div>
+
+            <div style="margin-top: 15px; background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 8px;">
+                <h4 style="font-size: 13px; font-weight: 800; color: #333; margin-bottom: 8px;">📦 سجل عمليات البيع والطلبات</h4>
+                <div id="sales-log-list" style="max-height: 140px; overflow-y: auto; font-size: 11px; color: #555;">
+                    لا توجد عمليات بيع مسجلة حديثاً.
+                </div>
+            </div>
+
+            <ul class="drawer-links">
+                <li onclick="closeDrawerPanel(); alert('📦 إدارة المنتجات: 3 منتجات رقمية نشطة ومعروضة للبيع.')">📦 إدارة المنتجات</li>
+                <li onclick="closeDrawerPanel(); alert('⚙️ إعدادات المتجر العامة مفعلة بنجاح.')">⚙️ إعدادات المتجر</li>
+            </ul>
+        </div>
+        <div style="border-top: 1px solid #eee; padding-top: 10px; font-size: 11px; color: #888; text-align: center;">
+            Pixeloria Secure v1.0
+        </div>
+    </div>
+
+    <!-- الصفحة الرئيسية (تمت إضافة active افتراضياً لضمان ظهورها فوراً) -->
+    <div id="home-page" class="page-section active">
+        <section class="hero">
+            <div>
+                <div class="hero-subtitle">Pixeloria</div>
+                <h1 class="hero-title">إبداعك الرقمي، <span>بين يديك</span></h1>
+                <p class="hero-desc">منتجات رقمية تلهم إبداعك. اكتشف أدوات وقوالب مميزة مصممة خصيصاً لمساعدتك على النمو والنجاح في مشاريعك الرقمية.</p>
+                <button type="button" class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">تسوق الآن</button>
+            </div>
+            <div class="hero-banner-art">
+                <span style="font-size: 40px; margin-bottom: 10px;">💻✨</span>
+                <h3>منصة Pixeloria الرقمية</h3>
+                <p>عالم متكامل من القوالب والكتب الرقمية والمخططات الاحترافية</p>
+            </div>
+        </section>
+
+        <!-- التصنيفات -->
+        <section class="categories-section">
+            <h2 class="section-title">استكشف المنتجات الرقمية</h2>
+            <p class="section-subtitle">أدوات وقوالب جاهزة للتحميل الفوري لمساعدة مشاريعك على النمو.</p>
+            <div class="categories-grid">
+                <div class="category-card"><span>📚 كتب إلكترونية</span></div>
+                <div class="category-card"><span>📅 مخططات ومنظمات</span></div>
+                <div class="category-card"><span>🎨 قوالب وسائل التواصل</span></div>
+            </div>
+        </section>
+
+        <!-- المنتجات المميزة -->
+        <section id="products-sec" class="products-section">
+            <h2 class="section-title">أحدث المنتجات الرقمية</h2>
+            <div class="products-grid" style="margin-top: 20px;">
+                <!-- منتج 1 -->
+                <div class="product-card">
+                    <div>
+                        <div class="product-visual-badge">
+                            <span style="font-size: 32px; margin-bottom: 5px;">📅</span>
+                            مخطط يومي بسيط
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">مخطط يومي بسيط</h3>
+                            <p class="product-desc">خطط ليومك، ركز على مهامك الأساسية وحقق أهدافك بكفاءة عالية.</p>
+                        </div>
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-price">$7.99</span>
+                        <button type="button" class="btn-details" onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'PDF', '15 صفحة', 'ملف PDF عالي الجودة جاهز للطباعة والاستخدام الفوري.', '📅 مخطط يومي بسيط', 'linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%)')">عرض التفاصيل</button>
+                    </div>
+                </div>
+
+                <!-- منتج 2 -->
+                <div class="product-card">
+                    <div>
+                        <div class="product-visual-badge">
+                            <span style="font-size: 32px; margin-bottom: 5px;">📖</span>
+                            دليل العناية الذاتية
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">دليل العناية الذاتية</h3>
+                            <p class="product-desc">عادات صغيرة يومية تؤدي إلى تغييرات كبرى وإيجابية في حياتك.</p>
+                        </div>
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-price">$5.99</span>
+                        <button type="button" class="btn-details" onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'PDF Workbook', '25 صفحة', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للصحة النفسية.', '📖 دليل العناية الذاتية', 'linear-gradient(135deg, #81ecec 0%, #00cec9 100%)')">عرض التفاصيل</button>
+                    </div>
+                </div>
+
+                <!-- منتج 3 -->
+                <div class="product-card">
+                    <div>
+                        <div class="product-visual-badge">
+                            <span style="font-size: 32px; margin-bottom: 5px;">🎨</span>
+                            قوالب وسائل التواصل
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">قوالب وسائل التواصل</h3>
+                            <p class="product-desc">50 قالباً احترافياً قابلاً للتعديل لتصميم منشورات جذابة بسرعة.</p>
+                        </div>
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-price">$12.00</span>
+                        <button type="button" class="btn-details" onclick="showProductDetails('قوالب وسائل التواصل', '12.00', 'Canva Template', '50 قالب جاهز', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل.', '🎨 قوالب وسائل التواصل', 'linear-gradient(135deg, #fab1a0 0%, #e17055 100%)')">عرض التفاصيل</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- صفحة تفاصيل المنتج -->
+    <div id="product-details-page" class="page-section">
+        <div class="details-container">
+            <div class="details-box">
+                <div id="det-badge-box" style="height: 200px; background: #6c5ce7; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 800; margin-bottom: 15px; text-align: center; padding: 15px;">
+                    صورة المنتج
+                </div>
+                <h4 style="font-size: 13px; font-weight: 700; color: #111; margin-bottom: 6px;">ماذا ستحصل عليه:</h4>
+                <p id="det-what-gets" style="color: #666; font-size: 12px; line-height: 1.5;"></p>
+            </div>
+
+            <div class="details-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <span style="display: inline-block; background: #f3f0ff; color: #6c5ce7; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 8px;" id="det-type">PDF</span>
+                    <h2 id="det-title" style="font-size: 20px; font-weight: 800; color: #111; margin-bottom: 8px;">اسم المنتج</h2>
+                    <p id="det-desc" style="color: #666; font-size: 13px; line-height: 1.5; margin-bottom: 12px;"></p>
+
+                    <ul class="spec-list">
+                        <li><span>نوع الملف:</span> <span id="det-spec-type">PDF</span></li>
+                        <li><span>المحتوى:</span> <span id="det-spec-pages">15 صفحة</span></li>
+                        <li><span>التسليم:</span> <span>تحميل فوري بعد الدفع</span></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <span style="font-size: 13px; color: #666;">السعر:</span>
+                        <span id="det-price" style="font-size: 24px; font-weight: 800; color: #111;">$7.99</span>
+                    </div>
+                    <button type="button" onclick="addToCartFromDetails()" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; margin-bottom: 6px;">إضافة إلى السلة</button>
+                    <button type="button" onclick="switchPage('home')" style="width: 100%; background: transparent; color: #666; padding: 6px; border: none; font-size: 12px; cursor: pointer;">← العودة للرئيسية</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة السلة مع اختيار وسيلة الدفع -->
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="font-size: 16px; font-weight: 700;">سلة المشتريات والدفع</h3>
+                <button type="button" onclick="closeModals()" style="background: none; border: none; font-size: 14px; cursor: pointer;">✕</button>
+            </div>
+            <div id="cart-items-list" style="margin-bottom: 10px; max-height: 140px; overflow-y: auto; font-size: 13px; color: #555;">
+                السلة فارغة حالياً.
+            </div>
+            <div style="border-top: 1px solid #eee; padding-top: 8px; display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 10px; font-size: 14px;">
+                <span>الإجمالي:</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+
+            <div style="margin-bottom: 12px; text-align: right;">
+                <label style="font-size: 11px; font-weight: 700; color: #444; display: block; margin-bottom: 4px;">اختر طريقة الدفع المناسبة:</label>
+                <select id="checkout-payment-method" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px;">
+                    <option value="RedotPay">💳 بطاقة RedotPay</option>
+                    <option value="PayPal">🅿️ حساب PayPal</option>
+                    <option value="Dahabia_CCP">🇩🇿 البطاقة الذهبية / حساب CCP</option>
+                </select>
+            </div>
+
+            <button type="button" onclick="checkoutCart()" style="width: 100%; background: #6c5ce7; color: white; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">تأكيد وإتمام الشراء</button>
+        </div>
+    </div>
+
+    <!-- نافذة تسجيل الدخول / إنشاء حساب -->
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 400px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 id="auth-modal-title" style="font-size: 16px; font-weight: 700;">تسجيل الدخول</h3>
+                <button type="button" onclick="closeModals()" style="background: none; border: none; font-size: 14px; cursor: pointer;">✕</button>
+            </div>
+            <form id="auth-form-element" onsubmit="handleAuthSubmit(event)" style="display: flex; flex-direction: column; gap: 10px;">
+                <div id="signup-name-fields" style="display: none; gap: 10px;">
+                    <input type="text" id="auth-firstname" placeholder="الاسم" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: right; font-size: 13px;">
+                    <input type="text" id="auth-lastname" placeholder="اللقب" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: right; font-size: 13px;">
+                </div>
+                <input type="email" id="auth-email" placeholder="البريد الإلكتروني" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: left; font-size: 13px;" required>
+                <input type="password" id="auth-pass" placeholder="الرقم السري" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: left; font-size: 13px;" required>
+                <input type="password" id="auth-pass-confirm" placeholder="تأكيد الرقم السري" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: left; font-size: 13px; display: none;">
+                
+                <button type="submit" id="auth-submit-btn" style="background: #6c5ce7; color: white; padding: 9px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">دخول</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentProduct = {};
+        let cart = [];
+        let ownerBalance = 148.00;
+        let salesLog = [
+            { item: "مخطط يومي بسيط", price: 7.99, time: "منذ ساعتين" }
+        ];
+
+        let registeredUsers = [];
+        const OWNER_PIN = "1234";
+
+        let pendingUser = null;
+        let generatedOtp = "";
+        let otpTimerInterval = null;
+        let timeLeft = 60;
+        let isOtpExpired = false;
+
+        function requestOwnerAccess() {
+            const pinModal = document.getElementById('pin-modal');
+            if(pinModal) pinModal.style.display = 'flex';
+            const pinInput = document.getElementById('owner-pin-input');
+            if(pinInput) {
+                pinInput.value = '';
+                pinInput.focus();
+            }
+        }
+
+        function closePinModal() {
+            const pinModal = document.getElementById('pin-modal');
+            if(pinModal) pinModal.style.display = 'none';
+        }
+
+        function verifyOwnerPin() {
+            const pinInput = document.getElementById('owner-pin-input');
+            if(!pinInput) return;
+            const enteredPin = pinInput.value;
+            if (enteredPin === OWNER_PIN) {
+                closePinModal();
+                updateDashboardUI();
+                openDrawerPanel();
+            } else {
+                alert('⚠️ الكود السري غير صحيح! الوصول مرفوض.');
+                pinInput.value = '';
+            }
+        }
+
+        function updateDashboardUI() {
+            const balanceEl = document.getElementById('owner-balance-display');
+            if(balanceEl) balanceEl.innerText = '$' + ownerBalance.toFixed(2);
+            
+            const salesListEl = document.getElementById('sales-log-list');
+            if(!salesListEl) return;
+
+            let html = '';
+            if (salesLog.length === 0) {
+                html = 'لا توجد عمليات بيع مسجلة حديثاً.';
+            } else {
+                salesLog.forEach(sale => {
+                    html += `<div style="border-bottom: 1px solid #f0f0f0; padding: 5px 0;">🛍️ ${sale.item} - <b>$${sale.price}</b> <span style="color:#888; float:left;">${sale.time}</span></div>`;
+                });
+            }
+            salesListEl.innerHTML = html;
+        }
+
+        function requestWithdrawal() {
+            const methodEl = document.getElementById('withdrawal-method');
+            const method = methodEl ? methodEl.value : 'RedotPay';
+            
+            if (ownerBalance <= 0) {
+                alert("⚠️ لا يوجد رصيد كافي للسحب حالياً.");
+                return;
+            }
+            const amount = prompt("أدخل مبلغ السحب المطلوب (بالدولار):", ownerBalance.toFixed(2));
+            if (amount) {
+                if (parseFloat(amount) > ownerBalance) {
+                    alert("⚠️ المبلغ المطلوب يتجاوز رصيدك الحالي!");
+                    return;
+                }
+                ownerBalance -= parseFloat(amount);
+                updateDashboardUI();
+                alert("✅ تم تقديم طلب سحب مبلغ $" + amount + " بنجاح عبر وسيلة (" + method + ")! سيتم المعالجة في أقرب وقت.");
+                closeDrawerPanel();
+            }
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                alert("السلة فارغة!");
+                return;
+            }
+            const paymentMethodEl = document.getElementById('checkout-payment-method');
+            const paymentMethod = paymentMethodEl ? paymentMethodEl.value : 'RedotPay';
+            
+            let cartTotal = 0;
+            cart.forEach(item => {
+                cartTotal += parseFloat(item.price);
+                salesLog.unshift({ item: item.title, price: parseFloat(item.price), time: "الآن" });
+            });
+            ownerBalance += cartTotal;
+            cart = [];
+            
+            const cartCountEl = document.getElementById('cart-count');
+            if(cartCountEl) cartCountEl.innerText = 0;
+            
+            closeModals();
+            alert("🎉 تم إتمام الشراء بنجاح عبر وسيلة الدفع (" + paymentMethod + ")! تم إضافة الأرباح إلى رصيد المتجر وتسجيل الطلب بنجاح.");
+        }
+
+        function openDrawerPanel() {
+            const drawerPanel = document.getElementById('drawer-panel');
+            const drawerOverlay = document.getElementById('drawer-overlay');
+            if(drawerPanel) drawerPanel.style.right = '0';
+            if(drawerOverlay) drawerOverlay.style.display = 'block';
+        }
+
+        function closeDrawerPanel() {
+            const drawerPanel = document.getElementById('drawer-panel');
+            const drawerOverlay = document.getElementById('drawer-overlay');
+            if(drawerPanel) drawerPanel.style.right = '-320px';
+            if(drawerOverlay) drawerOverlay.style.display = 'none';
+        }
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            if(pageId === 'home') {
+                const homePage = document.getElementById('home-page');
+                if(homePage) homePage.classList.add('active');
+            } else if(pageId === 'details') {
+                const detailsPage = document.getElementById('product-details-page');
+                if(detailsPage) detailsPage.classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function showProductDetails(title, price, type, pages, whatGets, badgeText, bgGrad) {
+            currentProduct = { title, price, type, whatGets };
+            
+            const titleEl = document.getElementById('det-title');
+            const priceEl = document.getElementById('det-price');
+            const typeEl = document.getElementById('det-type');
+            const specTypeEl = document.getElementById('det-spec-type');
+            const specPagesEl = document.getElementById('det-spec-pages');
+            const whatGetsEl = document.getElementById('det-what-gets');
+            const descEl = document.getElementById('det-desc');
+            const badgeBox = document.getElementById('det-badge-box');
+
+            if(titleEl) titleEl.innerText = title;
+            if(priceEl) priceEl.innerText = '$' + price;
+            if(typeEl) typeEl.innerText = type;
+            if(specTypeEl) specTypeEl.innerText = type;
+            if(specPagesEl) specPagesEl.innerText = pages;
+            if(whatGetsEl) whatGetsEl.innerText = whatGets;
+            if(descEl) descEl.innerText = whatGets;
+            
+            if(badgeBox) {
+                badgeBox.innerText = badgeText;
+                badgeBox.style.background = bgGrad;
+            }
+            
+            switchPage('details');
+        }
+
+        function addToCartFromDetails() {
+            cart.push(currentProduct);
+            const cartCountEl = document.getElementById('cart-count');
+            if(cartCountEl) cartCountEl.innerText = cart.length;
+            
+            alert('تمت إضافة المنتج إلى السلة بنجاح!');
+            switchPage('home');
+        }
+
+        function openCartModal() {
+            const listEl = document.getElementById('cart-items-list');
+            const totalEl = document.getElementById('cart-total');
+            
+            if(cart.length === 0) {
+                if(listEl) listEl.innerHTML = 'السلة فارغة حالياً.';
+                if(totalEl) totalEl.innerText = '$0.00';
+            } else {
+                let html = '';
+                let total = 0;
+                cart.forEach((item) => {
+                    html += `<div style="margin-bottom:5px;">• ${item.title} - $${item.price}</div>`;
+                    total += parseFloat(item.price);
+                });
+                if(listEl) listEl.innerHTML = html;
+                if(totalEl) totalEl.innerText = '$' + total.toFixed(2);
+            }
+            const cartModal = document.getElementById('cart-modal');
+            if(cartModal) cartModal.style.display = 'flex';
+        }
+
+        let isSignUpMode = false;
+        function openAuthModal(signUp) {
+            isSignUpMode = signUp;
+            const nameFields = document.getElementById('signup-name-fields');
+            const confirmPass = document.getElementById('auth-pass-confirm');
+            const modalTitle = document.getElementById('auth-modal-title');
+            const submitBtn = document.getElementById('auth-submit-btn');
+            const authModal = document.getElementById('auth-modal');
+            
+            const fNameInput = document.getElementById('auth-firstname');
+            const lNameInput = document.getElementById('auth-lastname');
+
+            if (signUp) {
+                if(modalTitle) modalTitle.innerText = 'إنشاء حساب جديد';
+                if(submitBtn) submitBtn.innerText = 'إرسال كود التفعيل للإيميل';
+                if(nameFields) nameFields.style.display = 'flex';
+                if(confirmPass) {
+                    confirmPass.style.display = 'block';
+                    confirmPass.required = true;
+                }
+                if(fNameInput) fNameInput.required = true;
+                if(lNameInput) lNameInput.required = true;
+            } else {
+                if(modalTitle) modalTitle.innerText = 'تسجيل الدخول';
+                if(submitBtn) submitBtn.innerText = 'دخول';
+                if(nameFields) nameFields.style.display = 'none';
+                if(confirmPass) {
+                    confirmPass.style.display = 'none';
+                    confirmPass.required = false;
+                }
+                if(fNameInput) fNameInput.required = false;
+                if(lNameInput) lNameInput.required = false;
+            }
+            if(authModal) authModal.style.display = 'flex';
+        }
+
+        function closeModals() {
+            const modals = document.querySelectorAll('.modal-overlay, .pin-modal-overlay');
+            modals.forEach(m => m.style.display = 'none');
+            clearInterval(otpTimerInterval);
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('auth-email');
+            const passInput = document.getElementById('auth-pass');
+            if(!emailInput || !passInput) return;
+
+            const email = emailInput.value.trim().toLowerCase();
+            const pass = passInput.value;
+
+            if (isSignUpMode) {
+                const fNameInput = document.getElementById('auth-firstname');
+                const lNameInput = document.getElementById('auth-lastname');
+                const confirmPassInput = document.getElementById('auth-pass-confirm');
+                
+                if(!fNameInput || !lNameInput || !confirmPassInput) return;
+
+                const fname = fNameInput.value.trim();
+                const lname = lNameInput.value.trim();
+                const confirmPass = confirmPassInput.value;
+
+                const userAccounts = registeredUsers.filter(u => u.email === email);
+                if (userAccounts.length >= 2) {
+                    alert('⚠️ عذراً! لقد وصلت إلى الحد الأقصى المسموح به (حسابين كحد أقصى) لهذا البريد الإلكتروني.');
+                    return;
+                }
+
+                if (pass !== confirmPass) {
+                    alert('⚠️ الرقم السري غير متطابق!');
+                    return;
+                }
+
+                pendingUser = { email, fname, lname, pass };
+                closeModals();
+                sendNewOtpCode();
+            } else {
+                const user = registeredUsers.find(u => u.email === email && u.pass === pass);
+                if (registeredUsers.length > 0 && !user) {
+                    alert('⚠️ البريد الإلكتروني أو الرقم السري غير صحيح!');
+                    return;
+                }
+                alert('أهلاً بعودتك، ' + email);
+                closeModals();
+            }
+        }
+
+        function sendNewOtpCode() {
+            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            isOtpExpired = false;
+
+            const templateParams = {
+                to_email: pendingUser.email,
+                to_name: pendingUser.fname,
+                otp_code: generatedOtp
+            };
+
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    alert('📩 تم إرسال كود التفعيل بنجاح إلى بريدك: ' + pendingUser.email);
+                    startOtpCountdown();
+                }, function(error) {
+                    alert('❌ حدث خطأ في إرسال البريد. تأكد من إعدادات EmailJS.');
+                });
+        }
+
+        function startOtpCountdown() {
+            timeLeft = 60;
+            isOtpExpired = false;
+            
+            const otpInput = document.getElementById('otp-input');
+            const resendContainer = document.getElementById('resend-container');
+            const otpModal = document.getElementById('otp-modal');
+            const otpTimer = document.getElementById('otp-timer');
+
+            if(otpInput) otpInput.value, otpInput.value = '';
+            if(resendContainer) resendContainer.style.display = 'none';
+            if(otpModal) otpModal.style.display = 'flex';
+            if(otpInput) otpInput.focus();
+            
+            clearInterval(otpTimerInterval);
+            otpTimerInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    if(otpTimer) otpTimer.innerText = `الوقت المتبقي لصلاحية الكود: ${timeLeft} ثانية`;
+                } else {
+                    clearInterval(otpTimerInterval);
+                    isOtpExpired = true;
+                    if(otpTimer) otpTimer.innerText = `❌ انتهت صلاحية هذا الكود!`;
+                    if(resendContainer) resendContainer.style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function resendOtpCode() {
+            sendNewOtpCode();
+        }
+
+        function closeOtpModal() {
+            clearInterval(otpTimerInterval);
+            const otpModal = document.getElementById('otp-modal');
+            if(otpModal) otpModal.style.display = 'none';
+        }
+
+        function verifyOtpCode() {
+            if (isOtpExpired) {
+                alert('⚠️ لقد انتهت صلاحية الكود الحالي (مرت دقيقة)! يرجى إعادة إرسال كود جديد.');
+                return;
+            }
+
+            const otpInput = document.getElementById('otp-input');
+            if(!otpInput) return;
+
+            const enteredOtp = otpInput.value.trim();
+            if (enteredOtp === generatedOtp) {
+                clearInterval(otpTimerInterval);
+                if(pendingUser) {
+                    registeredUsers.push(pendingUser);
+                    alert('🎉 تم تفعيل الحساب بنجاح وأهلاً بك ' + pendingUser.fname + ' ' + pendingUser.lname + '!');
+                }
+                closeOtpModal();
+                pendingUser = null;
+            } else {
+                alert('❌ الكود الذي أدخلته غير صحيح! تأكد منه وحاول مجدداً.');
+            }
+        }
+    </script>
+</body>
+</html>
