@@ -3,145 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixeloria - إبداعك الرقمي، بين يديك</title>
-    <!-- استيراد مكتبة EmailJS للإرسال الفعلي للإيميلات -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            emailjs.init("YOUR_PUBLIC_KEY");
-        })();
-    </script>
+    <title>Pixeloria - متجر رقمي</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #fcfcfc; color: #1a1a1a; }
-        
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 40px;
-            background: #ffffff;
-            border-bottom: 1px solid #eaeaea;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-right { display: flex; align-items: center; gap: 20px; }
-        .logo { font-weight: 900; font-size: 24px; color: #6c5ce7; cursor: pointer; }
-        
-        .btn-menu-drawer {
-            background: #6c5ce7;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 13px;
-            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
-        }
-
-        .nav-links { display: flex; gap: 25px; list-style: none; color: #555; font-size: 14px; font-weight: 500; }
-        .nav-links li { cursor: pointer; transition: color 0.2s; }
-        .nav-links li:hover { color: #6c5ce7; }
-        .header-actions { display: flex; gap: 10px; align-items: center; }
-        
-        .btn-sign { padding: 8px 14px; border: 1px solid #ddd; background: transparent; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
-        .btn-create { padding: 8px 14px; background: #6c5ce7; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
-        .cart-icon-btn { background: #f3f0ff; color: #6c5ce7; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; font-size: 13px; }
-
-        .page-section { display: none; }
-        .page-section.active { display: block; }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #f5f0ff 0%, #faf8ff 100%);
-            padding: 50px 30px;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 30px;
-            align-items: center;
-        }
-        @media(max-width: 900px) { .hero { grid-template-columns: 1fr; padding: 30px 20px; } }
-        .hero-subtitle { color: #6c5ce7; font-weight: 700; font-size: 13px; margin-bottom: 10px; }
-        .hero-title { font-size: 38px; font-weight: 900; line-height: 1.2; color: #111; margin-bottom: 15px; }
-        .hero-title span { color: #6c5ce7; }
-        .hero-desc { color: #555; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
-        .btn-primary { background: #6c5ce7; color: white; padding: 12px 25px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; }
-
-        .hero-banner-art {
-            background: linear-gradient(135deg, #4834d4 0%, #6c5ce7 50%, #a29bfe 100%);
-            border-radius: 20px;
-            height: 240px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.35);
-            text-align: center;
-            padding: 20px;
-        }
-        .hero-banner-art h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
-        .hero-banner-art p { font-size: 13px; opacity: 0.95; font-weight: 500; }
-
-        /* Categories */
-        .categories-section { padding: 40px 30px; background: #fff; border-bottom: 1px solid #eaeaea; }
-        .section-title { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 8px; }
-        .section-subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
-        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
-        .category-card { background: #faf8ff; border: 1px solid #f0edff; padding: 16px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
-        .category-card:hover { background: #6c5ce7; color: white; transform: translateY(-3px); }
-        .category-card span { font-size: 12px; font-weight: 600; color: #333; display: block; }
-
-        /* Products Grid */
-        .products-section { padding: 40px 30px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .product-card { border: 1px solid #eaeaea; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; }
-        
-        .product-visual-badge {
-            height: 150px;
-            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #2d3436;
-            font-weight: 900;
-            font-size: 16px;
-            text-align: center;
-            padding: 15px;
-        }
-        .product-card:nth-child(2) .product-visual-badge { background: linear-gradient(135deg, #81ecec 0%, #00cec9 100%); color: white; }
-        .product-card:nth-child(3) .product-visual-badge { background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%); color: white; }
-
-        .product-content { padding: 15px; }
-        .product-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 6px; }
-        .product-desc { color: #666; font-size: 12px; line-height: 1.4; margin-bottom: 12px; }
-        .product-footer { padding: 0 15px 15px 15px; display: flex; justify-content: space-between; align-items: center; }
-        .product-price { font-weight: 800; color: #111; font-size: 16px; }
-        .btn-details { background: #6c5ce7; color: white; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
-
-        /* لوحة التحكم المسحوبة */
-        #drawer-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 9999;
-        }
-        #drawer-panel {
-            position: fixed;
-            top: 0; right: -320px; width: 310px; height: 100%;
-            background: white;
-            box-shadow: -5px 0 25px rgba(0,0,0,0.3);
-            transition: right 0.3s ease-in-out;
-            z-index: 10000;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow-y: auto;
-        }
-        .drawer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .drawer-links li { font-
+        body { background-color: #fcfcfc; color: #1a1a1a; text-align: center; padding: 50px; }
+        h1 { color: #6c5ce7; font-size: 32px; margin-bottom: 15px; }
+        p { color: #555; font-size: 16px; margin-bottom: 25px; }
+        .btn { background: #6c5ce7; color: white; padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>منصة Pixeloria الرقمية</h1>
+        <p>متجرك الرقمي قيد التشغيل بنجاح وجاهز لاستقبال التعديلات والمنتجات!</p>
+        <button class="btn" onclick="alert('المتجر يعمل بكفاءة عالية!')">اضغط للتجربة</button>
+    </div>
+</body>
+</html>
