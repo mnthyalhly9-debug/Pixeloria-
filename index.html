@@ -35,63 +35,93 @@
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #f5f0ff 0%, #faf8ff 100%);
-            padding: 60px 40px;
+            padding: 50px 30px;
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
-            gap: 40px;
+            gap: 30px;
             align-items: center;
         }
         @media(max-width: 900px) { .hero { grid-template-columns: 1fr; padding: 30px 20px; } }
-        .hero-subtitle { color: #6c5ce7; font-weight: 700; font-size: 13px; margin-bottom: 12px; }
-        .hero-title { font-size: 40px; font-weight: 900; line-height: 1.2; color: #111; margin-bottom: 20px; }
+        .hero-subtitle { color: #6c5ce7; font-weight: 700; font-size: 13px; margin-bottom: 10px; }
+        .hero-title { font-size: 38px; font-weight: 900; line-height: 1.2; color: #111; margin-bottom: 15px; }
         .hero-title span { color: #6c5ce7; }
-        .hero-desc { color: #555; font-size: 15px; line-height: 1.6; margin-bottom: 30px; max-width: 500px; }
+        .hero-desc { color: #555; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
         .btn-primary { background: #6c5ce7; color: white; padding: 12px 25px; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3); }
 
-        /* حاوية رسومات SVG الثابتة للابتوب والكتب */
-        .hero-graphic {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.12);
-            border: 1px solid #eee;
-            text-align: center;
+        /* حاوية مرئية ملونة ومذهلة للكمبيوتر والمنصة */
+        .hero-banner-art {
+            background: linear-gradient(135deg, #4834d4 0%, #6c5ce7 50%, #a29bfe 100%);
+            border-radius: 20px;
+            height: 240px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.35);
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
         }
+        .hero-banner-art::after {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -30px;
+            right: -30px;
+        }
+        .hero-banner-art h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .hero-banner-art p { font-size: 13px; opacity: 0.95; font-weight: 500; }
 
         /* Categories */
-        .categories-section { padding: 40px; background: #fff; border-bottom: 1px solid #eaeaea; }
+        .categories-section { padding: 40px 30px; background: #fff; border-bottom: 1px solid #eaeaea; }
         .section-title { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 8px; }
-        .section-subtitle { color: #666; font-size: 13px; margin-bottom: 25px; }
-        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 15px; }
-        .category-card { background: #faf8ff; border: 1px solid #f0edff; padding: 18px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .section-subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
+        .category-card { background: #faf8ff; border: 1px solid #f0edff; padding: 16px 10px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
         .category-card:hover { background: #6c5ce7; color: white; transform: translateY(-3px); }
         .category-card:hover span { color: white; }
-        .category-card span { font-size: 12px; font-weight: 600; color: #333; display: block; margin-top: 6px; }
+        .category-card span { font-size: 12px; font-weight: 600; color: #333; display: block; }
 
         /* Products Grid */
-        .products-section { padding: 40px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .products-section { padding: 40px 30px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
         .product-card { border: 1px solid #eaeaea; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s; }
         .product-card:hover { transform: translateY(-3px); }
         
-        .product-thumb-svg {
-            height: 160px;
-            background: linear-gradient(135deg, #f0edff 0%, #e4deff 100%);
+        .product-visual-badge {
+            height: 150px;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            color: #2d3436;
+            font-weight: 900;
+            font-size: 16px;
             border-bottom: 1px solid #eee;
+            text-align: center;
+            padding: 15px;
+        }
+        .product-card:nth-child(2) .product-visual-badge {
+            background: linear-gradient(135deg, #81ecec 0%, #00cec9 100%);
+            color: white;
+        }
+        .product-card:nth-child(3) .product-visual-badge {
+            background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%);
+            color: white;
         }
 
-        .product-content { padding: 18px; }
-        .product-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 8px; }
-        .product-desc { color: #666; font-size: 13px; line-height: 1.5; margin-bottom: 15px; }
-        .product-footer { padding: 0 18px 18px 18px; display: flex; justify-content: space-between; align-items: center; }
+        .product-content { padding: 15px; }
+        .product-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 6px; }
+        .product-desc { color: #666; font-size: 12px; line-height: 1.4; margin-bottom: 12px; }
+        .product-footer { padding: 0 15px 15px 15px; display: flex; justify-content: space-between; align-items: center; }
         .product-price { font-weight: 800; color: #111; font-size: 16px; }
-        .btn-details { background: #6c5ce7; color: white; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; }
+        .btn-details { background: #6c5ce7; color: white; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
 
         /* Details & Modals */
         .details-container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; }
@@ -129,17 +159,11 @@
                 <p class="hero-desc">منتجات رقمية تلهم إبداعك. اكتشف أدوات وقوالب مميزة مصممة خصيصاً لمساعدتك على النمو والنجاح في مشاريعك الرقمية.</p>
                 <button class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior: 'smooth'})">تسوق الآن</button>
             </div>
-            <!-- رسمة SVG ثابتة للابتوب والكتب الرقمية -->
-            <div class="hero-graphic">
-                <svg width="100%" height="220" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="50" y="40" width="300" height="150" rx="12" fill="#f3f0ff" stroke="#6c5ce7" stroke-width="3"/>
-                    <rect x="70" y="60" width="260" height="110" rx="6" fill="#ffffff"/>
-                    <circle cx="100" cy="90" r="15" fill="#6c5ce7" opacity="0.2"/>
-                    <rect x="125" y="82" width="120" height="12" rx="4" fill="#6c5ce7"/>
-                    <rect x="125" y="104" width="80" height="8" rx="3" fill="#ddd"/>
-                    <path d="M30 200C30 194.477 34.4772 190 40 190H360C365.523 190 370 194.477 370 200V205H30V200Z" fill="#d1c4e9"/>
-                    <rect x="175" y="195" width="50" height="6" rx="3" fill="#6c5ce7"/>
-                </svg>
+            <!-- واجهة فنية ملونة وثابتة -->
+            <div class="hero-banner-art">
+                <span style="font-size: 40px; margin-bottom: 10px;">💻✨</span>
+                <h3>منصة Pixeloria الرقمية</h3>
+                <p>عالم متكامل من القوالب والكتب الرقمية والمخططات الاحترافية</p>
             </div>
         </section>
 
@@ -161,8 +185,9 @@
                 <!-- منتج 1 -->
                 <div class="product-card">
                     <div>
-                        <div class="product-thumb-svg">
-                            <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <div class="product-visual-badge">
+                            <span style="font-size: 32px; margin-bottom: 5px;">📅</span>
+                            مخطط يومي بسيط
                         </div>
                         <div class="product-content">
                             <h3 class="product-title">مخطط يومي بسيط</h3>
@@ -171,15 +196,16 @@
                     </div>
                     <div class="product-footer">
                         <span class="product-price">$7.99</span>
-                        <button class="btn-details" onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'PDF', '15 صفحة', 'ملف PDF عالي الجودة جاهز للطباعة والاستخدام الفوري.', 'planner')">عرض التفاصيل</button>
+                        <button class="btn-details" onclick="showProductDetails('مخطط يومي بسيط', '7.99', 'PDF', '15 صفحة', 'ملف PDF عالي الجودة جاهز للطباعة والاستخدام الفوري.', '📅 مخطط يومي بسيط', 'linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%)')">عرض التفاصيل</button>
                     </div>
                 </div>
 
                 <!-- منتج 2 -->
                 <div class="product-card">
                     <div>
-                        <div class="product-thumb-svg">
-                            <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <div class="product-visual-badge">
+                            <span style="font-size: 32px; margin-bottom: 5px;">📖</span>
+                            دليل العناية الذاتية
                         </div>
                         <div class="product-content">
                             <h3 class="product-title">دليل العناية الذاتية</h3>
@@ -188,15 +214,16 @@
                     </div>
                     <div class="product-footer">
                         <span class="product-price">$5.99</span>
-                        <button class="btn-details" onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'PDF Workbook', '25 صفحة', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للصحة النفسية.', 'book')">عرض التفاصيل</button>
+                        <button class="btn-details" onclick="showProductDetails('دليل العناية الذاتية', '5.99', 'PDF Workbook', '25 صفحة', 'دليل شامل يتضمن تمارين عملية ومتابعة يومية للصحة النفسية.', '📖 دليل العناية الذاتية', 'linear-gradient(135deg, #81ecec 0%, #00cec9 100%)')">عرض التفاصيل</button>
                     </div>
                 </div>
 
                 <!-- منتج 3 -->
                 <div class="product-card">
                     <div>
-                        <div class="product-thumb-svg">
-                            <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        <div class="product-visual-badge">
+                            <span style="font-size: 32px; margin-bottom: 5px;">🎨</span>
+                            قوالب وسائل التواصل
                         </div>
                         <div class="product-content">
                             <h3 class="product-title">قوالب وسائل التواصل</h3>
@@ -205,7 +232,7 @@
                     </div>
                     <div class="product-footer">
                         <span class="product-price">$12.00</span>
-                        <button class="btn-details" onclick="showProductDetails('قوالب وسائل التواصل', '12.00', 'Canva Template', '50 قالب جاهز', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل.', 'template')">عرض التفاصيل</button>
+                        <button class="btn-details" onclick="showProductDetails('قوالب وسائل التواصل', '12.00', 'Canva Template', '50 قالب جاهز', 'رابط وصول مباشر لقوالب Canva قابلة للتعديل بالكامل.', '🎨 قوالب وسائل التواصل', 'linear-gradient(135deg, #fab1a0 0%, #e17055 100%)')">عرض التفاصيل</button>
                     </div>
                 </div>
             </div>
@@ -216,8 +243,8 @@
     <div id="product-details-page" class="page-section">
         <div class="details-container">
             <div class="details-box">
-                <div id="det-svg-container" style="height: 220px; background: #f3f0ff; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin-bottom: 15px;">
-                    <!-- SVG ديناميكي للتفاصيل -->
+                <div id="det-badge-box" style="height: 200px; background: #6c5ce7; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 800; margin-bottom: 15px; text-align: center; padding: 15px;">
+                    صورة المنتج
                 </div>
                 <h4 style="font-size: 13px; font-weight: 700; color: #111; margin-bottom: 6px;">ماذا ستحصل عليه:</h4>
                 <p id="det-what-gets" style="color: #666; font-size: 12px; line-height: 1.5;"></p>
@@ -295,13 +322,7 @@
             window.scrollTo(0, 0);
         }
 
-        const svgs = {
-            planner: '<svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
-            book: '<svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>',
-            template: '<svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#6c5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>'
-        };
-
-        function showProductDetails(title, price, type, pages, whatGets, svgKey) {
+        function showProductDetails(title, price, type, pages, whatGets, badgeText, bgGrad) {
             currentProduct = { title, price, type, whatGets };
             document.getElementById('det-title').innerText = title;
             document.getElementById('det-price').innerText = '$' + price;
@@ -309,7 +330,11 @@
             document.getElementById('det-spec-type').innerText = type;
             document.getElementById('det-spec-pages').innerText = pages;
             document.getElementById('det-what-gets').innerText = whatGets;
-            document.getElementById('det-svg-container').innerHTML = svgs[svgKey] || svgs.planner;
+            
+            const badgeBox = document.getElementById('det-badge-box');
+            badgeBox.innerText = badgeText;
+            badgeBox.style.background = bgGrad;
+            
             document.getElementById('det-desc').innerText = whatGets;
             switchPage('details');
         }
@@ -362,3 +387,4 @@
     </script>
 </body>
 </html>
+
