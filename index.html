@@ -398,16 +398,24 @@
         </div>
     </div>
 
-    <!-- نافذة تسجيل الدخول -->
+    <!-- نافذة تسجيل الدخول / إنشاء حساب المحدثة -->
     <div id="auth-modal" class="modal-overlay">
-        <div class="modal-box">
+        <div class="modal-box" style="max-width: 400px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                 <h3 id="auth-modal-title" style="font-size: 16px; font-weight: 700;">تسجيل الدخول</h3>
                 <button onclick="closeModals()" style="background: none; border: none; font-size: 14px; cursor: pointer;">✕</button>
             </div>
-            <form onsubmit="handleAuthSubmit(event)" style="display: flex; flex-direction: column; gap: 10px;">
+            <form onsubmit="handleAuthSubmit(event)" style="display: flex; flex-direction: column; gap: 10px;" id="auth-form-body">
+                <!-- حقول الاسم واللقب تظهر فقط عند إنشاء حساب -->
+                <div id="signup-name-fields" style="display: none; gap: 10px;">
+                    <input type="text" id="auth-firstname" placeholder="الاسم" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: right; font-size: 13px;">
+                    <input type="text" id="auth-lastname" placeholder="اللقب" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: right; font-size: 13px;">
+                </div>
                 <input type="email" id="auth-email" placeholder="البريد الإلكتروني" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: left; font-size: 13px;" required>
-                <input type="password" id="auth-pass" placeholder="كلمة المرور" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: left; font-size: 13px;" required>
+                <input type="password" id="auth-pass" placeholder="الرقم السري" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: left; font-size: 13px;" required>
+                <!-- تأكيد الرقم السري يظهر فقط عند إنشاء حساب -->
+                <input type="password" id="auth-pass-confirm" placeholder="تأكيد الرقم السري" style="width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; text-align: left; font-size: 13px; display: none;">
+                
                 <button type="submit" id="auth-submit-btn" style="background: #6c5ce7; color: white; padding: 9px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-size: 13px;">دخول</button>
             </form>
         </div>
@@ -562,23 +570,54 @@
         let isSignUpMode = false;
         function openAuthModal(signUp) {
             isSignUpMode = signUp;
-            document.getElementById('auth-modal-title').innerText = signUp ? 'إنشاء حساب جديد' : 'تسجيل الدخول';
-            document.getElementById('auth-submit-btn').innerText = signUp ? 'تسجيل الحساب' : 'دخول';
+            const nameFields = document.getElementById('signup-name-fields');
+            const confirmPass = document.getElementById('auth-pass-confirm');
+            
+            if (signUp) {
+                document.getElementById('auth-modal-title').innerText = 'إنشاء حساب جديد';
+                document.getElementById('auth-submit-btn').innerText = 'تسجيل الحساب';
+                nameFields.style.display = 'flex';
+                confirmPass.style.display = 'block';
+                confirmPass.required = true;
+                document.getElementById('auth-firstname').required = true;
+                document.getElementById('auth-lastname').required = true;
+            } else {
+                document.getElementById('auth-modal-title').innerText = 'تسجيل الدخول';
+                document.getElementById('auth-submit-btn').innerText = 'دخول';
+                nameFields.style.display = 'none';
+                confirmPass.style.display = 'none';
+                confirmPass.required = false;
+                document.getElementById('auth-firstname').required = false;
+                document.getElementById('auth-lastname').required = false;
+            }
             document.getElementById('auth-modal').style.display = 'flex';
         }
 
         function closeModals() {
             document.getElementById('cart-modal').style.display = 'none';
             document.getElementById('auth-modal').style.display = 'none';
+            document.getElementById('pin-modal').style.display = 'none';
         }
 
         function handleAuthSubmit(e) {
             e.preventDefault();
             const email = document.getElementById('auth-email').value;
-            alert(isSignUpMode ? 'تم إنشاء الحساب بنجاح لـ: ' + email : 'أهلاً بعودتك، ' + email);
+            if (isSignUpMode) {
+                const fname = document.getElementById('auth-firstname').value;
+                const lname = document.getElementById('auth-lastname').value;
+                const pass = document.getElementById('auth-pass').value;
+                const confirmPass = document.getElementById('auth-pass-confirm').value;
+
+                if (pass !== confirmPass) {
+                    alert('⚠️ الرقم السري غير متطابق! يرجى التأكد من إعادة كتابة الرقم السري بشكل صحيح.');
+                    return;
+                }
+                alert('🎉 أهلاً بك ' + fname + ' ' + lname + '! تم إنشاء حسابك الجديد بنجاح.');
+            } else {
+                alert('أهلاً بعودتك، ' + email);
+            }
             closeModals();
         }
     </script>
 </body>
 </html>
-
