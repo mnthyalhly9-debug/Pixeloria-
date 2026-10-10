@@ -25,8 +25,6 @@ header{background:#fff;border-bottom:1px solid #eaeaea;padding:10px 12px;positio
 .header-actions{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
 .btn-action{background:#f3f0ff;color:#6c5ce7;border:0;padding:5px 7px;border-radius:5px;font-size:10px;font-weight:bold;cursor:pointer}
 .btn-main{background:#6c5ce7;color:white}
-
-/* قائمة اللغات والأعلام */
 .lang-selector{background:#f8f9fa;border:1px solid #ddd;border-radius:5px;padding:4px 6px;font-size:10px;font-weight:bold;color:#333;cursor:pointer}
 
 .nav-links{display:flex;gap:10px;list-style:none;font-size:11px;font-weight:600;color:#555;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
@@ -79,7 +77,6 @@ header{background:#fff;border-bottom:1px solid #eaeaea;padding:10px 12px;positio
   <div class="header-top">
     <div class="logo" onclick="switchPage('home')">Pixeloria 🇩🇿</div>
     <div class="header-actions">
-      <!-- زر اختيار اللغة مع الأعلام -->
       <select id="lang-select" class="lang-selector" onchange="changeLanguage(this.value)">
         <option value="ar">🇩🇿 العربية</option>
         <option value="en">🇺🇸 English</option>
@@ -101,17 +98,20 @@ header{background:#fff;border-bottom:1px solid #eaeaea;padding:10px 12px;positio
   </ul>
 </header>
 
-<!-- نافذة البطاقات -->
+<!-- نافذة إدارة البطاقات ووسائل الدفع (شراء) -->
 <div id="card-settings-modal" class="modal-overlay">
  <div class="modal-box">
-  <h3 style="font-size:14px;color:#6c5ce7;margin-bottom:8px">💳 إدارة بطاقة الدفع</h3>
-  <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:3px">وسيلة الدفع:</label>
+  <h3 style="font-size:14px;color:#6c5ce7;margin-bottom:8px">💳 إعدادات وسيلة الدفع</h3>
+  <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:3px">اختر وسيلة الدفع المفضلة:</label>
   <select id="user-pref-method">
-   <option value="RedotPay">💳 RedotPay</option><option value="PayPal">🅿️ PayPal</option><option value="Dahabia_CCP">🇩🇿 الذهبية / CCP</option>
+   <option value="PayPal Business">🅿️ PayPal Business</option>
+   <option value="RedotPay">💳 RedotPay</option>
+   <option value="CCP">🇩🇿 حساب CCP</option>
+   <option value="Dahabia">🇩🇿 البطاقة الذهبية</option>
   </select>
-  <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:3px">رقم البطاقة أو الإيميل:</label>
-  <input type="text" id="user-pref-details" placeholder="أدخل تفاصيل البطاقة">
-  <div id="current-saved-card-status" style="font-size:10px;color:#00b894;font-weight:bold;margin-bottom:8px;text-align:center">لا توجد بطاقة محفوظة.</div>
+  <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:3px">تفاصيل الحساب أو رقم البطاقة:</label>
+  <input type="text" id="user-pref-details" placeholder="أدخل البريد أو الرقم">
+  <div id="current-saved-card-status" style="font-size:10px;color:#00b894;font-weight:bold;margin-bottom:8px;text-align:center">لا توجد وسيلة محفوظة.</div>
   <div style="display:flex;gap:6px">
    <button type="button" onclick="saveUserCardInfo()" style="flex:1;background:#6c5ce7;color:white;padding:7px;border:0;border-radius:5px;font-weight:bold;cursor:pointer">حفظ</button>
    <button type="button" onclick="closeModals()" style="flex:1;background:#eee;border:0;padding:7px;border-radius:5px;cursor:pointer">إغلاق</button>
@@ -119,7 +119,7 @@ header{background:#fff;border-bottom:1px solid #eaeaea;padding:10px 12px;positio
  </div>
 </div>
 
-<!-- نافذة PIN المالك -->
+<!-- نافذة PIN لوحة التحكم -->
 <div id="pin-modal" class="modal-overlay">
  <div class="modal-box" style="text-align:center">
   <h3 style="color:#6c5ce7;font-size:15px;margin-bottom:8px">🔐 حماية لوحة التحكم</h3>
@@ -131,18 +131,22 @@ header{background:#fff;border-bottom:1px solid #eaeaea;padding:10px 12px;positio
  </div>
 </div>
 
-<!-- لوحة التحكم الجانبية -->
+<!-- لوحة التحكم الجانبية (مع خيارات السحب الأربع) -->
 <div id="drawer-overlay" onclick="closeDrawerPanel()"></div>
 <div id="drawer-panel">
  <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:8px;margin-bottom:10px">
-  <h3 style="font-size:14px;color:#6c5ce7">لوحة التحكم</h3>
+  <h3 style="font-size:14px;color:#6c5ce7">لوحة التحكم والسحب</h3>
   <button type="button" onclick="closeDrawerPanel()" style="background:none;border:0;font-size:14px;cursor:pointer">✕</button>
  </div>
  <div style="background:#f8f9fa;padding:10px;border-radius:6px;text-align:center;margin-bottom:10px;border:1px solid #eee">
   <span style="font-size:10px;color:#666">الرصيد القابل للسحب (عمولة 10%)</span>
   <h2 id="owner-balance-display" style="font-size:18px;color:#2d3436;margin:4px 0">$148.00</h2>
+  <label style="font-size:9px;color:#555;display:block;margin-bottom:2px;text-align:right">اختر وسيلة سحب الأرباح:</label>
   <select id="withdrawal-method" style="margin-bottom:6px">
-   <option value="RedotPay">💳 RedotPay</option><option value="PayPal">🅿️ PayPal</option><option value="CCP">🇩🇿 CCP</option>
+   <option value="PayPal Business">🅿️ PayPal Business</option>
+   <option value="RedotPay">💳 RedotPay</option>
+   <option value="CCP">🇩🇿 حساب CCP</option>
+   <option value="Dahabia">🇩🇿 البطاقة الذهبية</option>
   </select>
   <button type="button" onclick="requestWithdrawal()" style="width:100%;background:#00b894;color:white;border:0;padding:6px;border-radius:4px;font-weight:bold;cursor:pointer">سحب الأرباح</button>
  </div>
@@ -166,7 +170,7 @@ header{background:#fff;border-bottom:1px solid #eaeaea;padding:10px 12px;positio
  <div class="trust-row">
   <span class="trust-pill" data-i18n="trust_1">📥 تحميل فوري</span>
   <span class="trust-pill" data-i18n="trust_2">🔒 حماية Supabase</span>
-  <span class="trust-pill" data-i18n="trust_3">💎 جودة عالية</span>
+  <span class="trust-pill" data-i18n="trust_3">💎 4 وسائل دفع وسحب</span>
  </div>
 
  <section class="categories-section" id="categories-sec">
@@ -240,7 +244,6 @@ header{background:#fff;border-bottom:1px solid #eaeaea;padding:10px 12px;positio
 </div>
 
 <script>
-// قاموس الترجمات للغات الثلاث
 const translations = {
   ar: {
     nav_home: "الرئيسية",
@@ -253,7 +256,7 @@ const translations = {
     btn_browse: "تصفح المنتجات",
     trust_1: "📥 تحميل فوري",
     trust_2: "🔒 حماية Supabase",
-    trust_3: "💎 جودة عالية",
+    trust_3: "💎 4 وسائل دفع وسحب",
     cat_title: "التصنيفات",
     cat_1: "كتب إلكترونية",
     cat_1_desc: "أدلة ومعرفة",
@@ -281,7 +284,7 @@ const translations = {
     btn_browse: "Browse Products",
     trust_1: "📥 Instant Download",
     trust_2: "🔒 Supabase Security",
-    trust_3: "💎 High Quality",
+    trust_3: "💎 4 Payment & Payout Methods",
     cat_title: "Categories",
     cat_1: "E-Books",
     cat_1_desc: "Guides & Knowledge",
@@ -309,7 +312,7 @@ const translations = {
     btn_browse: "Parcourir les produits",
     trust_1: "📥 Téléchargement instantané",
     trust_2: "🔒 Sécurité Supabase",
-    trust_3: "💎 Haute Qualité",
+    trust_3: "💎 4 Méthodes de Paiement",
     cat_title: "Catégories",
     cat_1: "E-Books",
     cat_1_desc: "Guides & Connaissance",
@@ -336,8 +339,6 @@ function changeLanguage(lang) {
       el.innerText = translations[lang][key];
     }
   });
-  
-  // تغيير اتجاه الصفحة بناءً على اللغة (RTL للعربية، LTR للإنجليزية والفرنسية)
   if (lang === 'ar') {
     document.documentElement.setAttribute('dir', 'rtl');
     document.documentElement.setAttribute('lang', 'ar');
@@ -398,7 +399,7 @@ function checkoutCart(){
  ownerBalance+=total; salesLog.unshift(`شراء منتج بـ $${total.toFixed(2)}`);
  if(currentUser) currentUser.purchases=(currentUser.purchases||0)+cart.length;
  cart=[]; document.getElementById('cart-count').innerText='0'; closeModals();
- alert('🎉 تم الشراء بنجاح عبر النظام التجريبي!');
+ alert('🎉 تم الشراء بنجاح عبر الوسيلة المختارة!');
 }
 
 function openAuthModal(signUp){
@@ -503,10 +504,10 @@ function openCardSettingsModal(){
  if(!currentUser){alert('⚠️ يرجى تسجيل الدخول أولاً لإدارة بطاقاتك!');openAuthModal(false);return}
  const status=document.getElementById('current-saved-card-status');
  if(currentUser.savedCard){
-  status.innerText=`البطاقة: ${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
+  status.innerText=`الوسيلة: ${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
   document.getElementById('user-pref-method').value=currentUser.savedCard.method;
   document.getElementById('user-pref-details').value=currentUser.savedCard.details;
- }else{status.innerText='لا توجد بطاقة محفوظة حتى الآن.';document.getElementById('user-pref-details').value=''}
+ }else{status.innerText='لا توجد وسيلة محفوظة حتى الآن.';document.getElementById('user-pref-details').value=''}
  document.getElementById('card-settings-modal').style.display='flex';
 }
 
@@ -516,7 +517,7 @@ function saveUserCardInfo(){
  const details=document.getElementById('user-pref-details').value.trim();
  if(!details){alert('يرجى إدخال التفاصيل.');return}
  currentUser.savedCard={method,details};
- alert('✅ تم حفظ البطاقة في حسابك بنجاح!');
+ alert('✅ تم حفظ وسيلة الدفع في حسابك بنجاح!');
  closeModals();
  updateDrawerUserInfo();
 }
@@ -542,6 +543,7 @@ function escapeHtml(value){
 }
 
 function requestWithdrawal(){
+ const method=document.getElementById('withdrawal-method').value;
  const raw=prompt('أدخل مبلغ السحب المطلوب (بالدولار):',ownerBalance.toFixed(2));
  if(raw===null||raw.trim()==='')return;
  const amount=Number(raw);
@@ -549,9 +551,10 @@ function requestWithdrawal(){
  if(amount>ownerBalance){alert('المبلغ المطلوب يتجاوز الرصيد المتاح.');return}
  ownerBalance-=amount;
  document.getElementById('owner-balance-display').innerText='$'+ownerBalance.toFixed(2);
- alert('✅ تم إرسال طلب سحب الأرباح بنجاح!');
+ alert(`✅ تم طلب سحب الأرباح بنجاح عبر (${method})!`);
  closeDrawerPanel();
 }
 </script>
 </body>
 </html>
+
