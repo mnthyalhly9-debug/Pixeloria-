@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -5,556 +6,456 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pixeloria - السوق العالمي للمنتجات الرقمية</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const PIXELORIA_SUPABASE_URL = "https://iksqnhcrfpnqppxfyxqt.supabase.co";
-const PIXELORIA_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_z7yzvMEV08VTIDx-X6Sk0w_UJsl-jF3";
-const pixeloriaSupabase = window.supabase.createClient(
-  PIXELORIA_SUPABASE_URL,
-  PIXELORIA_SUPABASE_PUBLISHABLE_KEY,
-  { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
-);
-</script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
-body{background:#fcfcfc;color:#1a1a1a;padding-bottom:40px}
-
-header{background:#fff;border-bottom:1px solid #eaeaea;padding:10px 12px;position:sticky;top:0;z-index:100}
-.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.logo{font-weight:900;font-size:18px;color:#6c5ce7;cursor:pointer}
-
-.header-actions{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
-.btn-action{background:#f3f0ff;color:#6c5ce7;border:0;padding:5px 7px;border-radius:5px;font-size:10px;font-weight:bold;cursor:pointer}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI,Tahoma,sans-serif}
+body{background:#fcfcfc;color:#1a1a1a;padding-bottom:30px}
+header{background:white;border-bottom:1px solid #eee;padding:12px;position:sticky;top:0;z-index:10}
+.header-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.logo{font-weight:900;font-size:20px;color:#6c5ce7;cursor:pointer}
+.header-actions{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+button,select,input{font:inherit}
+button{cursor:pointer}
+.btn{background:#f3f0ff;color:#6c5ce7;border:0;border-radius:6px;padding:8px 10px;font-size:12px;font-weight:bold}
 .btn-main{background:#6c5ce7;color:white}
-.lang-selector{background:#f8f9fa;border:1px solid #ddd;border-radius:5px;padding:4px 6px;font-size:10px;font-weight:bold;color:#333;cursor:pointer}
-
-.nav-links{display:flex;gap:10px;list-style:none;font-size:11px;font-weight:600;color:#555;overflow-x:auto;white-space:nowrap;padding-bottom:2px}
-.nav-links::-webkit-scrollbar{display:none}
+#lang-select{border:1px solid #ddd;border-radius:5px;padding:6px;font-size:11px}
+.nav-links{display:flex;gap:16px;list-style:none;margin-top:12px;overflow:auto;white-space:nowrap;font-size:12px;color:#555}
 .nav-links li{cursor:pointer}
-
+.hero{background:linear-gradient(135deg,#211342,#49308b,#7657df);padding:38px 15px;text-align:center;color:white}
+.hero h1{font-size:27px;margin:10px 0}
+.hero h1 span{color:#d6c8ff}
+.hero p{font-size:13px;line-height:1.8;margin-bottom:15px;color:#eee8ff}
+.hero button{background:white;color:#4e32a1;border:0;border-radius:6px;padding:10px 18px;font-weight:bold}
+.trust-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:12px;background:white}
+.trust-pill{background:#f6f2ff;color:#5235a2;border:1px solid #e7ddff;border-radius:20px;padding:7px 10px;font-size:11px}
+section.content{padding:22px 15px}
+.section-title{font-size:18px;margin-bottom:12px}
+.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.category-tile{border:1px solid #eee;border-radius:10px;overflow:hidden;background:white}
+.category-tile img{width:100%;height:105px;object-fit:cover;display:block}
+.category-tile div{padding:10px}
+.category-tile strong{font-size:12px;display:block}
+.category-tile span{font-size:11px;color:#777}
+.product-card{background:white;border:1px solid #eaeaea;border-radius:10px;padding:14px;margin-bottom:12px}
+.product-title{font-size:14px;font-weight:bold;margin-bottom:6px}
+.product-desc{font-size:12px;line-height:1.7;color:#666;margin-bottom:12px}
+.product-footer{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.product-price{font-size:15px;font-weight:bold}
 .page-section{display:none}
 .page-section.active{display:block}
-
-/* Hero Section */
-.hero{background:linear-gradient(135deg,#211342 0%,#49308b 52%,#7657df 100%);padding:25px 15px;text-align:center;color:#fff}
-.hero-title{font-size:22px;font-weight:900;margin-bottom:8px}
-.hero-title span{color:#d6c8ff}
-.hero-desc{color:#eee8ff;font-size:12px;line-height:1.5;margin-bottom:12px}
-.btn-primary{background:#fff;color:#4e32a1;padding:8px 16px;border-radius:6px;font-weight:bold;cursor:pointer;border:0;font-size:12px}
-
-.trust-row{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding:10px;background:#fff;border-bottom:1px solid #eee8ff}
-.trust-pill{background:#f6f2ff;color:#5235a2;border:1px solid #e7ddff;border-radius:20px;padding:5px 9px;font-size:10px;font-weight:700}
-
-/* التصنيفات والمنتجات */
-.categories-section{padding:20px 15px;background:#fff}
-.section-title{font-size:16px;font-weight:800;color:#111;margin-bottom:10px;text-align:right}
-.category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.category-tile{border:1px solid #eee8ff;border-radius:10px;overflow:hidden;background:#fff;text-align:right}
-.category-tile img{width:100%;height:80px;object-fit:cover;display:block}
-.category-tile div{padding:8px}
-.category-tile strong{font-size:11px;color:#332052;display:block;margin-bottom:2px}
-.category-tile span{font-size:9px;color:#777}
-
-.products-section{padding:20px 15px;text-align:right}
-.product-card{border:1px solid #eaeaea;border-radius:10px;background:#fff;padding:12px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,0.02)}
-.product-title{font-size:14px;font-weight:700;color:#111;margin-bottom:4px}
-.product-desc{color:#666;font-size:11px;margin-bottom:8px;line-height:1.4}
-.product-footer{display:flex;justify-content:space-between;align-items:center}
-.product-price{font-weight:800;color:#111;font-size:14px}
-.btn-details{background:#6c5ce7;color:white;padding:6px 10px;border-radius:5px;border:0;cursor:pointer;font-size:11px;font-weight:bold}
-
-/* لوحة التحكم والنوافذ المنبثقة */
-#drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999}
-#drawer-panel{position:fixed;top:0;right:-280px;width:270px;height:100%;background:white;box-shadow:-4px 0 20px rgba(0,0,0,0.2);transition:right 0.3s ease;z-index:10000;padding:15px;text-align:right;overflow-y:auto}
-
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:20000;padding:15px}
-.modal-box{background:white;padding:20px;border-radius:10px;width:100%;max-width:320px;text-align:right;box-shadow:0 5px 15px rgba(0,0,0,0.2)}
-.modal-box input,.modal-box select{width:100%;padding:7px;margin-bottom:8px;border:1px solid #ccc;border-radius:5px;font-size:11px}
+.modal-overlay{display:none;position:fixed;inset:0;background:#0009;z-index:100;justify-content:center;align-items:center;padding:15px}
+.modal-box{background:white;border-radius:12px;padding:20px;width:100%;max-width:360px;max-height:90vh;overflow:auto}
+.modal-box h3{font-size:16px;color:#6c5ce7;margin-bottom:12px}
+.modal-box label{display:block;font-size:12px;margin:8px 0 4px}
+.modal-box input,.modal-box select{width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;margin-bottom:8px}
+.modal-box button{width:100%;margin-top:6px}
+.notice{background:#fff8e7;border:1px solid #f1dba5;color:#684e13;padding:12px;border-radius:8px;font-size:12px;line-height:1.8;margin:12px 0}
+.muted{color:#666;font-size:12px;line-height:1.8}
+footer{text-align:center;padding:20px;color:#777;font-size:11px}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-top">
-    <div class="logo" onclick="switchPage('home')">Pixeloria 🇩🇿</div>
-    <div class="header-actions">
-      <select id="lang-select" class="lang-selector" onchange="changeLanguage(this.value)">
-        <option value="ar">🇩🇿 العربية</option>
-        <option value="en">🇺🇸 English</option>
-        <option value="fr">🇫🇷 Français</option>
-      </select>
-
-      <button class="btn-action btn-main" type="button" onclick="requestOwnerAccess()">لوحة التحكم</button>
-      <button class="btn-action" type="button" onclick="openCartModal()">🛒 (<span id="cart-count">0</span>)</button>
-      <button class="btn-action" type="button" onclick="openAuthModal(false)">دخول</button>
-      <button class="btn-action btn-main" type="button" onclick="openAuthModal(true)">حساب جديد</button>
-      <button class="btn-action" id="logout-btn" type="button" onclick="logoutUser()" style="display:none">خروج</button>
-    </div>
+ <div class="header-top">
+  <div class="logo" onclick="switchPage('home')">Pixeloria 🌍</div>
+  <div class="header-actions">
+   <select id="lang-select" onchange="changeLanguage(this.value)" aria-label="Language">
+    <option value="ar">🇩🇿 العربية</option>
+    <option value="en">🇺🇸 English</option>
+    <option value="fr">🇫🇷 Français</option>
+   </select>
+   <button class="btn" onclick="showOwnerNotice()" data-i18n="dashboard">لوحة المالك</button>
+   <button class="btn" onclick="openCart()">🛒 <span data-i18n="cart">السلة</span> (<span id="cart-count">0</span>)</button>
+   <button class="btn" id="login-button" onclick="openAuth(false)" data-i18n="login">دخول</button>
+   <button class="btn btn-main" id="signup-button" onclick="openAuth(true)" data-i18n="signup">حساب جديد</button>
+   <button class="btn" id="logout-button" onclick="logoutUser()" hidden data-i18n="logout">خروج</button>
   </div>
-  <ul class="nav-links">
-    <li onclick="switchPage('home')" data-i18n="nav_home">الرئيسية</li>
-    <li onclick="document.getElementById('categories-sec').scrollIntoView({behavior:'smooth'})" data-i18n="nav_cats">التصنيفات</li>
-    <li onclick="alert('📚 مكتبة الموارد الرقمية المجانية.')" data-i18n="nav_resources">الموارد</li>
-    <li onclick="openCardSettingsModal()" style="color:#6c5ce7;font-weight:bold" data-i18n="nav_cards">💳 بطاقاتي</li>
-  </ul>
+ </div>
+ <ul class="nav-links">
+  <li onclick="switchPage('home')" data-i18n="home">الرئيسية</li>
+  <li onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})" data-i18n="categories">التصنيفات</li>
+  <li onclick="showPaymentNotice()" data-i18n="payment">الدفع</li>
+ </ul>
 </header>
 
-<!-- نافذة إدارة البطاقات ووسائل الدفع (شراء) -->
-<div id="card-settings-modal" class="modal-overlay">
- <div class="modal-box">
-  <h3 style="font-size:14px;color:#6c5ce7;margin-bottom:8px">💳 إعدادات وسيلة الدفع</h3>
-  <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:3px">اختر وسيلة الدفع المفضلة:</label>
-  <select id="user-pref-method">
-   <option value="PayPal Business">🅿️ PayPal Business</option>
-   <option value="RedotPay">💳 RedotPay</option>
-   <option value="CCP">🇩🇿 حساب CCP</option>
-   <option value="Dahabia">🇩🇿 البطاقة الذهبية</option>
-  </select>
-  <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:3px">تفاصيل الحساب أو رقم البطاقة:</label>
-  <input type="text" id="user-pref-details" placeholder="أدخل البريد أو الرقم">
-  <div id="current-saved-card-status" style="font-size:10px;color:#00b894;font-weight:bold;margin-bottom:8px;text-align:center">لا توجد وسيلة محفوظة.</div>
-  <div style="display:flex;gap:6px">
-   <button type="button" onclick="saveUserCardInfo()" style="flex:1;background:#6c5ce7;color:white;padding:7px;border:0;border-radius:5px;font-weight:bold;cursor:pointer">حفظ</button>
-   <button type="button" onclick="closeModals()" style="flex:1;background:#eee;border:0;padding:7px;border-radius:5px;cursor:pointer">إغلاق</button>
-  </div>
- </div>
-</div>
-
-<!-- نافذة PIN لوحة التحكم -->
-<div id="pin-modal" class="modal-overlay">
- <div class="modal-box" style="text-align:center">
-  <h3 style="color:#6c5ce7;font-size:15px;margin-bottom:8px">🔐 حماية لوحة التحكم</h3>
-  <input type="password" id="owner-pin-input" placeholder="الكود السري" style="text-align:center">
-  <div style="display:flex;gap:6px">
-   <button type="button" onclick="verifyOwnerPin()" style="flex:1;background:#6c5ce7;color:white;padding:7px;border:0;border-radius:5px;font-weight:bold;cursor:pointer">دخول</button>
-   <button type="button" onclick="closeModals()" style="flex:1;background:#eee;border:0;padding:7px;border-radius:5px;cursor:pointer">إلغاء</button>
-  </div>
- </div>
-</div>
-
-<!-- لوحة التحكم الجانبية (مع خيارات السحب الأربع) -->
-<div id="drawer-overlay" onclick="closeDrawerPanel()"></div>
-<div id="drawer-panel">
- <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:8px;margin-bottom:10px">
-  <h3 style="font-size:14px;color:#6c5ce7">لوحة التحكم والسحب</h3>
-  <button type="button" onclick="closeDrawerPanel()" style="background:none;border:0;font-size:14px;cursor:pointer">✕</button>
- </div>
- <div style="background:#f8f9fa;padding:10px;border-radius:6px;text-align:center;margin-bottom:10px;border:1px solid #eee">
-  <span style="font-size:10px;color:#666">الرصيد القابل للسحب (عمولة 10%)</span>
-  <h2 id="owner-balance-display" style="font-size:18px;color:#2d3436;margin:4px 0">$148.00</h2>
-  <label style="font-size:9px;color:#555;display:block;margin-bottom:2px;text-align:right">اختر وسيلة سحب الأرباح:</label>
-  <select id="withdrawal-method" style="margin-bottom:6px">
-   <option value="PayPal Business">🅿️ PayPal Business</option>
-   <option value="RedotPay">💳 RedotPay</option>
-   <option value="CCP">🇩🇿 حساب CCP</option>
-   <option value="Dahabia">🇩🇿 البطاقة الذهبية</option>
-  </select>
-  <button type="button" onclick="requestWithdrawal()" style="width:100%;background:#00b894;color:white;border:0;padding:6px;border-radius:4px;font-weight:bold;cursor:pointer">سحب الأرباح</button>
- </div>
- <div style="background:#faf8ff;border:1px solid #eae5ff;padding:8px;border-radius:6px;margin-bottom:10px">
-  <h4 style="font-size:10px;color:#6c5ce7;margin-bottom:4px">👤 معلومات حسابك:</h4>
-  <div id="drawer-user-info" style="font-size:10px;color:#444;line-height:1.4">يرجى تسجيل الدخول.</div>
- </div>
- <div style="font-size:10px;color:#666;font-weight:bold;margin-bottom:4px">سجل المبيعات:</div>
- <div id="sales-log-list" style="font-size:10px;color:#444;max-height:100px;overflow-y:auto">لا توجد عمليات بيع.</div>
-</div>
-
-<!-- الصفحة الرئيسية -->
 <div id="home-page" class="page-section active">
  <section class="hero">
-  <div class="hero-kicker" style="display:inline-block;background:rgba(255,255,255,0.15);padding:3px 8px;border-radius:15px;font-size:9px;margin-bottom:6px">✦ منصة جزائرية عالمية</div>
-  <h1 class="hero-title"><span data-i18n="hero_title_1">إبداعك الرقمي،</span> <span data-i18n="hero_title_2">بين يديك</span></h1>
-  <p class="hero-desc" data-i18n="hero_desc">كتب، قوالب، ومخططات رقمية مصممة لمساعدتك على النجاح.</p>
-  <button type="button" class="btn-primary" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})" data-i18n="btn_browse">تصفح المنتجات</button>
+  <div>✦ <span data-i18n="kicker">منصة للمنتجات الرقمية</span></div>
+  <h1><span data-i18n="hero1">إبداعك الرقمي،</span> <span data-i18n="hero2">بين يديك</span></h1>
+  <p data-i18n="heroDesc">كتب وقوالب ومخططات رقمية تساعدك على التعلم والتنظيم والإبداع.</p>
+  <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})" data-i18n="browse">تصفح المنتجات</button>
  </section>
 
  <div class="trust-row">
-  <span class="trust-pill" data-i18n="trust_1">📥 تحميل فوري</span>
-  <span class="trust-pill" data-i18n="trust_2">🔒 حماية Supabase</span>
-  <span class="trust-pill" data-i18n="trust_3">💎 4 وسائل دفع وسحب</span>
+  <span class="trust-pill" data-i18n="trust1">🛠️ المنصة قيد التطوير</span>
+  <span class="trust-pill" data-i18n="trust2">🔐 تسجيل عبر Supabase</span>
+  <span class="trust-pill" data-i18n="trust3">💳 الدفع غير مفعّل بعد</span>
  </div>
 
- <section class="categories-section" id="categories-sec">
-  <h2 class="section-title" data-i18n="cat_title">التصنيفات</h2>
+ <section class="content" id="categories">
+  <h2 class="section-title" data-i18n="categories">التصنيفات</h2>
   <div class="category-grid">
-   <div class="category-tile" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})"><img src="https://images.unsplash.com/photo-1512820542661-1e8a6b5a9b9f?auto=format&fit=crop&w=400&q=80" alt="كتب"><div><strong data-i18n="cat_1">كتب إلكترونية</strong><span data-i18n="cat_1_desc">أدلة ومعرفة</span></div></div>
-   <div class="category-tile" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})"><img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=400&q=80" alt="قوالب"><div><strong data-i18n="cat_2">قوالب رقمية</strong><span data-i18n="cat_2_desc">تصاميم جاهزة</span></div></div>
-   <div class="category-tile" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})"><img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&w=400&q=80" alt="مخططات"><div><strong data-i18n="cat_3">مخططات</strong><span data-i18n="cat_3_desc">تنظيم الأهداف</span></div></div>
-   <div class="category-tile" onclick="document.getElementById('products-sec').scrollIntoView({behavior:'smooth'})"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=400&q=80" alt="موارد"><div><strong data-i18n="cat_4">موارد تعليمية</strong><span data-i18n="cat_4_desc">تنمية مهارات</span></div></div>
+   <div class="category-tile">
+    <img src="https://images.unsplash.com/photo-1512820542661-1e8a6b5a9b9f?auto=format&fit=crop&w=500&q=80" alt="Books">
+    <div><strong data-i18n="cat1">كتب إلكترونية</strong><span data-i18n="cat1d">أدلة ومعرفة</span></div>
+   </div>
+   <div class="category-tile">
+    <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=500&q=80" alt="Templates">
+    <div><strong data-i18n="cat2">قوالب رقمية</strong><span data-i18n="cat2d">تصاميم جاهزة</span></div>
+   </div>
+   <div class="category-tile">
+    <img src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&w=500&q=80" alt="Planners">
+    <div><strong data-i18n="cat3">مخططات</strong><span data-i18n="cat3d">تنظيم الأهداف</span></div>
+   </div>
+   <div class="category-tile">
+    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=500&q=80" alt="Learning">
+    <div><strong data-i18n="cat4">موارد تعليمية</strong><span data-i18n="cat4d">تنمية المهارات</span></div>
+   </div>
   </div>
  </section>
 
- <section id="products-sec" class="products-section">
-  <h2 class="section-title" data-i18n="prod_title">أحدث المنتجات الرقمية</h2>
-  
+ <section class="content" id="products">
+  <h2 class="section-title" data-i18n="productsTitle">المنتجات الرقمية</h2>
   <div class="product-card">
-   <div class="product-title" data-i18n="p1_title">📅 مخطط يومي بسيط</div>
-   <div class="product-desc" data-i18n="p1_desc">خطط ليومك وحقق أهدافك بكفاءة عالية.</div>
-   <div class="product-footer"><span class="product-price">$7.99</span><button type="button" class="btn-details" onclick="showProductDetails('مخطط يومي بسيط','7.99','PDF','15 صفحة','ملف PDF عالي الجودة للطباعة.')" data-i18n="btn_buy">شراء</button></div>
+   <div class="product-title" data-i18n="p1">📅 مخطط يومي بسيط</div>
+   <div class="product-desc" data-i18n="p1d">مخطط لتنظيم المهام والأهداف اليومية. المنتج تجريبي إلى أن يتم توفير ملفه الفعلي.</div>
+   <div class="product-footer"><span class="product-price">$7.99</span><button class="btn btn-main" onclick="showDetails('planner')" data-i18n="details">التفاصيل</button></div>
   </div>
-
   <div class="product-card">
-   <div class="product-title" data-i18n="p2_title">📖 دليل العناية الذاتية</div>
-   <div class="product-desc" data-i18n="p2_desc">عادات صغيرة يومية تؤدي لتغييرات كبرى.</div>
-   <div class="product-footer"><span class="product-price">$5.99</span><button type="button" class="btn-details" onclick="showProductDetails('دليل العناية الذاتية','5.99','PDF','25 صفحة','دليل شامل وتمارين عملية.')" data-i18n="btn_buy">شراء</button></div>
+   <div class="product-title" data-i18n="p2">📖 دليل العناية الذاتية</div>
+   <div class="product-desc" data-i18n="p2d">أفكار وعادات يومية للعناية بالذات. المنتج تجريبي إلى أن يتم توفير ملفه الفعلي.</div>
+   <div class="product-footer"><span class="product-price">$5.99</span><button class="btn btn-main" onclick="showDetails('selfcare')" data-i18n="details">التفاصيل</button></div>
   </div>
  </section>
 </div>
 
-<!-- صفحة التفاصيل -->
-<div id="product-details-page" class="page-section" style="padding:15px;text-align:right">
- <h2 id="det-title" style="font-size:16px;color:#6c5ce7;margin-bottom:6px"></h2>
- <p id="det-desc" style="font-size:12px;color:#555;margin-bottom:10px"></p>
- <div id="det-price" style="font-size:18px;font-weight:bold;margin-bottom:12px"></div>
- <button type="button" onclick="addToCartFromDetails()" style="width:100%;background:#6c5ce7;color:white;padding:8px;border:0;border-radius:6px;font-weight:bold;font-size:12px;cursor:pointer;margin-bottom:6px">إضافة إلى السلة</button>
- <button type="button" onclick="switchPage('home')" style="width:100%;background:none;border:0;color:#666;font-size:11px;cursor:pointer">← العودة للرئيسية</button>
+<div id="details-page" class="page-section">
+ <section class="content">
+  <h2 class="section-title" id="detail-title"></h2>
+  <p class="muted" id="detail-desc"></p>
+  <h3 id="detail-price" style="margin:15px 0"></h3>
+  <div class="notice" data-i18n="demoNotice">هذا منتج تجريبي. لا يوجد دفع أو تنزيل ملف متاح حاليًا.</div>
+  <button class="btn btn-main" onclick="addToCart()" data-i18n="addCart">إضافة إلى السلة</button>
+  <button class="btn" onclick="switchPage('home')" data-i18n="back">العودة للرئيسية</button>
+ </section>
 </div>
 
-<!-- نافذة السلة -->
-<div id="cart-modal" class="modal-overlay">
+<div class="modal-overlay" id="cart-modal">
  <div class="modal-box">
-  <h3 style="font-size:14px;margin-bottom:8px">سلة المشتريات</h3>
-  <div id="cart-items-list" style="font-size:11px;color:#555;margin-bottom:8px">السلة فارغة.</div>
-  <div style="font-size:13px;font-weight:bold;margin-bottom:10px">الإجمالي: <span id="cart-total">$0.00</span></div>
-  <button type="button" onclick="checkoutCart()" style="width:100%;background:#6c5ce7;color:white;padding:8px;border:0;border-radius:6px;font-weight:bold;font-size:11px;cursor:pointer;margin-bottom:6px">إتمام الشراء السريع</button>
-  <button type="button" onclick="closeModals()" style="width:100%;background:#eee;border:0;padding:6px;border-radius:6px;font-size:11px;cursor:pointer">إغلاق</button>
+  <h3 data-i18n="cartTitle">سلة المشتريات</h3>
+  <div id="cart-items" class="muted">السلة فارغة.</div>
+  <p style="margin:12px 0;font-weight:bold"><span data-i18n="total">الإجمالي</span>: <span id="cart-total">$0.00</span></p>
+  <div class="notice" data-i18n="noPayment">الدفع غير مفعّل. لن يتم خصم أي مبلغ أو تسجيل عملية شراء.</div>
+  <button class="btn btn-main" onclick="checkout()" data-i18n="checkout">متابعة الشراء</button>
+  <button class="btn" onclick="closeModals()" data-i18n="close">إغلاق</button>
  </div>
 </div>
 
-<!-- نافذة التسجيل / حساب جديد -->
-<div id="auth-modal" class="modal-overlay">
+<div class="modal-overlay" id="auth-modal">
  <div class="modal-box">
-  <h3 id="auth-modal-title" style="font-size:14px;margin-bottom:8px">تسجيل الدخول</h3>
-  <form id="auth-form" onsubmit="handleAuthSubmit(event)">
-   <div id="signup-fields" style="display:none">
-    <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:2px">الاسم واللقب الحقيقيين:</label>
-    <input type="text" id="auth-name" placeholder="الاسم واللقب">
+  <h3 id="auth-title">تسجيل الدخول</h3>
+  <form id="auth-form" onsubmit="handleAuth(event)">
+   <div id="name-wrap" hidden>
+    <label for="auth-name" data-i18n="name">الاسم</label>
+    <input id="auth-name" autocomplete="name">
    </div>
-   <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:2px">البريد الإلكتروني:</label>
-   <input type="email" id="auth-email" placeholder="name@example.com" required style="text-align:left">
-   <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:2px">الرقم السري:</label>
-   <input type="password" id="auth-pass" placeholder="8 أحرف على الأقل" minlength="8" required style="text-align:left">
-   <div id="signup-confirm-box" style="display:none">
-    <label style="font-size:10px;font-weight:bold;display:block;margin-bottom:2px">تأكيد الرقم السري:</label>
-    <input type="password" id="auth-pass-confirm" placeholder="أعيدي كتابة الرقم السري" style="text-align:left">
+   <label for="auth-email" data-i18n="email">البريد الإلكتروني</label>
+   <input id="auth-email" type="email" autocomplete="email" required>
+   <label for="auth-password" data-i18n="password">كلمة المرور</label>
+   <input id="auth-password" type="password" minlength="8" autocomplete="current-password" required>
+   <div id="confirm-wrap" hidden>
+    <label for="auth-confirm" data-i18n="confirm">تأكيد كلمة المرور</label>
+    <input id="auth-confirm" type="password" minlength="8" autocomplete="new-password">
    </div>
-   <button type="submit" id="auth-submit-btn" style="width:100%;background:#6c5ce7;color:white;padding:8px;border:0;border-radius:5px;font-weight:bold;font-size:11px;cursor:pointer;margin-bottom:6px">دخول</button>
+   <button id="auth-submit" class="btn btn-main" type="submit">دخول</button>
   </form>
-  <button type="button" onclick="closeModals()" style="width:100%;background:none;border:0;color:#666;font-size:10px;cursor:pointer">إغلاق</button>
+  <button class="btn" onclick="closeModals()" data-i18n="close">إغلاق</button>
  </div>
 </div>
+
+<div class="modal-overlay" id="info-modal">
+ <div class="modal-box">
+  <h3 data-i18n="infoTitle">معلومات المنصة</h3>
+  <p class="muted" id="info-text"></p>
+  <button class="btn btn-main" onclick="closeModals()" data-i18n="close">إغلاق</button>
+ </div>
+</div>
+
+<footer>Pixeloria © 2026 — <span data-i18n="footer">منصة قيد التطوير</span></footer>
 
 <script>
-const translations = {
-  ar: {
-    nav_home: "الرئيسية",
-    nav_cats: "التصنيفات",
-    nav_resources: "الموارد",
-    nav_cards: "💳 بطاقاتي",
-    hero_title_1: "إبداعك الرقمي،",
-    hero_title_2: "بين يديك",
-    hero_desc: "كتب، قوالب، ومخططات رقمية مصممة لمساعدتك على النجاح.",
-    btn_browse: "تصفح المنتجات",
-    trust_1: "📥 تحميل فوري",
-    trust_2: "🔒 حماية Supabase",
-    trust_3: "💎 4 وسائل دفع وسحب",
-    cat_title: "التصنيفات",
-    cat_1: "كتب إلكترونية",
-    cat_1_desc: "أدلة ومعرفة",
-    cat_2: "قوالب رقمية",
-    cat_2_desc: "تصاميم جاهزة",
-    cat_3: "مخططات",
-    cat_3_desc: "تنظيم الأهداف",
-    cat_4: "موارد تعليمية",
-    cat_4_desc: "تنمية مهارات",
-    prod_title: "أحدث المنتجات الرقمية",
-    p1_title: "📅 مخطط يومي بسيط",
-    p1_desc: "خطط ليومك وحقق أهدافك بكفاءة عالية.",
-    p2_title: "📖 دليل العناية الذاتية",
-    p2_desc: "عادات صغيرة يومية تؤدي لتغييرات كبرى.",
-    btn_buy: "شراء"
-  },
-  en: {
-    nav_home: "Home",
-    nav_cats: "Categories",
-    nav_resources: "Resources",
-    nav_cards: "💳 My Cards",
-    hero_title_1: "Your Digital Creativity,",
-    hero_title_2: "in Your Hands",
-    hero_desc: "Books, templates, and digital planners designed to help you succeed.",
-    btn_browse: "Browse Products",
-    trust_1: "📥 Instant Download",
-    trust_2: "🔒 Supabase Security",
-    trust_3: "💎 4 Payment & Payout Methods",
-    cat_title: "Categories",
-    cat_1: "E-Books",
-    cat_1_desc: "Guides & Knowledge",
-    cat_2: "Digital Templates",
-    cat_2_desc: "Ready-made Designs",
-    cat_3: "Planners",
-    cat_3_desc: "Goal Organization",
-    cat_4: "Educational Resources",
-    cat_4_desc: "Skill Development",
-    prod_title: "Latest Digital Products",
-    p1_title: "📅 Simple Daily Planner",
-    p1_desc: "Plan your day and achieve your goals efficiently.",
-    p2_title: "📖 Self-Care Guide",
-    p2_desc: "Small daily habits leading to major changes.",
-    btn_buy: "Buy"
-  },
-  fr: {
-    nav_home: "Accueil",
-    nav_cats: "Catégories",
-    nav_resources: "Ressources",
-    nav_cards: "💳 Mes Cartes",
-    hero_title_1: "Votre Créativité Numérique,",
-    hero_title_2: "entre Vos Mains",
-    hero_desc: "Livres, modèles et planificateurs numériques conçus pour vous réussir.",
-    btn_browse: "Parcourir les produits",
-    trust_1: "📥 Téléchargement instantané",
-    trust_2: "🔒 Sécurité Supabase",
-    trust_3: "💎 4 Méthodes de Paiement",
-    cat_title: "Catégories",
-    cat_1: "E-Books",
-    cat_1_desc: "Guides & Connaissance",
-    cat_2: "Modèles Numériques",
-    cat_2_desc: "Designs Prêts à l'emploi",
-    cat_3: "Planificateurs",
-    cat_3_desc: "Organisation des Objectifs",
-    cat_4: "Ressources Éducatives",
-    cat_4_desc: "Développement des compétences",
-    prod_title: "Derniers Produits Numériques",
-    p1_title: "📅 Planificateur Quotidien",
-    p1_desc: "Planifiez votre journée et atteignez vos objectifs efficacement.",
-    p2_title: "📖 Guide de Soin de Soi",
-    p2_desc: "Petites habitudes quotidiennes menant à de grands changements.",
-    btn_buy: "Acheter"
-  }
+/* استعمل مفتاح Supabase العام فقط. لا تضع أبدًا service_role هنا. */
+const SUPABASE_URL = "https://iksqnhcrfpnqppxfyxqt.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_z7yzvMEV08VTIDx-X6Sk0w_UJsl-jF3";
+
+let db = null;
+if (window.supabase && SUPABASE_URL.startsWith("https://") && SUPABASE_PUBLISHABLE_KEY) {
+  db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+}
+
+const words = {
+ ar:{
+  dashboard:"لوحة المالك",cart:"السلة",login:"دخول",signup:"حساب جديد",logout:"خروج",
+  home:"الرئيسية",categories:"التصنيفات",payment:"الدفع",kicker:"منصة للمنتجات الرقمية",
+  hero1:"إبداعك الرقمي،",hero2:"بين يديك",
+  heroDesc:"كتب وقوالب ومخططات رقمية تساعدك على التعلم والتنظيم والإبداع.",
+  browse:"تصفح المنتجات",trust1:"🛠️ المنصة قيد التطوير",trust2:"🔐 تسجيل عبر Supabase",
+  trust3:"💳 الدفع غير مفعّل بعد",cat1:"كتب إلكترونية",cat1d:"أدلة ومعرفة",
+  cat2:"قوالب رقمية",cat2d:"تصاميم جاهزة",cat3:"مخططات",cat3d:"تنظيم الأهداف",
+  cat4:"موارد تعليمية",cat4d:"تنمية المهارات",productsTitle:"المنتجات الرقمية",
+  p1:"📅 مخطط يومي بسيط",p1d:"مخطط لتنظيم المهام والأهداف اليومية. المنتج تجريبي إلى أن يتم توفير ملفه الفعلي.",
+  p2:"📖 دليل العناية الذاتية",p2d:"أفكار وعادات يومية للعناية بالذات. المنتج تجريبي إلى أن يتم توفير ملفه الفعلي.",
+  details:"التفاصيل",demoNotice:"هذا منتج تجريبي. لا يوجد دفع أو تنزيل ملف متاح حاليًا.",
+  addCart:"إضافة إلى السلة",back:"العودة للرئيسية",cartTitle:"سلة المشتريات",
+  total:"الإجمالي",noPayment:"الدفع غير مفعّل. لن يتم خصم أي مبلغ أو تسجيل عملية شراء.",
+  checkout:"متابعة الشراء",close:"إغلاق",name:"الاسم",email:"البريد الإلكتروني",
+  password:"كلمة المرور",confirm:"تأكيد كلمة المرور",infoTitle:"معلومات المنصة",
+  footer:"منصة قيد التطوير",empty:"السلة فارغة.",added:"تمت الإضافة إلى السلة.",
+  loginTitle:"تسجيل الدخول",signupTitle:"إنشاء حساب جديد",
+  ownerInfo:"لوحة المالك غير مفعّلة. رمز PIN داخل صفحة HTML لا يحمي بيانات المالك. يلزم إعداد صلاحيات آمنة من جهة الخادم.",
+  paymentInfo:"الدفع والسحب غير مفعّلين. لا تدخلي أرقام البطاقات أو كلمات مرور حسابات الدفع في هذا الموقع.",
+  checkoutInfo:"لم تتم أي عملية دفع. يجب ربط بوابة دفع حقيقية والتحقق من الدفع على الخادم قبل تأكيد أي طلب.",
+  needDb:"خدمة تسجيل الدخول غير جاهزة. تحققي من إعدادات Supabase واتصال الإنترنت.",
+  signedUp:"تم إرسال طلب إنشاء الحساب. إذا كان تأكيد البريد مفعّلًا، افتحي رسالة التأكيد التي وصلتك.",
+  signedIn:"تم تسجيل الدخول بنجاح.",signedOut:"تم تسجيل الخروج.",badConfirm:"كلمتا المرور غير متطابقتين.",
+  genericError:"تعذّرت العملية: "
+ },
+ en:{
+  dashboard:"Owner Panel",cart:"Cart",login:"Login",signup:"Sign up",logout:"Logout",
+  home:"Home",categories:"Categories",payment:"Payments",kicker:"Digital products marketplace",
+  hero1:"Your digital creativity,",hero2:"in your hands",
+  heroDesc:"Books, templates, and planners for learning, organizing, and creating.",
+  browse:"Browse products",trust1:"🛠️ Platform in development",trust2:"🔐 Supabase authentication",
+  trust3:"💳 Payments not enabled",cat1:"E-books",cat1d:"Guides and knowledge",
+  cat2:"Digital templates",cat2d:"Ready-made designs",cat3:"Planners",cat3d:"Organize goals",
+  cat4:"Learning resources",cat4d:"Build your skills",productsTitle:"Digital products",
+  p1:"📅 Simple daily planner",p1d:"A daily planner demo. The actual downloadable file has not been added yet.",
+  p2:"📖 Self-care guide",p2d:"A self-care guide demo. The actual downloadable file has not been added yet.",
+  details:"Details",demoNotice:"Demo product. Payment and file downloads are not available yet.",
+  addCart:"Add to cart",back:"Back to home",cartTitle:"Shopping cart",total:"Total",
+  noPayment:"Payments are disabled. No money will be charged and no purchase will be recorded.",
+  checkout:"Continue to checkout",close:"Close",name:"Name",email:"Email",
+  password:"Password",confirm:"Confirm password",infoTitle:"Platform information",
+  footer:"Platform in development",empty:"Your cart is empty.",added:"Added to cart.",
+  loginTitle:"Login",signupTitle:"Create an account",
+  ownerInfo:"The owner panel is disabled. A PIN in client-side HTML cannot protect owner data. Server-side authorization is required.",
+  paymentInfo:"Payments and payouts are not enabled. Never enter card numbers or payment-account passwords here.",
+  checkoutInfo:"No payment was made. A real payment provider and server-side verification are required before confirming orders.",
+  needDb:"Authentication is unavailable. Check your Supabase configuration and internet connection.",
+  signedUp:"Signup request submitted. If email confirmation is enabled, check your inbox.",
+  signedIn:"Successfully signed in.",signedOut:"Successfully signed out.",badConfirm:"Passwords do not match.",
+  genericError:"Operation failed: "
+ },
+ fr:{
+  dashboard:"Espace propriétaire",cart:"Panier",login:"Connexion",signup:"Créer un compte",logout:"Déconnexion",
+  home:"Accueil",categories:"Catégories",payment:"Paiement",kicker:"Marché de produits numériques",
+  hero1:"Votre créativité numérique,",hero2:"entre vos mains",
+  heroDesc:"Livres, modèles et planificateurs pour apprendre, organiser et créer.",
+  browse:"Voir les produits",trust1:"🛠️ Plateforme en développement",trust2:"🔐 Authentification Supabase",
+  trust3:"💳 Paiement non activé",cat1:"Livres numériques",cat1d:"Guides et connaissances",
+  cat2:"Modèles numériques",cat2d:"Designs prêts",cat3:"Planificateurs",cat3d:"Organiser les objectifs",
+  cat4:"Ressources éducatives",cat4d:"Développer ses compétences",productsTitle:"Produits numériques",
+  p1:"📅 Planificateur quotidien",p1d:"Démo de planificateur. Le fichier téléchargeable réel n'est pas encore disponible.",
+  p2:"📖 Guide de bien-être",p2d:"Démo de guide. Le fichier téléchargeable réel n'est pas encore disponible.",
+  details:"Détails",demoNotice:"Produit de démonstration. Paiement et téléchargement indisponibles.",
+  addCart:"Ajouter au panier",back:"Retour à l'accueil",cartTitle:"Panier",total:"Total",
+  noPayment:"Paiement désactivé. Aucun montant ne sera débité et aucun achat ne sera enregistré.",
+  checkout:"Continuer",close:"Fermer",name:"Nom",email:"E-mail",
+  password:"Mot de passe",confirm:"Confirmer le mot de passe",infoTitle:"Informations",
+  footer:"Plateforme en développement",empty:"Votre panier est vide.",added:"Ajouté au panier.",
+  loginTitle:"Connexion",signupTitle:"Créer un compte",
+  ownerInfo:"L'espace propriétaire est désactivé. Un code PIN dans le HTML ne protège pas les données. Une autorisation serveur est nécessaire.",
+  paymentInfo:"Les paiements et retraits ne sont pas activés. Ne saisissez jamais de numéro de carte ni de mot de passe de paiement ici.",
+  checkoutInfo:"Aucun paiement effectué. Un prestataire réel et une vérification côté serveur sont nécessaires.",
+  needDb:"Authentification indisponible. Vérifiez Supabase et votre connexion Internet.",
+  signedUp:"Demande d'inscription envoyée. Vérifiez votre e-mail si la confirmation est activée.",
+  signedIn:"Connexion réussie.",signedOut:"Déconnexion réussie.",badConfirm:"Les mots de passe ne correspondent pas.",
+  genericError:"Échec de l'opération : "
+ }
 };
 
-function changeLanguage(lang) {
-  const elements = document.querySelectorAll('[data-i18n]');
-  elements.forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (translations[lang] && translations[lang][key]) {
-      el.innerText = translations[lang][key];
-    }
-  });
-  if (lang === 'ar') {
-    document.documentElement.setAttribute('dir', 'rtl');
-    document.documentElement.setAttribute('lang', 'ar');
-  } else {
-    document.documentElement.setAttribute('dir', 'ltr');
-    document.documentElement.setAttribute('lang', lang);
-  }
-}
-
-let currentProduct = {};
-let cart = [];
-let ownerBalance = 148.00;
-let salesLog = [];
+let lang = "ar";
 let currentUser = null;
-const OWNER_PIN = "1234";
-let isSignUp = false;
+let isSignup = false;
+let selectedProduct = null;
+let cart = [];
 
-function requestOwnerAccess(){
- document.getElementById('pin-modal').style.display='flex';
- document.getElementById('owner-pin-input').value='';
- document.getElementById('owner-pin-input').focus();
+const products = {
+ planner:{title:{ar:"📅 مخطط يومي بسيط",en:"📅 Simple daily planner",fr:"📅 Planificateur quotidien"},price:7.99,descKey:"p1d"},
+ selfcare:{title:{ar:"📖 دليل العناية الذاتية",en:"📖 Self-care guide",fr:"📖 Guide de bien-être"},price:5.99,descKey:"p2d"}
+};
+
+function t(key){return words[lang][key] || words.ar[key] || key}
+
+function changeLanguage(value){
+ lang = words[value] ? value : "ar";
+ document.documentElement.lang = lang;
+ document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+ document.querySelectorAll("[data-i18n]").forEach(el=>{
+  const key=el.getAttribute("data-i18n");
+  if(t(key)) el.textContent=t(key);
+ });
+ if(document.getElementById("auth-modal").style.display==="flex"){
+  document.getElementById("auth-title").textContent=isSignup?t("signupTitle"):t("loginTitle");
+  document.getElementById("auth-submit").textContent=isSignup?t("signup"):t("login");
+ }
+ renderCart();
 }
-function verifyOwnerPin(){
- if(document.getElementById('owner-pin-input').value===OWNER_PIN){
-  closeModals(); updateDrawerUserInfo();
-  document.getElementById('drawer-panel').style.right='0';
-  document.getElementById('drawer-overlay').style.display='block';
- }else{alert('⚠️ الكود السري خاطئ!'); document.getElementById('owner-pin-input').value='';}
-}
-function closeDrawerPanel(){document.getElementById('drawer-panel').style.right='-280px';document.getElementById('drawer-overlay').style.display='none'}
-function closeModals(){document.querySelectorAll('.modal-overlay').forEach(m=>m.style.display='none')}
+
 function switchPage(page){
- document.querySelectorAll('.page-section').forEach(el=>el.classList.remove('active'));
- document.getElementById(page==='home'?'home-page':'product-details-page').classList.add('active');
- window.scrollTo(0,0);
-}
-function showProductDetails(title,price,type,pages,desc){
- currentProduct={title,price,type,pages,desc};
- document.getElementById('det-title').innerText=title;
- document.getElementById('det-price').innerText='$'+price;
- document.getElementById('det-desc').innerText=desc;
- switchPage('details');
-}
-function addToCartFromDetails(){cart.push(currentProduct);document.getElementById('cart-count').innerText=cart.length;alert('تمت الإضافة للسلة بنجاح!');switchPage('home')}
-function openCartModal(){
- const list=document.getElementById('cart-items-list'),total=document.getElementById('cart-total');
- if(!cart.length){list.textContent='السلة فارغة.';total.textContent='$0.00'}
- else{
-  list.innerHTML='';let sum=0;
-  cart.forEach(item=>{const row=document.createElement('div');row.textContent=`• ${item.title} - $${item.price}`;list.appendChild(row);sum+=Number(item.price)});
-  total.textContent='$'+sum.toFixed(2);
- }
- document.getElementById('cart-modal').style.display='flex';
-}
-function checkoutCart(){
- if(!cart.length){alert('السلة فارغة!');return}
- const total=cart.reduce((sum,item)=>sum+Number(item.price),0);
- ownerBalance+=total; salesLog.unshift(`شراء منتج بـ $${total.toFixed(2)}`);
- if(currentUser) currentUser.purchases=(currentUser.purchases||0)+cart.length;
- cart=[]; document.getElementById('cart-count').innerText='0'; closeModals();
- alert('🎉 تم الشراء بنجاح عبر الوسيلة المختارة!');
+ document.querySelectorAll(".page-section").forEach(el=>el.classList.remove("active"));
+ document.getElementById(page==="home"?"home-page":"details-page").classList.add("active");
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function openAuthModal(signUp){
- isSignUp=signUp;
- document.getElementById('auth-modal-title').innerText=signUp?'إنشاء حساب جديد':'تسجيل الدخول';
- document.getElementById('auth-submit-btn').innerText=signUp?'إنشاء الحساب وإرسال رابط التأكيد':'دخول';
- document.getElementById('signup-fields').style.display=signUp?'block':'none';
- document.getElementById('signup-confirm-box').style.display=signUp?'block':'none';
- document.getElementById('auth-name').required=signUp;
- document.getElementById('auth-pass-confirm').required=signUp;
- document.getElementById('auth-email').value='';
- document.getElementById('auth-pass').value='';
- document.getElementById('auth-modal').style.display='flex';
+function showDetails(id){
+ selectedProduct=id;
+ const p=products[id];
+ document.getElementById("detail-title").textContent=p.title[lang];
+ document.getElementById("detail-desc").textContent=t(p.descKey);
+ document.getElementById("detail-price").textContent="$"+p.price.toFixed(2);
+ switchPage("details");
 }
 
-async function handleAuthSubmit(event){
- event.preventDefault();
- const email=document.getElementById('auth-email').value.trim().toLowerCase();
- const pass=document.getElementById('auth-pass').value;
- const submit=document.getElementById('auth-submit-btn');
+function addToCart(){
+ if(!selectedProduct)return;
+ cart.push(selectedProduct);
+ document.getElementById("cart-count").textContent=cart.length;
+ alert(t("added"));
+ switchPage("home");
+}
 
- if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-  alert('يرجى كتابة بريد إلكتروني صحيح.');
-  return;
- }
+function openCart(){
+ renderCart();
+ document.getElementById("cart-modal").style.display="flex";
+}
 
- if(isSignUp){
-  const name=document.getElementById('auth-name').value.trim();
-  const confirmPass=document.getElementById('auth-pass-confirm').value;
-  if(!name){alert('يرجى إدخال الاسم واللقب.');return}
-  if(pass!==confirmPass){alert('كلمتا المرور غير متطابقتين!');return}
-
-  submit.disabled=true;
-  try{
-   const {data,error}=await pixeloriaSupabase.auth.signUp({
-    email, password:pass,
-    options:{data:{full_name:name}, emailRedirectTo: window.location.href}
-   });
-   if(error) throw error;
-   closeModals();
-   if(data.session){
-    currentUser={name,email,purchases:0,savedCard:null};
-    alert('🎉 تم إنشاء الحساب وتسجيل الدخول بنجاح!');
-    updateDrawerUserInfo();
-   }else{
-    alert('📩 تم تسجيل طلب إنشاء الحساب بنجاح! تم إرسال رسالة تأكيد إلى بريدك الإلكتروني.');
-   }
-  }catch(error){
-   console.error('Supabase signup error:',error);
-   alert('تعذّر إنشاء الحساب: '+(error?.message||'تحقق من إعدادات البريد في Supabase.'));
-  }finally{submit.disabled=false}
+function renderCart(){
+ const list=document.getElementById("cart-items");
+ const total=document.getElementById("cart-total");
+ list.replaceChildren();
+ let sum=0;
+ if(!cart.length){
+  list.textContent=t("empty");
  }else{
-  submit.disabled=true;
-  try{
-   const {data,error}=await pixeloriaSupabase.auth.signInWithPassword({email,password:pass});
-   if(error) throw error;
-   const user=data.user;
-   currentUser={name:user.user_metadata?.full_name||user.email?.split('@')[0]||'مستخدم',email:user.email,purchases:0,savedCard:null};
+  cart.forEach(id=>{
+   const p=products[id];
+   sum+=p.price;
+   const row=document.createElement("div");
+   row.style.padding="5px 0";
+   row.textContent=p.title[lang]+" — $"+p.price.toFixed(2);
+   list.appendChild(row);
+  });
+ }
+ total.textContent="$"+sum.toFixed(2);
+ document.getElementById("cart-count").textContent=cart.length;
+}
+
+function checkout(){
+ alert(t("checkoutInfo"));
+}
+
+function showInfo(message){
+ document.getElementById("info-text").textContent=message;
+ document.getElementById("info-modal").style.display="flex";
+}
+function showOwnerNotice(){showInfo(t("ownerInfo"))}
+function showPaymentNotice(){showInfo(t("paymentInfo"))}
+function closeModals(){document.querySelectorAll(".modal-overlay").forEach(m=>m.style.display="none")}
+
+function openAuth(signup){
+ isSignup=signup;
+ document.getElementById("auth-title").textContent=signup?t("signupTitle"):t("loginTitle");
+ document.getElementById("auth-submit").textContent=signup?t("signup"):t("login");
+ document.getElementById("name-wrap").hidden=!signup;
+ document.getElementById("confirm-wrap").hidden=!signup;
+ document.getElementById("auth-name").required=signup;
+ document.getElementById("auth-confirm").required=signup;
+ document.getElementById("auth-password").autocomplete=signup?"new-password":"current-password";
+ document.getElementById("auth-form").reset();
+ document.getElementById("auth-modal").style.display="flex";
+}
+
+async function handleAuth(event){
+ event.preventDefault();
+ if(!db){alert(t("needDb"));return}
+ const email=document.getElementById("auth-email").value.trim();
+ const password=document.getElementById("auth-password").value;
+ const button=document.getElementById("auth-submit");
+ button.disabled=true;
+ try{
+  if(isSignup){
+   const name=document.getElementById("auth-name").value.trim();
+   const confirm=document.getElementById("auth-confirm").value;
+   if(!name){alert(t("name"));return}
+   if(password!==confirm){alert(t("badConfirm"));return}
+   const {data,error}=await db.auth.signUp({
+    email,password,
+    options:{data:{full_name:name},emailRedirectTo:window.location.href}
+   });
+   if(error)throw error;
    closeModals();
-   alert('أهلاً بعودتك، '+currentUser.name+'!');
-   updateDrawerUserInfo();
-  }catch(error){
-   console.error('Supabase login error:',error);
-   alert('تعذّر تسجيل الدخول: '+(error?.message||'تأكد من البريد وكلمة المرور.'));
-  }finally{submit.disabled=false}
+   alert(t("signedUp"));
+   if(data.session)currentUser=data.user;
+  }else{
+   const {data,error}=await db.auth.signInWithPassword({email,password});
+   if(error)throw error;
+   currentUser=data.user;
+   closeModals();
+   alert(t("signedIn"));
+  }
+  updateAuthUI();
+ }catch(error){
+  console.error("Supabase authentication error:",error);
+  alert(t("genericError")+(error.message||"Unknown error"));
+ }finally{
+  button.disabled=false;
  }
 }
 
-async function initPixeloriaAuth(){
- try{
-  const {data,error}=await pixeloriaSupabase.auth.getSession();
-  if(error) throw error;
-  const user=data.session?.user;
-  if(user){
-   currentUser={name:user.user_metadata?.full_name||user.email?.split('@')[0]||'مستخدم',email:user.email,purchases:0,savedCard:null};
-   updateDrawerUserInfo();
-  }
-  pixeloriaSupabase.auth.onAuthStateChange((_event,session)=>{
-   const user=session?.user;
-   currentUser=user?{name:user.user_metadata?.full_name||user.email?.split('@')[0]||'مستخدم',email:user.email,purchases:0,savedCard:null}:null;
-   updateDrawerUserInfo();
-  });
- }catch(error){console.error('Supabase session error:',error)}
+function updateAuthUI(){
+ const loggedIn=!!currentUser;
+ document.getElementById("login-button").hidden=loggedIn;
+ document.getElementById("signup-button").hidden=loggedIn;
+ document.getElementById("logout-button").hidden=!loggedIn;
 }
-document.addEventListener('DOMContentLoaded',initPixeloriaAuth);
 
 async function logoutUser(){
+ if(!db)return;
  try{
-  const {error}=await pixeloriaSupabase.auth.signOut();
-  if(error) throw error;
+  const {error}=await db.auth.signOut();
+  if(error)throw error;
   currentUser=null;
-  updateDrawerUserInfo();
-  closeModals();
-  alert('تم تسجيل الخروج بنجاح.');
+  updateAuthUI();
+  alert(t("signedOut"));
  }catch(error){
-  console.error('Supabase signout error:',error);
-  alert('تعذّر تسجيل الخروج.');
+  alert(t("genericError")+(error.message||""));
  }
 }
 
-function openCardSettingsModal(){
- if(!currentUser){alert('⚠️ يرجى تسجيل الدخول أولاً لإدارة بطاقاتك!');openAuthModal(false);return}
- const status=document.getElementById('current-saved-card-status');
- if(currentUser.savedCard){
-  status.innerText=`الوسيلة: ${currentUser.savedCard.method} (${currentUser.savedCard.details})`;
-  document.getElementById('user-pref-method').value=currentUser.savedCard.method;
-  document.getElementById('user-pref-details').value=currentUser.savedCard.details;
- }else{status.innerText='لا توجد وسيلة محفوظة حتى الآن.';document.getElementById('user-pref-details').value=''}
- document.getElementById('card-settings-modal').style.display='flex';
-}
-
-function saveUserCardInfo(){
- if(!currentUser)return;
- const method=document.getElementById('user-pref-method').value;
- const details=document.getElementById('user-pref-details').value.trim();
- if(!details){alert('يرجى إدخال التفاصيل.');return}
- currentUser.savedCard={method,details};
- alert('✅ تم حفظ وسيلة الدفع في حسابك بنجاح!');
- closeModals();
- updateDrawerUserInfo();
-}
-
-function updateDrawerUserInfo(){
- const logoutButton=document.getElementById('logout-btn');
- if(logoutButton) logoutButton.style.display=currentUser?'inline-block':'none';
- const box=document.getElementById('drawer-user-info');
- if(!currentUser){box.textContent='لم تقم بتسجيل الدخول بعد.'}
- else{
-  const cardText=currentUser.savedCard?`${currentUser.savedCard.method} (${currentUser.savedCard.details})`:'لا توجد وسيلة دفع محفوظة';
-  box.innerHTML=`الاسم: <b>${escapeHtml(currentUser.name)}</b><br>الإيميل: ${escapeHtml(currentUser.email)}<br>عدد المشتريات: ${currentUser.purchases||0}<br>وسيلة الدفع: <span style="color:#00b894">${escapeHtml(cardText)}</span>`;
+async function initAuth(){
+ if(!db)return;
+ try{
+  const {data,error}=await db.auth.getSession();
+  if(error)throw error;
+  currentUser=data.session?.user||null;
+  updateAuthUI();
+  db.auth.onAuthStateChange((_event,session)=>{
+   currentUser=session?.user||null;
+   updateAuthUI();
+  });
+ }catch(error){
+  console.error("Supabase session error:",error);
  }
- const sales=document.getElementById('sales-log-list');
- sales.innerHTML='';
- if(!salesLog.length) sales.textContent='لا توجد عمليات بيع مسجلة.';
- else salesLog.forEach(item=>{const row=document.createElement('div');row.textContent='• '+item;sales.appendChild(row)});
- document.getElementById('owner-balance-display').innerText='$'+ownerBalance.toFixed(2);
 }
 
-function escapeHtml(value){
- return String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-}
-
-function requestWithdrawal(){
- const method=document.getElementById('withdrawal-method').value;
- const raw=prompt('أدخل مبلغ السحب المطلوب (بالدولار):',ownerBalance.toFixed(2));
- if(raw===null||raw.trim()==='')return;
- const amount=Number(raw);
- if(!Number.isFinite(amount)||amount<=0){alert('أدخل مبلغًا صحيحًا أكبر من صفر.');return}
- if(amount>ownerBalance){alert('المبلغ المطلوب يتجاوز الرصيد المتاح.');return}
- ownerBalance-=amount;
- document.getElementById('owner-balance-display').innerText='$'+ownerBalance.toFixed(2);
- alert(`✅ تم طلب سحب الأرباح بنجاح عبر (${method})!`);
- closeDrawerPanel();
-}
+document.querySelectorAll(".modal-overlay").forEach(modal=>{
+ modal.addEventListener("click",event=>{
+  if(event.target===modal)modal.style.display="none";
+ });
+});
+document.addEventListener("DOMContentLoaded",initAuth);
+changeLanguage("ar");
 </script>
 </body>
 </html>
-
